@@ -1,0 +1,1559 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RioSulAPI</name>
+    </assembly>
+    <members>
+        <member name="M:RioSulAPI.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
+            </summary>
+            <param name="description">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The ID as a string.</returns>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.HelpPageConfig">
+            <summary>
+            Use this class to customize the Help Page.
+            For example you can set a custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
+            or you can provide the samples for the requests/responses.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.Controllers.HelpController">
+            <summary>
+            The controller that will handle requests for the help page.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetDocumentationProvider(System.Web.Http.HttpConfiguration,System.Web.Http.Description.IDocumentationProvider)">
+            <summary>
+            Sets the documentation provider for help page.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="documentationProvider">The documentation provider.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleObjects(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.Type,System.Object})">
+            <summary>
+            Sets the objects that will be used by the formatters to produce sample requests/responses.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleObjects">The sample objects.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type and action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleRequest(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample request directly for the specified media type and action with parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample request.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String)">
+            <summary>
+            Sets the sample request directly for the specified media type of the action.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleResponse(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.String,System.String,System.String[])">
+            <summary>
+            Sets the sample response directly for the specified media type of the action with specific parameters.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample response.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForMediaType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Sets the sample directly for all actions with the specified media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetSampleForType(System.Web.Http.HttpConfiguration,System.Object,System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Sets the sample directly for all actions with the specified type and media type.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sample">The sample.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The parameter type or return type of an action.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualRequestType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate request samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String)">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetActualResponseType(System.Web.Http.HttpConfiguration,System.Type,System.String,System.String,System.String[])">
+            <summary>
+            Specifies the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> returned as part of the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            The help page will use this information to produce more accurate response samples.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="type">The type.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <returns>The help page sample generator.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.SetHelpPageSampleGenerator(System.Web.Http.HttpConfiguration,RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator)">
+            <summary>
+            Sets the help page sample generator.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="sampleGenerator">The help page sample generator.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.GetModelDescriptionGenerator(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Gets the model description generator.
+            </summary>
+            <param name="config">The configuration.</param>
+            <returns>The <see cref="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator"/></returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageConfigurationExtensions.GetHelpPageApiModel(System.Web.Http.HttpConfiguration,System.String)">
+            <summary>
+            Gets the model that represents an API displayed on the help page. The model is initialized on the first call and cached for subsequent calls.
+            </summary>
+            <param name="config">The <see cref="T:System.Web.Http.HttpConfiguration"/>.</param>
+            <param name="apiDescriptionId">The <see cref="T:System.Web.Http.Description.ApiDescription"/> ID.</param>
+            <returns>
+            An <see cref="T:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel"/>
+            </returns>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescription">
+            <summary>
+            Describes a type model.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescriptionGenerator">
+            <summary>
+            Generates model descriptions for given types.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelNameAttribute">
+            <summary>
+            Use this attribute to change the name of the <see cref="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescription"/> generated for a type.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel">
+            <summary>
+            The model that represents an API displayed on the help page.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel"/> class.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription">
+            <summary>
+            Gets or sets the <see cref="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.ApiDescription"/> that describes the API.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.UriParameters">
+            <summary>
+            Gets or sets the <see cref="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ParameterDescription"/> collection that describes the URI parameters for the API.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.RequestDocumentation">
+            <summary>
+            Gets or sets the documentation for the request.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.RequestModelDescription">
+            <summary>
+            Gets or sets the <see cref="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the request body.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.RequestBodyParameters">
+            <summary>
+            Gets the request body parameter descriptions.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.ResourceDescription">
+            <summary>
+            Gets or sets the <see cref="T:RioSulAPI.Areas.HelpPage.ModelDescriptions.ModelDescription"/> that describes the resource.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.ResourceProperties">
+            <summary>
+            Gets the resource property descriptions.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.SampleRequests">
+            <summary>
+            Gets the sample requests associated with the API.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.SampleResponses">
+            <summary>
+            Gets the sample responses associated with the API.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.Models.HelpPageApiModel.ErrorMessages">
+            <summary>
+            Gets the error messages associated with this model.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator">
+            <summary>
+            This class will generate the samples for the help page.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator"/> class.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.ActualHttpMessageTypes">
+            <summary>
+            Gets CLR types that are used as the content of <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples">
+            <summary>
+            Gets the objects that are used directly as samples for certain actions.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects">
+            <summary>
+            Gets the objects that are serialized as samples by the supported formatters.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories">
+            <summary>
+            Gets factories for the objects that the supported formatters will serialize as samples. Processed in order,
+            stopping when the factory successfully returns a non-<see langref="null"/> object.
+            </summary>
+            <remarks>
+            Collection includes just <see cref="M:RioSulAPI.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)"/> initially. Use
+            <code>SampleObjectFactories.Insert(0, func)</code> to provide an override and
+            <code>SampleObjectFactories.Add(func)</code> to provide a fallback.</remarks>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.GetSampleRequests(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the request body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.GetSampleResponses(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Gets the response body samples for a given <see cref="T:System.Web.Http.Description.ApiDescription"/>.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.GetSample(System.Web.Http.Description.ApiDescription,RioSulAPI.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Gets the request or response body samples.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The samples keyed by media type.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.GetActionSample(System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Type,System.Net.Http.Formatting.MediaTypeFormatter,System.Net.Http.Headers.MediaTypeHeaderValue,RioSulAPI.Areas.HelpPage.SampleDirection)">
+            <summary>
+            Search for samples that are provided directly through <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.ActionSamples"/>.
+            </summary>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="type">The CLR type.</param>
+            <param name="formatter">The formatter.</param>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or for a response.</param>
+            <returns>The sample that matches the parameters.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.GetSampleObject(System.Type)">
+            <summary>
+            Gets the sample object that will be serialized by the formatters. 
+            First, it will look at the <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.SampleObjects"/>. If no sample object is found, it will try to create
+            one using <see cref="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.DefaultSampleObjectFactory(RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator,System.Type)"/> (which wraps an <see cref="T:RioSulAPI.Areas.HelpPage.ObjectGenerator"/>) and other
+            factories in <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.SampleObjectFactories"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>The sample object.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.ResolveHttpRequestMessageType(System.Web.Http.Description.ApiDescription)">
+            <summary>
+            Resolves the actual type of <see cref="T:System.Net.Http.ObjectContent`1"/> passed to the <see cref="T:System.Net.Http.HttpRequestMessage"/> in an action.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <returns>The type.</returns>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.ResolveType(System.Web.Http.Description.ApiDescription,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},RioSulAPI.Areas.HelpPage.SampleDirection,System.Collections.ObjectModel.Collection{System.Net.Http.Formatting.MediaTypeFormatter}@)">
+            <summary>
+            Resolves the type of the action parameter or return value when <see cref="T:System.Net.Http.HttpRequestMessage"/> or <see cref="T:System.Net.Http.HttpResponseMessage"/> is used.
+            </summary>
+            <param name="api">The <see cref="T:System.Web.Http.Description.ApiDescription"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+            <param name="sampleDirection">The value indicating whether the sample is for a request or a response.</param>
+            <param name="formatters">The formatters.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleGenerator.WriteSampleObjectUsingFormatter(System.Net.Http.Formatting.MediaTypeFormatter,System.Object,System.Type,System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Writes the sample object using formatter.
+            </summary>
+            <param name="formatter">The formatter.</param>
+            <param name="value">The value.</param>
+            <param name="type">The type.</param>
+            <param name="mediaType">Type of the media.</param>
+            <returns></returns>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.HelpPageSampleKey">
+            <summary>
+            This is used to identify the place where the sample should be applied.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue)">
+            <summary>
+            Creates a new <see cref="T:RioSulAPI.Areas.HelpPage.HelpPageSampleKey"/> based on media type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,System.Type)">
+            <summary>
+            Creates a new <see cref="T:RioSulAPI.Areas.HelpPage.HelpPageSampleKey"/> based on media type and CLR type.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="type">The CLR type.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.#ctor(RioSulAPI.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:RioSulAPI.Areas.HelpPage.HelpPageSampleKey"/> based on <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="sampleDirection">The <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.#ctor(System.Net.Http.Headers.MediaTypeHeaderValue,RioSulAPI.Areas.HelpPage.SampleDirection,System.String,System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Creates a new <see cref="T:RioSulAPI.Areas.HelpPage.HelpPageSampleKey"/> based on media type, <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>, controller name, action name and parameter names.
+            </summary>
+            <param name="mediaType">The media type.</param>
+            <param name="sampleDirection">The <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.</param>
+            <param name="controllerName">Name of the controller.</param>
+            <param name="actionName">Name of the action.</param>
+            <param name="parameterNames">The parameter names.</param>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.ControllerName">
+            <summary>
+            Gets the name of the controller.
+            </summary>
+            <value>
+            The name of the controller.
+            </value>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.ActionName">
+            <summary>
+            Gets the name of the action.
+            </summary>
+            <value>
+            The name of the action.
+            </value>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.MediaType">
+            <summary>
+            Gets the media type.
+            </summary>
+            <value>
+            The media type.
+            </value>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.ParameterNames">
+            <summary>
+            Gets the parameter names.
+            </summary>
+        </member>
+        <member name="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection">
+            <summary>
+            Gets the <see cref="P:RioSulAPI.Areas.HelpPage.HelpPageSampleKey.SampleDirection"/>.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.ImageSample">
+            <summary>
+            This represents an image sample on the help page. There's a display template named ImageSample associated with this class.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.ImageSample.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RioSulAPI.Areas.HelpPage.ImageSample"/> class.
+            </summary>
+            <param name="src">The URL of an image.</param>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.InvalidSample">
+            <summary>
+            This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.ObjectGenerator">
+            <summary>
+            This class will create an object of a given type and populate it with sample data.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.ObjectGenerator.GenerateObject(System.Type)">
+            <summary>
+            Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
+            Simple types: <see cref="T:System.Int32"/>, <see cref="T:System.String"/>, <see cref="T:System.Enum"/>, <see cref="T:System.DateTime"/>, <see cref="T:System.Uri"/>, etc.
+            Complex types: POCO types.
+            Nullables: <see cref="T:System.Nullable`1"/>.
+            Arrays: arrays of simple types or complex types.
+            Key value pairs: <see cref="T:System.Collections.Generic.KeyValuePair`2"/>
+            Tuples: <see cref="T:System.Tuple`1"/>, <see cref="T:System.Tuple`2"/>, etc
+            Dictionaries: <see cref="T:System.Collections.Generic.IDictionary`2"/> or anything deriving from <see cref="T:System.Collections.Generic.IDictionary`2"/>.
+            Collections: <see cref="T:System.Collections.Generic.IList`1"/>, <see cref="T:System.Collections.Generic.IEnumerable`1"/>, <see cref="T:System.Collections.Generic.ICollection`1"/>, <see cref="T:System.Collections.IList"/>, <see cref="T:System.Collections.IEnumerable"/>, <see cref="T:System.Collections.ICollection"/> or anything deriving from <see cref="T:System.Collections.Generic.ICollection`1"/> or <see cref="T:System.Collections.IList"/>.
+            Queryables: <see cref="T:System.Linq.IQueryable"/>, <see cref="T:System.Linq.IQueryable`1"/>.
+            </summary>
+            <param name="type">The type.</param>
+            <returns>An object of the given type.</returns>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.SampleDirection">
+            <summary>
+            Indicates whether the sample is used for request or response
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.TextSample">
+            <summary>
+            This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Areas.HelpPage.XmlDocumentationProvider">
+            <summary>
+            A custom <see cref="T:System.Web.Http.Description.IDocumentationProvider"/> that reads the API documentation from an XML documentation file.
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Areas.HelpPage.XmlDocumentationProvider.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RioSulAPI.Areas.HelpPage.XmlDocumentationProvider"/> class.
+            </summary>
+            <param name="documentPath">The physical path to XML document.</param>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Registra nueva auditoria confección
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.ObtieneAuditoriaConfeccion">
+            <summary>
+            Obtiene auditoría de confección
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de corte confeccion
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneOrdenesTrabajoDynamics(System.String,System.String)">
+            <summary>
+            Obtiene las Ordenes de trabajo en Dynamics
+            </summary>
+            <param name="IdClienteRef"></param>
+            <param name="OrdenT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorte(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Ingresa una nueva auditoria de corte
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Ingresa una nueva auditoria de corte tendido
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneDatosGeneralesOrdenTrabajo(System.String,System.String)">
+            <summary>
+            Obtiene los datos generales de la orden de trabajo
+            </summary>
+            <param name="OrdenTrabajo"></param>
+            <param name="CLI_ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneBultosAuditoria">
+            <summary>
+            Obtiene los bultos de Dynamics para auditoría
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneSerieAuditoria">
+            <summary>
+            Obtiene las series de Dynamics para auditoría
+            </summary>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaCorte">
+            <summary>
+            Obtiene auditoría por IdAuditoriaCorte
+            </summary>
+            <param name="IdAuditoriaCorte"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaTendido">
+            <summary>
+            Obtiene auditoría de tendido
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaCortePorId(System.Int32)">
+            <summary>
+            Obtiene auditoría por corte por Id
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de corte
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.CierreAuditoriaTendido(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de corte tendido
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.NuevaAuditoriaLavanderia(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Registra una nueva auditoría de Lavandería
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.ObtieneAuditoriaLavanderia">
+            <summary>
+            Obtienen auditoría de Lavandería
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de corte
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.NuevaAuditoriaProcEsp(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Registra una nueva auditoría de procesos especiales
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ObtieneAuditoriaProcEsp">
+            <summary>
+            Obtiene auditoría de Procesos Especiales
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de corte
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.NuevaAuditoriaTerminado(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+            <summary>
+            Registra una nueva auditoría de lavandería
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtieneAuditoriaTerminado">
+            <summary>
+            Obtiene auditoría de Lavandería
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de terminado
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.ObtieneSegundasDynamics(System.String)">
+            <summary>
+            OBTIENE LOS ESTILOS DE SEGUNDAS DE LA BASE DYNAMICS
+            </summary>
+            <param name="Consulta"></param>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.GuardaSegundaPorcentajes(RioSulAPI.Class.ViewModel.REQ_C_SEGUNDA)">
+            <summary>
+            AGREGA SEGUNDA A LA BASE DE DATOS
+            </summary>
+            <param name="SEG"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.EditaSegundaPorcentajes(RioSulAPI.Class.ViewModel.RES_C_SEGUNDA,System.String)">
+            <summary>
+            EDITA LOS PORCENTAJES DE UNA SEGUNDA, DE LA BASE DE DATOS
+            </summary>
+            <param name="RES"></param>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.ElimianSegundaPorcentaje(System.String,System.Int32)">
+            <summary>
+            ELIMINA EL REGISTRO DEL CATALOGO SEGUNDAS
+            </summary>
+            <param name="Key"></param>
+            <param name="IdSegunda"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.ObtieneEstilosApp(System.String)">
+            <summary>
+            OBTIENE LOS ESTILOS YA CON SUS PORCENTAJES DE SEGUNDA
+            </summary>
+            <param name="Busqueda"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.VerificaEstilo(System.String,System.String)">
+            <summary>
+            VERIFICA QUE EL ESTILO NO CUENTE CON PORCENTAJES DE SEGUNDAS
+            </summary>
+            <param name="Estilo"></param>
+            <param name="Descripcion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.GetSegundaById(System.Int32)">
+            <summary>
+            OBTIENE LOS DETALLES DEL IdSegunda, PARA EDICIÓN
+            </summary>
+            <param name="IdSegunda"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.ObtieneClientesDynamics(System.String)">
+            <summary>
+            Obtiene los clientes, por nombre, nombre corto o clave
+            </summary>
+            <param name="BusquedaCliente"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.ObtieneClientes(System.String,System.String)">
+            <summary>
+             ObtieneClientes
+            </summary>
+            <param name="Observacion"></param>
+            <param name="Descripcion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.ObtieneClientesReferenciaCruzada(System.String,System.String)">
+            <summary>
+            Obtiene los clientes en la aplicación, con referencia cruzada
+            </summary>
+            <param name="Observaciones"></param>
+            <param name="Descripcion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.GuardaReferenciaCruzada(RioSulAPI.Class.ViewModel.REQ_ClienteRef)">
+            <summary>
+            Guarda un nuevo registro referente a clientes Dynamics 
+            </summary>
+            <param name="rEQ_ClienteRef"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.ObtieneReferenciasPorCliente(System.Int32)">
+            <summary>
+            Obtiene las referencias cruzadas por cliente
+            </summary>
+            <param name="IdCliente"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoDefectoConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
+            <summary>
+            Registra un nuevo defecto confeccion
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaDefectoConfeccionSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo confeccion por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActivaInactivaDefectoConfeccion(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdDefecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneDefectoConfeccion(System.String,System.String)">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneInfoDefectoConfeccion(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaDefectoConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CONFECCION)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
+            <summary>
+            Registra un nuevo operación confeccion
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaOperacionSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo operacion por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActivaInactivaOperacionConfeccion(System.Int32)">
+            <summary>
+            Activa o inactiva el operacion por IdDefecto
+            </summary>
+            <param name="IdOperacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneOperacionConfeccion(System.String,System.String)">
+            <summary>
+            Obtiene operación por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneInfoOperacionConfeccion(System.Int32)">
+            <summary>
+            Obtiene información de una operacion por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CONFECCION)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Operacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneDefectosActivosOperacion">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoAreaConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
+            <summary>
+            Registra un nuevo area confeccion
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaAreaSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo area por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActivaInactivaAreaConfeccion(System.Int32)">
+            <summary>
+            Activa o inactiva el operacion por area
+            </summary>
+            <param name="IdOperacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneAreaConfeccion(System.String,System.String)">
+            <summary>
+            Obtiene area por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneInfoAreaConfeccion(System.Int32)">
+            <summary>
+            Obtiene información de una area por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaAreaConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CONFECCION)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Area"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneOperacionAreas">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtienePlantasDynamics">
+            <summary>
+            Obtiene las plantas dadas de alta en Dynamics
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevaPlantaArea(RioSulAPI.Class.ViewModel.REQ_PLANTA_AREA)">
+            <summary>
+            Ingresa una nueva relación entre planta y área
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaExistenciaPlanta(System.Int32)">
+            <summary>
+            Verifica que la planta no se encuentre ya registrada alguna relación
+            </summary>
+            <param name="IdPlanta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneAreasRelPlantas(System.String)">
+            <summary>
+            Obtiene las relaciones entre áreas y plantas
+            </summary>
+            <param name="Planta"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.EliminaRelacionAreaPlanta(System.Int32)">
+            <summary>
+            Elimina la relación de una planta con área
+            </summary>
+            <param name="IdPlantaArea"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneInfoAreaPlanta(System.Int32)">
+            <summary>
+            Obtiene las áreas relacionadas a una planta
+            </summary>
+            <param name="IdPlanta"></param>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CorreosElectronicosController.ObtieneUsuariosCierreAuditoria(System.String,System.String)">
+            <summary>
+            OBTIENE LOS CORREOS ELECTRONICOS A LAOS QUE SE LES ENVIARA UN CIERRE DE AUDITORIA
+            </summary>
+            <param name="Key"></param>
+            <param name="CorreoE"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CorreosElectronicosController.NuevoCorreoCierreAuditoria(RioSulAPI.Class.ViewModel.REQ_NVO_CORREO)">
+            <summary>
+            INGRESA UN NUEVO USUARIO AL CUAL SE LE ENVIARA CORREO ELECTRONICO, INFORMANDO EL CIERRE DE AUDITORIA
+            </summary>
+            <param name="REQ"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CorreosElectronicosController.EditaCierreAuditoria(RioSulAPI.Class.ViewModel.REQ_NVO_CORREO)">
+            <summary>
+            EDITA LAS OPCIONES A LAS QUE SE MANDARA CORREO AL CIERRE DE AUDITORIA
+            </summary>
+            <param name="REQ"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CorreosElectronicosController.EliminaUsuarioAuditoriaCorreo(System.String,System.Int32)">
+            <summary>
+            ELIMINA A LOS USUARIOS A LOS QUE NO SE DESEA SE ENVÍE CORREO CON EL CIERRE DE AUDITORÍA
+            </summary>
+            <param name="Key"></param>
+            <param name="USU_ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CorreosElectronicosController.UsuariosNoRegistrados(System.String)">
+            <summary>
+            OBTIENE LOS USUARIOS NO REGISTRADOS EN LOS AVISOS DE CIERRE DE AUDITORRA
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoCortador(RioSulAPI.Class.ViewModel.REQ_CORTADOR)">
+            <summary>
+            Registra un nuevo cortador
+            </summary>
+            <param name="cORTADOR"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaCortadorSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo cortador por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaCortador(System.Int32)">
+            <summary>
+            Activa o inactiva cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneCortadores(System.String,System.String)">
+            <summary>
+            Obtiene cortadores por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoCortador(System.Int32)">
+            <summary>
+            Obtiene información de un cortador por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaCortador(RioSulAPI.Class.ViewModel.REQ_EDT_CORTADOR)">
+            <summary>
+            Actualiza los datos del cortador
+            </summary>
+            <param name="cORTADOR"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoTendido(RioSulAPI.Class.ViewModel.REQ_TENDIDO)">
+            <summary>
+            Registra un nuevo tendido
+            </summary>
+            <param name="Tendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTendidoSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo tendido por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaTendido(System.Int32)">
+            <summary>
+            Activa o inactiva tendido por IdTendido
+            </summary>
+            <param name="IdTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTendido(System.String,System.String)">
+            <summary>
+            Obtiene tendido por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoTendido(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaTendido(RioSulAPI.Class.ViewModel.REQ_EDT_TENDIDO)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Tendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoTipoTendido(RioSulAPI.Class.ViewModel.REQ_TIPO_TENDIDO)">
+            <summary>
+            Registra un nuevo tendido
+            </summary>
+            <param name="TipoTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTipoTendidoSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo tendido por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaTipoTendido(System.Int32)">
+            <summary>
+            Activa o inactiva tendido por IdTendido
+            </summary>
+            <param name="IdTipoTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTipoTendido(System.String,System.String)">
+            <summary>
+            Obtiene tendido por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoTipoTendido(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaTipoTendido(RioSulAPI.Class.ViewModel.REQ_EDT_TIPO_TENDIDO)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="TipoTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoMesa(RioSulAPI.Class.ViewModel.REQ_TIPO_TENDIDO)">
+            <summary>
+            Registra un nuevo tendido
+            </summary>
+            <param name="TipoTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaMesaSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo tendido por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaMesa(System.Int32)">
+            <summary>
+            Activa o inactiva tendido por IdTendido
+            </summary>
+            <param name="IdMesa"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneMesa(System.String,System.String)">
+            <summary>
+            Obtiene tendido por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoMesa(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaMesa(RioSulAPI.Class.ViewModel.REQ_EDT_TIPO_TENDIDO)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="TipoTendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoDefecto(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CORTE)">
+            <summary>
+            Registra un nuevo tendido
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaDefectoSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo tendido por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaDefecto(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdDefecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneDefecto(System.String,System.String)">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoDefecto(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaDefecto(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CORTE)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoPosicion(RioSulAPI.Class.ViewModel.REQ_POSICION_CORTE)">
+            <summary>
+            Registra un nuevo posición
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaPosicionSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nueva posisión por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActivaInactivaPosicion(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por Posicion
+            </summary>
+            <param name="IdPosicion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtienePosicion(System.String,System.String)">
+            <summary>
+            Obtiene posicion por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneInfoPosicion(System.Int32)">
+            <summary>
+            Obtiene información de una posicion por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaPosicion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CORTE)">
+            <summary>
+            Actualiza los datos de la posición
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneDefectosActivos">
+            <summary>
+            Obtiene los defectos activos para relacionar a la posición
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTolerancias">
+            <summary>
+            Obtiene los rangos de toleranciaregistrados
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.RegistraNuevaTolerancia(RioSulAPI.Class.ViewModel.TOLERANCIA)">
+            <summary>
+            Registra nueva tolerancia de cortador
+            </summary>
+            <param name="Tolerancia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaNuevaTolerancia(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+            <summary>
+            Valida que la tolerancia a registrar no se encuentre aun registrada
+            </summary>
+            <param name="Descripcion"></param>
+            <param name="Numerador"></param>
+            <param name="Denominador"></param>
+            <param name="ToleranciaPositiva"></param>
+            <param name="ToleranciaNegativa"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneToleranciaPorId(System.Int32)">
+            <summary>
+            Obtiene la tolerancia por Id
+            </summary>
+            <param name="IdTolerancia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevoDefectoLavanderia(RioSulAPI.Class.ViewModel.REQ_DEFECTO_LAV)">
+            <summary>
+            Registra un nuevo Lavandería
+            </summary>
+            <param name="Lavanderia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ValidaLavanderiaSuBmodulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valido nueva lavanderia submodulo 
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ActivaInactivaLavanderia(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdLavanderia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneDefectoLavanderia(System.String,System.String)">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ActualizaDefectoLavanderia(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_LAVANDERIA)">
+            <summary>
+            Actualiza los datos del defecto de lavandría
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevaOperacionLavanderia(RioSulAPI.Class.ViewModel.REQ_DEFECTO_LAV)">
+            <summary>
+            Registra una nueva operación lavandería
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ValidaOperacionSubModuloLavanderia(System.Int32,System.String,System.String)">
+            <summary>
+            Valida nuevo lavanderia por submodulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ActivaInactivaOperacionesLavanderia(System.Int32)">
+            <summary>
+            Activa o inactiva la operación de lavandería
+            </summary>
+            <param name="IdLavanderia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneOperacionLavanderia(System.String,System.String)">
+            <summary>
+            Obtiene lavanderia por clave y/o nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneInfoOperacionLavanderia(System.Int32)">
+            <summary>
+            Actualiza el Id Lavanderia
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LogInController.IniciaSesion(RioSulAPI.Class.ViewModel.REQ_LOGIN)">
+            POST api/Login/IniciaSesion
+            <summary>
+            Valida el inicio de sesion
+            </summary>
+            <param name="Login"></param>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.NuevoDefecto(RioSulAPI.Class.ViewModel.REQ_DEFECTO_PROCESO_ESP)">
+            <summary>
+            Registra un nuevo tendido
+            </summary>
+            <param name="Proceso"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ValidaProcesoEspecialSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo tendido por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActivaInactivaDefectoProcessoEsp(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdProcesoEspecial"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneDefectoProseso(System.String,System.String)">
+            <summary>
+            Obtiene defecto por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneInfoDefectoProcesoEspeciales(System.Int32)">
+            <summary>
+            Obtiene información de un tendido por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaDefectoProcesosEspeciales(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_PROCESO_ESP)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.NuevoOperacionProcesosEspeciales(RioSulAPI.Class.ViewModel.REQ_DEFECTO_PROCESO_ESP)">
+            <summary>
+            Registra un nuevo operación procesos especiales 
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ValidaOperacionSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nuevo proceso especial por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActivaInactivaOperacionesProcesosEspeciales(System.Int32)">
+            <summary>
+            Activa o inactiva el operacion por IdDefecto
+            </summary>
+            <param name="IdOperacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneOperacionProcesosEspeciales(System.String,System.String)">
+            <summary>
+            Obtiene procesos especiales por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneInfoOperacionProcesosEspeciales(System.Int32)">
+            <summary>
+            Obtiene información de una operacion proceos especiales por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_PROCESO_ESP)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Operacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneDefectosActivosOperacion">
+            <summary>
+            Obtiene defectos por Procesos especiales por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.NuevoPosicion(RioSulAPI.Class.ViewModel.REQ_POSICION_PROC_ESP)">
+            <summary>
+            Registra un nuevo posición
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ValidaPosicionSubModulo(System.Int32,System.String,System.String)">
+            <summary>
+            Valida Nueva posisión por SubModulo
+            </summary>
+            <param name="SubModulo"></param>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActivaInactivaPosicion(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por Posicion
+            </summary>
+            <param name="IdPosicion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtienePosicion(System.String,System.String)">
+            <summary>
+            Obtiene posicion por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneInfoPosicion(System.Int32)">
+            <summary>
+            Obtiene información de una posicion por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaPosicion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CORTE)">
+            <summary>
+            Actualiza los datos de la posición
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneDefectosActivos">
+            <summary>
+            Obtiene los defectos activos para relacionar a la posición
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ReportesController.WipCorte(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Filtra la información por submodulos
+            </summary>
+            <param name="FechaInicial"></param>
+            <param name="FechaFinal"></param>
+            <param name="IdCliente"></param>
+            <param name="Marca"></param>
+            <param name="NumPo"></param>
+            <param name="NoCorte"></param>
+            <param name="Planta"></param>
+            <param name="IdSubModulo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.NewUser(RioSulAPI.Class.ViewModel.REQ_USU)">
+            <summary>
+            AGREGA UN NUEVO USUARIO RioSulApp
+            </summary>
+            <param name="User"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.DisableUser(System.Int32)">
+            <summary>
+            INACTIVA UN USUARIO EXISTENTE
+            </summary>
+            <param name="ID_USU"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.ChangePassword(RioSulAPI.Class.ViewModel.REQ_CHG_PASS)">
+            <summary>
+            MODIFICA LA CONTRASEÑA ACTUAL DEL USUARIO 
+            </summary>
+            <param name="User"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.GetUsers(System.String,System.String,System.String,System.String)">
+            <summary>
+            OBTIENE LOS USUARIOS REGISTRADOS A PARTIR DEL KEY REGISTRADO
+            </summary>
+            <param name="Key"></param>
+            <param name="Nombre"></param>
+            <param name="Usuario"></param>
+            <param name="Email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.GetMenus(System.String)">
+            <summary>
+            OBTIENE LOS MENUS ACTIVOS 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.GetPermitsByUser(System.String,System.Int32)">
+            <summary>
+             OBTIENE EL DETALLE DEL USUARIO
+            </summary>
+            <param name="Key"></param>
+            <param name="USU_ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.UsuarioController.UpdatePermitsByUser(RioSulAPI.Class.ViewModel.REQ_USU_UPD)">
+            <summary>
+            ACTUALIZA LOS USUARIOS Y PERMISOS
+            </summary>
+            <param name="User"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
