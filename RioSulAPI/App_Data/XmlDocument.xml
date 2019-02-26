@@ -1503,6 +1503,42 @@
             <param name="IdSubModulo"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoDefectoTerminado(RioSulAPI.Class.ViewModel.REQ_DEFECTO_TERMINADO)">
+            <summary>
+            Crea un nuevo defecto de terminado
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneDefecto(System.String,System.String)">
+            <summary>
+            Obtiene defecto de terminado por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneInfoDefecto(System.Int32)">
+            <summary>
+            Obtiene información de un defecto terminnado por Id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActualizaDefecto(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_TERMINADO)">
+            <summary>
+            Actualiza los datos de un defecto terminado
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaDefecto(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdDefecto"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.UsuarioController.NewUser(RioSulAPI.Class.ViewModel.REQ_USU)">
             <summary>
             AGREGA UN NUEVO USUARIO RioSulApp

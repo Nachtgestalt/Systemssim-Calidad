@@ -30,6 +30,7 @@ namespace RioSulAPI.Controllers
         public RES_OT_CLI ObtieneOrdenesTrabajoDynamics(string IdClienteRef, string OrdenT)
         {
             RES_OT_CLI API = new RES_OT_CLI();
+            int _idCliRef = Convert.ToInt32(IdClienteRef);
             try
             {
                 List<Models.C_ClientesReferencia> CliRef;
@@ -37,7 +38,6 @@ namespace RioSulAPI.Controllers
                 //OBTIENE LOS CLIENTES 
                 using (Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities())
                 {
-                    int _idCliRef = Convert.ToInt32(IdClienteRef);
                     CliRef = db.C_ClientesReferencia.Where(x => x.IdClienteRef == _idCliRef).ToList();
                     if (CliRef.Count > 0)
                     {
@@ -53,7 +53,7 @@ namespace RioSulAPI.Controllers
                 using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = "SELECT WOHeader.ProcStage AS EtapaProceso, LTRIM(RTRIM(WOHeader.User9)) AS OrdenVenta, SOHeader.CustID AS Cve_Cliente, Customer.Name AS NombreCorto, XCustomer.LongName AS NombreLargo, WOHeader.InvtID AS NoArticulo, Inventory.Color AS Lavado, WOHeader.User5 AS Planta, RsTb_Plantas.Descr AS Planta_Descripcion, Inventory.ClassID AS Marca, ISNULL(ItemXRef.AlternateID, '') AS No_Alterno, WOHeader.QtyOrig AS Fab_Original, WOHeader.User6 AS PO FROM WOHeader INNER JOIN SOHeader ON WoHeader.User9 = SoHeader.OrdNbr INNER JOIN Customer ON SOHeader.CustID = Customer.CustId INNER JOIN XCustomer ON Customer.CustId = XCustomer.CustId INNER JOIN Inventory ON WOHeader.InvtID = Inventory.InvtID INNER JOIN RsTb_Plantas ON WOHeader.User5 = RsTb_Plantas.Planta LEFT OUTER JOIN ItemXRef ON WOHeader.InvtID = ItemXRef.InvtID WHERE (1 = 1) AND (SOHeader.CustID IN(" + _cli + ")) AND (LTRIM(RTRIM(WOHeader.User9)) = '" + OrdenT + "') GROUP BY WOHeader.User9, SOHeader.CustID, WOHeader.ProcStage, Customer.Name, XCustomer.LongName, WOHeader.InvtID, Inventory.Color, WOHeader.User5, RsTb_Plantas.Descr, Inventory.ClassID, ItemXRef.AlternateID, WOHeader.QtyOrig, WOHeader.User6 ORDER BY 1 ";
+                    string Consulta = "SELECT WOHeader.ProcStage AS EtapaProceso, LTRIM(RTRIM(WOHeader.User9)) AS OrdenVenta, SOHeader.CustID AS Cve_Cliente, Customer.Name AS NombreCorto, XCustomer.LongName AS NombreLargo, WOHeader.InvtID AS NoArticulo, Inventory.Color AS Lavado, WOHeader.User5 AS Planta, RsTb_Plantas.Descr AS Planta_Descripcion, Inventory.ClassID AS Marca, ISNULL(ItemXRef.AlternateID, '') AS No_Alterno, WOHeader.QtyOrig AS Fab_Original, WOHeader.User6 AS PO FROM WOHeader INNER JOIN SOHeader ON WoHeader.User9 = SoHeader.OrdNbr INNER JOIN Customer ON SOHeader.CustID = Customer.CustId INNER JOIN XCustomer ON Customer.CustId = XCustomer.CustId INNER JOIN Inventory ON WOHeader.InvtID = Inventory.InvtID INNER JOIN RsTb_Plantas ON WOHeader.User5 = RsTb_Plantas.Planta LEFT OUTER JOIN ItemXRef ON WOHeader.InvtID = ItemXRef.InvtID WHERE (1 = 1) AND (SOHeader.CustID IN(" + _idCliRef + ")) AND (LTRIM(RTRIM(WOHeader.User9)) = '" + OrdenT + "') GROUP BY WOHeader.User9, SOHeader.CustID, WOHeader.ProcStage, Customer.Name, XCustomer.LongName, WOHeader.InvtID, Inventory.Color, WOHeader.User5, RsTb_Plantas.Descr, Inventory.ClassID, ItemXRef.AlternateID, WOHeader.QtyOrig, WOHeader.User6 ORDER BY 1 ";
                     API.OrdenTrabajo = new List<OT_CLI>();
                     SqlCommand Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader sqlData = Command.ExecuteReader();
@@ -229,12 +229,13 @@ namespace RioSulAPI.Controllers
             }
         }
 
+
         /// <summary>
-        /// Obtiene los datos generales de la orden de trabajo
-        /// </summary>
-        /// <param name="OrdenTrabajo"></param>
-        /// <param name="CLI_ID"></param>
-        /// <returns></returns>
+         /// Obtiene los datos generales de la orden de trabajo
+         /// </summary>
+         /// <param name="OrdenTrabajo"></param>
+         /// <param name="CLI_ID"></param>
+         /// <returns></returns>
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/AuditoriaCorte/ObtieneDatosGeneralesOrdenTrabajo")]
@@ -242,58 +243,70 @@ namespace RioSulAPI.Controllers
         {
             RES_OT API = new RES_OT();
             API.OT = new OT_GRL();
-            try
-            {
-                List<Models.C_ClientesReferencia> CliRef;
-                string _cli = "";
-                //OBTIENE LOS CLIENTES 
-                using (Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities())
-                {
-                    int _idCliRef = Convert.ToInt32(CLI_ID);
-                    CliRef = db.C_ClientesReferencia.Where(x => x.IdClienteRef == _idCliRef).ToList();
-                    if (CliRef.Count > 0)
-                    {
-                        foreach (Models.C_ClientesReferencia item in CliRef)
-                        {
-                            if (_cli == "")
-                                _cli = "'" + item.Cve_Cliente + "'";
-                            else
-                                _cli += ",'" + item.Cve_Cliente + "'";
-                        }
-                    }
-                }
+
                 using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = "SELECT WOHeader.ProcStage AS EtapaProceso, LTRIM(RTRIM(WOHeader.User9)) AS OrdenVenta, SOHeader.CustID AS Cve_Cliente, Customer.Name AS NombreCorto, XCustomer.LongName AS NombreLargo, WOHeader.InvtID AS NoArticulo, Inventory.Color AS Lavado, WOHeader.User5 AS Planta, RsTb_Plantas.Descr AS Planta_Descripcion, Inventory.ClassID AS Marca, ISNULL(ItemXRef.AlternateID, '') AS No_Alterno, WOHeader.QtyOrig AS Fab_Original, WOHeader.User6 AS PO FROM WOHeader INNER JOIN SOHeader ON WoHeader.User9 = SoHeader.OrdNbr INNER JOIN Customer ON SOHeader.CustID = Customer.CustId INNER JOIN XCustomer ON Customer.CustId = XCustomer.CustId INNER JOIN Inventory ON WOHeader.InvtID = Inventory.InvtID INNER JOIN RsTb_Plantas ON WOHeader.User5 = RsTb_Plantas.Planta LEFT OUTER JOIN ItemXRef ON WOHeader.InvtID = ItemXRef.InvtID WHERE (1 = 1)  AND (SOHeader.CustID IN(" + _cli + ")) AND (LTRIM(RTRIM(WOHeader.User9)) = '" + OrdenTrabajo + "') GROUP BY WOHeader.User9, SOHeader.CustID, WOHeader.ProcStage, Customer.Name, XCustomer.LongName, WOHeader.InvtID, Inventory.Color, WOHeader.User5, RsTb_Plantas.Descr, Inventory.ClassID, ItemXRef.AlternateID, WOHeader.QtyOrig, WOHeader.User6 ORDER BY 1";
+                    //string Consulta = "SELECT WOHeader.ProcStage AS EtapaProceso, LTRIM(RTRIM(WOHeader.User9)) AS OrdenVenta, SOHeader.CustID AS Cve_Cliente, Customer.Name AS NombreCorto, XCustomer.LongName AS NombreLargo, WOHeader.InvtID AS NoArticulo, Inventory.Color AS Lavado, WOHeader.User5 AS Planta, RsTb_Plantas.Descr AS Planta_Descripcion, Inventory.ClassID AS Marca, ISNULL(ItemXRef.AlternateID, '') AS No_Alterno, WOHeader.QtyOrig AS Fab_Original, WOHeader.User6 AS PO FROM WOHeader INNER JOIN SOHeader ON WoHeader.User9 = SoHeader.OrdNbr INNER JOIN Customer ON SOHeader.CustID = Customer.CustId INNER JOIN XCustomer ON Customer.CustId = XCustomer.CustId INNER JOIN Inventory ON WOHeader.InvtID = Inventory.InvtID INNER JOIN RsTb_Plantas ON WOHeader.User5 = RsTb_Plantas.Planta LEFT OUTER JOIN ItemXRef ON WOHeader.InvtID = ItemXRef.InvtID WHERE (1 = 1)  AND (SOHeader.CustID IN(" + _cli + ")) AND (LTRIM(RTRIM(WOHeader.User9)) = '" + OrdenTrabajo + "') GROUP BY WOHeader.User9, SOHeader.CustID, WOHeader.ProcStage, Customer.Name, XCustomer.LongName, WOHeader.InvtID, Inventory.Color, WOHeader.User5, RsTb_Plantas.Descr, Inventory.ClassID, ItemXRef.AlternateID, WOHeader.QtyOrig, WOHeader.User6 ORDER BY 1";
+                    string Consulta = @"SELECT
+                                WH.Status AS STATUS,
+	                            WH.User5 AS PLANTA,
+	                            WH.QtyOrig AS NUMERO_CORTADA,
+	                            WH.CustID AS ESTILO,
+	                            WH.User6 AS PO,
+	                            ISNULL(CM.Name, '') AS CLIENTE,
+                                IV.Size AS LINEA,
+	                            IV.Color AS LAVADO,
+	                            IV.Descr AS MODELO,
+	                            IV.ClassID AS MARCA,
+	                            IV.Descr AS DESCRIPCION,
+	                            IV.User2 AS RUTA,
+	                            IADG.Style AS DIVISION,
+	                            ISNULL(WOB.InvtID, '') AS TELA,
+	                            WH.ProcStage as ESTADO_PROCESO,
+	                            RSP.Descr as PLANTA_DESCRIPCION,
+                                WH.InvtID AS NoArticulo,
+                                ISNULL(IXR.AlternateID, '') AS No_Alterno,
+                                ISNULL(CM.CustId, 0) as CLIENT_ID,
+	                            RSD.Qty AS BULTO
+                                FROM WOHeader AS WH
+                                LEFT JOIN Customer AS CM
+                                ON WH.CustID = CM.CustId
+                                LEFT JOIN Inventory AS IV
+                                ON WH.InvtID = IV.InvtID
+                                LEFT JOIN InventoryADG AS IADG
+                                ON IV.InvtID = IADG.InvtID
+                                LEFT JOIN WOBuildTo AS WOB
+                                ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ'
+                                LEFT JOIN RsTb_Plantas RSP
+                                ON WH.User5 = RSP.Planta
+                                LEFT JOIN ItemXRef IXR ON WH.InvtID = IXR.InvtID
+                                LEFT JOIN rstb_seriesdtl AS RSD ON RSD.WoNbr = WH.WONbr
+                                WHERE WH.WONbr = '" + OrdenTrabajo + "'";
+
                     SqlCommand _Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader reader = _Command.ExecuteReader();
                     if (reader.Read())
                     {
-                        API.OT.EtapaProceso = reader[0].ToString();
-                        API.OT.OrdenVenta = reader[1].ToString();
+                        //API.OT.OrdenVenta = reader[1].ToString();
                         API.OT.Cve_Cliente = reader[2].ToString();
-                        API.OT.NombreCorto = reader[3].ToString();
-                        API.OT.NombreLargo = reader[4].ToString();
-                        API.OT.NoArticulo = reader[5].ToString();
-                        API.OT.Lavado = reader[6].ToString();
-                        API.OT.Planta = reader[7].ToString();
-                        API.OT.PlantaDescripcion = reader[8].ToString();
+                        API.OT.Fab_Original = reader[2].ToString();
+                        API.OT.NombreCorto = reader[5].ToString();
+                        //API.OT.NombreLargo = reader[4].ToString();
+                        API.OT.Lavado = reader[7].ToString();
+                        API.OT.Planta = reader[1].ToString();
                         API.OT.Marca = reader[9].ToString();
-                        API.OT.NoAlterno = reader[10].ToString();
-                        API.OT.Fab_Original = reader[11].ToString();
-                        API.OT.PO = reader[12].ToString();
-                    }
+                        API.OT.PO = reader[4].ToString();
+                        API.OT.EtapaProceso = reader[14].ToString();
+                        API.OT.PlantaDescripcion = reader[15].ToString();
+                        API.OT.NoArticulo = reader[16].ToString();
+                        API.OT.NoAlterno = reader[17].ToString();
+                        API.OT.ClientId = Convert.ToInt32(reader[18].ToString());
+                        API.OT.Bulto = Convert.ToInt32(reader[19].ToString());
+;                    }
                     reader.Close();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-            }
-            catch (Exception ex)
-            {
-                Utilerias.EscribirLog(ex.ToString());
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.OT = null;
-            }
             return API;
         }
 
@@ -500,6 +513,22 @@ namespace RioSulAPI.Controllers
             public string NombreCorto { get; set; }
             public string NombreLargo { get; set; }
         }
+        public partial class OT_DATA
+        {
+            public string Status { get; set; }
+            public string Planta { get; set; }
+            public string Cortada { get; set; }
+            public string Po { get; set; }
+            public string Estilo { get; set; }
+            public string Cliente { get; set; }
+            public string Linea { get; set; }
+            public string Lavado { get; set; }
+            public string Division { get; set; }
+            public string Marca { get; set; }
+            public string Modelo { get; set; }
+            public string Ruta { get; set; }
+
+        }
         public partial class RES_OT
         {
             public HttpResponseMessage Message { get; set; }
@@ -520,6 +549,8 @@ namespace RioSulAPI.Controllers
             public string NoAlterno { get; set; }
             public string Fab_Original { get; set; }
             public string PO { get; set; }
+            public int ClientId { get; set; }
+            public int Bulto { get; set; }
         }
         public partial class REQ_NEW_OT
         {

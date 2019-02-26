@@ -10,7 +10,7 @@ namespace RioSulAPI.Class
     {
         public void Log(string text, string Metodo, string NombreArchivo)
         {
-            string path = @"C:\Desarrollo\LOG\" + NombreArchivo + "_" + DateTime.Now.ToString("MMyyyy") + ".log";
+            string path = @"E:\Desarrollo\LOG\" + NombreArchivo + "_" + DateTime.Now.ToString("MMyyyy") + ".log";
             if (!File.Exists(path)) File.Create(path).Dispose();
             using (StreamWriter writter = new StreamWriter(path, true))
             {

@@ -789,5 +789,59 @@ namespace RioSulAPI.Class
             public string Imagen { get; set; }
         }
         #endregion
+
+        #region Terminado
+        public partial class RES_DEFECTO_TERMINADO
+        {
+            public bool Hecho { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+        public class REQ_DEFECTO_TERMINADO
+        {
+            [Required]
+            public int IdSubModulo { get; set; }
+            [Required]
+            public int IdUsuario { get; set; }
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+       
+        }
+
+        public partial class REQ_EDT_DEFECTO_TERMINADO
+        {
+            [Required]
+            public int ID { get; set; }
+            [Required]
+            public int IdUsuario { get; set; }
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+            [Required]
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+        }
+
+        public partial class RES_EDT_DEFECTO_TERMINADO
+        {
+            public Models.VST_TERMINADO Vst_Terminado { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public partial class RES_BUS_DEFECTO_CORTE_TERMINADO
+        {
+            public List<Models.VST_TERMINADO> Vst_Terminado { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+  
+
+        #endregion
     }
 }
