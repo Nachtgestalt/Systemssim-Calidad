@@ -14,22 +14,9 @@ namespace RioSulAPI.Models
     
     public partial class C_Posicion_Terminado
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public C_Posicion_Terminado()
-        {
-            this.C_Posicion_Terminado1 = new HashSet<C_Posicion_Terminado>();
-            this.C_Posicion_Terminado11 = new HashSet<C_Posicion_Terminado>();
-        }
-    
         public int ID { get; set; }
-        public int IdPosicion { get; set; }
-        public int IdCortador { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Posicion_Terminado> C_Posicion_Terminado1 { get; set; }
-        public virtual C_Posicion_Terminado C_Posicion_Terminado2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Posicion_Terminado> C_Posicion_Terminado11 { get; set; }
-        public virtual C_Posicion_Terminado C_Posicion_Terminado3 { get; set; }
+        public string Clave { get; set; }
+        public string Nombre { get; set; }
+        public bool Activo { get; set; }
     }
 }

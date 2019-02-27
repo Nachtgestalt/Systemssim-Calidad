@@ -791,6 +791,9 @@ namespace RioSulAPI.Class
         #endregion
 
         #region Terminado
+
+        #region Defecto/Terminado
+
         public partial class RES_DEFECTO_TERMINADO
         {
             public bool Hecho { get; set; }
@@ -810,7 +813,7 @@ namespace RioSulAPI.Class
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
-       
+
         }
 
         public partial class REQ_EDT_DEFECTO_TERMINADO
@@ -841,12 +844,16 @@ namespace RioSulAPI.Class
             public HttpResponseMessage Message { get; set; }
         }
 
+        #endregion
+
+
         #region Operaciones/Terminado
 
         public partial class RES_OPERACION_TERMINADO
         {
             public bool Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
+            public string Message2 {get; set; }
         }
 
         public class REQ_OPERACION_TERMINADO
@@ -879,6 +886,47 @@ namespace RioSulAPI.Class
             public Models.C_Operacion_Terminado c_operacion_t { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+        #endregion
+
+        #region Posicion/Terminado
+
+        public partial class RESPUESTA_MENSAJE
+        {
+            public bool Hecho { get; set; }
+            public HttpResponseMessage Message { get; set; }
+            public string Message2 { get; set; }
+        }
+
+        public class REQ_POSICION_TERMINADO
+        {
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+        }
+
+        public class RES_BUS_POSICION_TERMINADO
+        {
+            public List<Models.C_Posicion_Terminado> c_posicion_t { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class RES_BUS_ONE_POSICION_TERMINADO
+        {
+            public Models.C_Posicion_Terminado c_posicion_t { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class REQ_EDIT_POSICION_TERMINADO
+        {
+            [Required]
+            public int ID { get; set; }
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+        }
+
         #endregion
 
 

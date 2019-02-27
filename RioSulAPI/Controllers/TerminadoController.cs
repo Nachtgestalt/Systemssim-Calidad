@@ -18,7 +18,6 @@ namespace RioSulAPI.Controllers
     {
         private JavaScriptSerializer _objSerializer = new JavaScriptSerializer();
         private Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities();
-        public string var = "";
 
         #region Defectos
 
@@ -239,6 +238,7 @@ namespace RioSulAPI.Controllers
                     db.SaveChanges();
 
                     API.Hecho = true;
+                    API.Message2 = "Registro realizado con éxito";
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -252,8 +252,19 @@ namespace RioSulAPI.Controllers
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
-                API.Hecho = false;
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Registro existente, favor de validar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
+                
             }
             return API;
         }
@@ -277,13 +288,14 @@ namespace RioSulAPI.Controllers
 
                     if (con != null)
                     {
-                        con.Nombre = Operacion.Nombre;
+                        con.Nombre = Operacion.Nombre.ToUpper();
                         con.Clave = Operacion.Clave;
 
                         db.Entry(con).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
 
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Message2 = "Registro actualizado con éxito";
                         API.Hecho = true;
                     }
                 }
@@ -296,8 +308,17 @@ namespace RioSulAPI.Controllers
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.Hecho = false;
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Favor de validar registros Requeridos, Imposible guardar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
             }
             return API;
         }
@@ -411,6 +432,225 @@ namespace RioSulAPI.Controllers
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        #endregion
+
+        #region POSICION
+
+        /// <summary>
+        /// Creamos un nuevo registro de una Posición/Terminado
+        /// </summary>
+        /// <param name="Posicion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/NuevaPosicionT")]
+        public ViewModel.RESPUESTA_MENSAJE NuevaPosicionT([FromBody] ViewModel.REQ_POSICION_TERMINADO Posicion)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Posicion_Terminado _posicion = new Models.C_Posicion_Terminado()
+                    {
+                        Activo = true,
+                        Clave = Posicion.Clave,
+                        Nombre = Posicion.Nombre.ToUpper()
+                    };
+                    db.C_Posicion_Terminado.Add(_posicion);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message2 = "Registro realizado con éxito";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Registro existente, favor de validar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
+
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Obtenemos todas las posiciones que existan dependiendo el parámetro
+        /// </summary>
+        /// <param name="clave"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ObtienePosicionT")]
+        public ViewModel.RES_BUS_POSICION_TERMINADO ObtienePosicionT(string clave)
+        {
+            ViewModel.RES_BUS_POSICION_TERMINADO API = new ViewModel.RES_BUS_POSICION_TERMINADO();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    API.c_posicion_t = db.C_Posicion_Terminado.Where(x => x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.c_posicion_t = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.c_posicion_t = null;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Obtenemos un registro del catálogo de posicion/terminado dependiendo el id
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ObtieneInfPosicionT")]
+        public ViewModel.RES_BUS_ONE_POSICION_TERMINADO ObtieneInfPosicionT(int ID)
+        {
+            ViewModel.RES_BUS_ONE_POSICION_TERMINADO API = new ViewModel.RES_BUS_ONE_POSICION_TERMINADO();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    API.c_posicion_t = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.c_posicion_t = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Actualizamos un registro del catálogo de posiciones
+        /// </summary>
+        /// <param name="Posicion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ActualizaPosicionT")]
+        public ViewModel.RESPUESTA_MENSAJE ActualizaPosicionT([FromBody] ViewModel.REQ_EDIT_POSICION_TERMINADO Posicion)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Posicion_Terminado con = db.C_Posicion_Terminado.Where(x => x.ID == Posicion.ID).FirstOrDefault();
+
+                    if (con != null)
+                    {
+                        con.Nombre = Posicion.Nombre.ToUpper();
+                        con.Clave = Posicion.Clave;
+
+                        db.Entry(con).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Message2 = "Registro actualizado con éxito";
+                        API.Hecho = true;
+                    }
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Favor de validar registros Requeridos, Imposible guardar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Activamos o desactivamos el registro de Posición depenediendo el caso
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ActivaInactivaPosicionT")]
+        public ViewModel.RESPUESTA_MENSAJE ActivaInactivaPosicionT(int ID)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Posicion_Terminado posicion = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                    posicion.Activo = (posicion.Activo == false ? true : false);
+
+                    db.Entry(posicion).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message2 = "Registro eliminado con éxito";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
                 API.Hecho = false;
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }

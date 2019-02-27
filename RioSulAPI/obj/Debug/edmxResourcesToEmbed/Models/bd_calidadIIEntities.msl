@@ -324,8 +324,9 @@
     <EntitySetMapping Name="C_Posicion_Terminado">
       <EntityTypeMapping TypeName="bd_calidadIIModel.C_Posicion_Terminado">
         <MappingFragment StoreEntitySet="C_Posicion_Terminado">
-          <ScalarProperty Name="IdCortador" ColumnName="IdCortador" />
-          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

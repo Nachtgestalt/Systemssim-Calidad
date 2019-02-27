@@ -293,8 +293,9 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="IdPosicion" Type="int" Nullable="false" />
-    <Property Name="IdCortador" Type="int" Nullable="false" />
+    <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="C_Procesos_Especiales">
     <Key>
@@ -1171,30 +1172,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado">
-    <End Role="C_Posicion_Terminado" Type="Self.C_Posicion_Terminado" Multiplicity="1" />
-    <End Role="C_Posicion_Terminado1" Type="Self.C_Posicion_Terminado" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Posicion_Terminado">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="C_Posicion_Terminado1">
-        <PropertyRef Name="IdPosicion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1">
-    <End Role="C_Posicion_Terminado" Type="Self.C_Posicion_Terminado" Multiplicity="1" />
-    <End Role="C_Posicion_Terminado1" Type="Self.C_Posicion_Terminado" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Posicion_Terminado">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="C_Posicion_Terminado1">
-        <PropertyRef Name="IdCortador" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_C_Procesos_Especiales_C_Sg_Usuarios">
     <End Role="C_Sg_Usuarios" Type="Self.C_Sg_Usuarios" Multiplicity="1" />
     <End Role="C_Procesos_Especiales" Type="Self.C_Procesos_Especiales" Multiplicity="*" />
@@ -1731,14 +1708,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     <AssociationSet Name="FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1" Association="Self.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1">
       <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
       <End Role="C_Posicion_ProcesosEsp" EntitySet="C_Posicion_ProcesosEsp" />
-    </AssociationSet>
-    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado" Association="Self.FK_C_Posicion_Terminado_C_Posicion_Terminado">
-      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
-      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
-    </AssociationSet>
-    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1" Association="Self.FK_C_Posicion_Terminado_C_Posicion_Terminado1">
-      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
-      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
     </AssociationSet>
     <AssociationSet Name="FK_C_Procesos_Especiales_C_Sg_Usuarios" Association="Self.FK_C_Procesos_Especiales_C_Sg_Usuarios">
       <End Role="C_Sg_Usuarios" EntitySet="C_Sg_Usuarios" />

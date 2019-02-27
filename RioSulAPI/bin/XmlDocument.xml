@@ -1574,6 +1574,41 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevaPosicionT(RioSulAPI.Class.ViewModel.REQ_POSICION_TERMINADO)">
+            <summary>
+            Creamos un nuevo registro de una Posición/Terminado
+            </summary>
+            <param name="Posicion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtienePosicionT(System.String)">
+            <summary>
+            Obtenemos todas las posiciones que existan dependiendo el parámetro
+            </summary>
+            <param name="clave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneInfPosicionT(System.Int32)">
+            <summary>
+            Obtenemos un registro del catálogo de posicion/terminado dependiendo el id
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActualizaPosicionT(RioSulAPI.Class.ViewModel.REQ_EDIT_POSICION_TERMINADO)">
+            <summary>
+            Actualizamos un registro del catálogo de posiciones
+            </summary>
+            <param name="Posicion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaPosicionT(System.Int32)">
+            <summary>
+            Activamos o desactivamos el registro de Posición depenediendo el caso
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.UsuarioController.NewUser(RioSulAPI.Class.ViewModel.REQ_USU)">
             <summary>
             AGREGA UN NUEVO USUARIO RioSulApp

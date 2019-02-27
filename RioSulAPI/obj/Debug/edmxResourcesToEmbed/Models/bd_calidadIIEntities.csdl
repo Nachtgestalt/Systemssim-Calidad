@@ -212,14 +212,6 @@
       <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
       <End Role="C_Posicion_ProcesosEsp" EntitySet="C_Posicion_ProcesosEsp" />
     </AssociationSet>
-    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado" Association="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado">
-      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
-      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
-    </AssociationSet>
-    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1" Association="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado1">
-      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
-      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
-    </AssociationSet>
     <AssociationSet Name="FK_C_Procesos_Especiales_C_Sg_Usuarios" Association="bd_calidadIIModel.FK_C_Procesos_Especiales_C_Sg_Usuarios">
       <End Role="C_Sg_Usuarios" EntitySet="C_Sg_Usuarios" />
       <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
@@ -601,12 +593,9 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="IdPosicion" Type="Int32" Nullable="false" />
-    <Property Name="IdCortador" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="C_Posicion_Terminado1" Relationship="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado" FromRole="C_Posicion_Terminado" ToRole="C_Posicion_Terminado1" />
-    <NavigationProperty Name="C_Posicion_Terminado2" Relationship="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado" FromRole="C_Posicion_Terminado1" ToRole="C_Posicion_Terminado" />
-    <NavigationProperty Name="C_Posicion_Terminado11" Relationship="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado1" FromRole="C_Posicion_Terminado" ToRole="C_Posicion_Terminado1" />
-    <NavigationProperty Name="C_Posicion_Terminado3" Relationship="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado1" FromRole="C_Posicion_Terminado1" ToRole="C_Posicion_Terminado" />
+    <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="C_Procesos_Especiales">
     <Key>
@@ -1490,30 +1479,6 @@
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="C_Posicion_ProcesosEsp">
-        <PropertyRef Name="IdCortador" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado">
-    <End Type="bd_calidadIIModel.C_Posicion_Terminado" Role="C_Posicion_Terminado" Multiplicity="1" />
-    <End Type="bd_calidadIIModel.C_Posicion_Terminado" Role="C_Posicion_Terminado1" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Posicion_Terminado">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="C_Posicion_Terminado1">
-        <PropertyRef Name="IdPosicion" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1">
-    <End Type="bd_calidadIIModel.C_Posicion_Terminado" Role="C_Posicion_Terminado" Multiplicity="1" />
-    <End Type="bd_calidadIIModel.C_Posicion_Terminado" Role="C_Posicion_Terminado1" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Posicion_Terminado">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="C_Posicion_Terminado1">
         <PropertyRef Name="IdCortador" />
       </Dependent>
     </ReferentialConstraint>
