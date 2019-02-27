@@ -1609,6 +1609,41 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoOrigenT(RioSulAPI.Class.ViewModel.REQ_ORIGEN_TERMINADO)">
+            <summary>
+            Creamos un nuevo registro de Origen/Terminado
+            </summary>
+            <param name="origen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOrigenT(System.String)">
+            <summary>
+            Obtenemos todos los registros de origen dependiendo la búsqueda
+            </summary>
+            <param name="clave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneInfOrigenT(System.Int32)">
+            <summary>
+            Obtenemos un registro del catálogo de origen dependiendo el ID
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActualizaOrigenT(RioSulAPI.Class.ViewModel.REQ_EDIT_ORIGEN_TERMINADO)">
+            <summary>
+            Actualizamos un registro del catálogo de origen
+            </summary>
+            <param name="origen"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaOrigenT(System.Int32)">
+            <summary>
+            Activamos o desactivamos el registro de Posición depenediendo el caso
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.UsuarioController.NewUser(RioSulAPI.Class.ViewModel.REQ_USU)">
             <summary>
             AGREGA UN NUEVO USUARIO RioSulApp

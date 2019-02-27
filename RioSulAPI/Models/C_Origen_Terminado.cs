@@ -12,7 +12,7 @@ namespace RioSulAPI.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class C_Operacion_Terminado
+    public partial class C_Origen_Terminado
     {
         public int ID { get; set; }
         public string Clave { get; set; }

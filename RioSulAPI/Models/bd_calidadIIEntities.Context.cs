@@ -47,6 +47,7 @@ namespace RioSulAPI.Models
         public virtual DbSet<C_Operacion_Lavanderia> C_Operacion_Lavanderia { get; set; }
         public virtual DbSet<C_Operacion_ProcesosEspeciales> C_Operacion_ProcesosEspeciales { get; set; }
         public virtual DbSet<C_Operacion_Terminado> C_Operacion_Terminado { get; set; }
+        public virtual DbSet<C_Origen_Terminado> C_Origen_Terminado { get; set; }
         public virtual DbSet<C_Plantas_Areas> C_Plantas_Areas { get; set; }
         public virtual DbSet<C_Plantas_Dynamic> C_Plantas_Dynamic { get; set; }
         public virtual DbSet<C_Posicion_Cortador> C_Posicion_Cortador { get; set; }

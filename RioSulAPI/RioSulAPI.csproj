@@ -269,6 +269,9 @@
     <Compile Include="Models\C_Operacion_Terminado.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\C_Origen_Terminado.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\C_Plantas_Areas.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>

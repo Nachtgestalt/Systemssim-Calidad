@@ -276,6 +276,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="C_Origen_Terminado">
+      <EntityTypeMapping TypeName="bd_calidadIIModel.C_Origen_Terminado">
+        <MappingFragment StoreEntitySet="C_Origen_Terminado">
+          <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="C_Plantas_Areas">
       <EntityTypeMapping TypeName="bd_calidadIIModel.C_Plantas_Areas">
         <MappingFragment StoreEntitySet="C_Plantas_Areas">

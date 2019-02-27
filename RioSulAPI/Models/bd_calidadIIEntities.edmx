@@ -251,7 +251,16 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Activo" Type="int" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
+        </EntityType>
+        <EntityType Name="C_Origen_Terminado">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" />
         </EntityType>
         <EntityType Name="C_Plantas_Areas">
           <Key>
@@ -1349,6 +1358,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySet Name="C_Operacion_Lavanderia" EntityType="Self.C_Operacion_Lavanderia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Operacion_ProcesosEspeciales" EntityType="Self.C_Operacion_ProcesosEspeciales" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Operacion_Terminado" EntityType="Self.C_Operacion_Terminado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="C_Origen_Terminado" EntityType="Self.C_Origen_Terminado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Plantas_Areas" EntityType="Self.C_Plantas_Areas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Plantas_Dynamic" EntityType="Self.C_Plantas_Dynamic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Posicion_Cortador" EntityType="Self.C_Posicion_Cortador" Schema="dbo" store:Type="Tables" />
@@ -1810,6 +1820,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySet Name="C_Operacion_Lavanderia" EntityType="bd_calidadIIModel.C_Operacion_Lavanderia" />
           <EntitySet Name="C_Operacion_ProcesosEspeciales" EntityType="bd_calidadIIModel.C_Operacion_ProcesosEspeciales" />
           <EntitySet Name="C_Operacion_Terminado" EntityType="bd_calidadIIModel.C_Operacion_Terminado" />
+          <EntitySet Name="C_Origen_Terminado" EntityType="bd_calidadIIModel.C_Origen_Terminado" />
           <EntitySet Name="C_Plantas_Areas" EntityType="bd_calidadIIModel.C_Plantas_Areas" />
           <EntitySet Name="C_Plantas_Dynamic" EntityType="bd_calidadIIModel.C_Plantas_Dynamic" />
           <EntitySet Name="C_Posicion_Cortador" EntityType="bd_calidadIIModel.C_Posicion_Cortador" />
@@ -2294,7 +2305,16 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Activo" Type="Int32" Nullable="false" />
+          <Property Name="Activo" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="C_Origen_Terminado">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" />
         </EntityType>
         <EntityType Name="C_Plantas_Areas">
           <Key>
@@ -3624,6 +3644,16 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="C_Operacion_Terminado">
             <EntityTypeMapping TypeName="bd_calidadIIModel.C_Operacion_Terminado">
               <MappingFragment StoreEntitySet="C_Operacion_Terminado">
+                <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C_Origen_Terminado">
+            <EntityTypeMapping TypeName="bd_calidadIIModel.C_Origen_Terminado">
+              <MappingFragment StoreEntitySet="C_Origen_Terminado">
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />

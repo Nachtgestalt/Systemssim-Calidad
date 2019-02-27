@@ -230,7 +230,7 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid){
                     Models.C_Operacion_Terminado _operacion = new Models.C_Operacion_Terminado()
                     {
-                        Activo = 1,
+                        Activo = true,
                         Clave = Operacion.Clave,
                         Nombre = Operacion.Nombre.ToUpper()
                     };
@@ -408,14 +408,7 @@ namespace RioSulAPI.Controllers
                 {
                     Models.C_Operacion_Terminado op = db.C_Operacion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
 
-                    if (op.Activo == 1)
-                    {
-                        op.Activo = 2;
-                    }
-                    else
-                    {
-                        op.Activo = 1;
-                    }
+                    op.Activo = (op.Activo == false ? true : false);
 
                     db.Entry(op).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
@@ -637,6 +630,225 @@ namespace RioSulAPI.Controllers
                     posicion.Activo = (posicion.Activo == false ? true : false);
 
                     db.Entry(posicion).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message2 = "Registro eliminado con éxito";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        #endregion
+
+        #region ORIGEN
+
+        /// <summary>
+        /// Creamos un nuevo registro de Origen/Terminado
+        /// </summary>
+        /// <param name="origen"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/NuevoOrigenT")]
+        public ViewModel.RESPUESTA_MENSAJE NuevoOrigenT([FromBody] ViewModel.REQ_ORIGEN_TERMINADO origen)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Origen_Terminado _origen = new Models.C_Origen_Terminado()
+                    {
+                        Activo = true,
+                        Clave = origen.Clave,
+                        Nombre = origen.Nombre.ToUpper()
+                    };
+                    db.C_Origen_Terminado.Add(_origen);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message2 = "Registro realizado con éxito";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Registro existente, favor de validar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
+
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Obtenemos todos los registros de origen dependiendo la búsqueda
+        /// </summary>
+        /// <param name="clave"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ObtieneOrigenT")]
+        public ViewModel.RES_BUS_ORIGEN_TERMINADO ObtieneOrigenT(string clave)
+        {
+            ViewModel.RES_BUS_ORIGEN_TERMINADO API = new ViewModel.RES_BUS_ORIGEN_TERMINADO();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    API.c_origen_t = db.C_Origen_Terminado.Where(x => x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.c_origen_t = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.c_origen_t = null;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Obtenemos un registro del catálogo de origen dependiendo el ID
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ObtieneInfOrigenT")]
+        public ViewModel.RES_BUS_ONE_ORIGEN_TERMINADO ObtieneInfOrigenT(int ID)
+        {
+            ViewModel.RES_BUS_ONE_ORIGEN_TERMINADO API = new ViewModel.RES_BUS_ONE_ORIGEN_TERMINADO();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    API.c_origen_t = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.c_origen_t = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Actualizamos un registro del catálogo de origen
+        /// </summary>
+        /// <param name="origen"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ActualizaOrigenT")]
+        public ViewModel.RESPUESTA_MENSAJE ActualizaOrigenT([FromBody] ViewModel.REQ_EDIT_ORIGEN_TERMINADO origen)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Origen_Terminado con = db.C_Origen_Terminado.Where(x => x.ID == origen.ID).FirstOrDefault();
+
+                    if (con != null)
+                    {
+                        con.Nombre = origen.Nombre.ToUpper();
+                        con.Clave = origen.Clave;
+
+                        db.Entry(con).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Message2 = "Registro actualizado con éxito";
+                        API.Hecho = true;
+                    }
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
+                {
+                    API.Message2 = "Favor de validar registros Requeridos, Imposible guardar";
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                }
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Activamos o desactivamos el registro de Posición depenediendo el caso
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/ActivaInactivaOrigenT")]
+        public ViewModel.RESPUESTA_MENSAJE ActivaInactivaOrigenT(int ID)
+        {
+            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Origen_Terminado origen = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                    origen.Activo = (origen.Activo == false ? true : false);
+
+                    db.Entry(origen).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
 
                     API.Hecho = true;

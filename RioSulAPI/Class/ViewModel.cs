@@ -10,13 +10,13 @@ namespace RioSulAPI.Class
     public class ViewModel
     {
         #region LogIn
+
         public partial class REQ_LOGIN
         {
-            [Required]
-            public string Usuario { get; set; }
-            [Required]
-            public string Contrasena { get; set; }
+            [Required] public string Usuario { get; set; }
+            [Required] public string Contrasena { get; set; }
         }
+
         public partial class RES_LOGIN
         {
             public HttpResponseMessage Message { get; set; }
@@ -24,6 +24,7 @@ namespace RioSulAPI.Class
             public List<PERMISOS> PER { get; set; }
             public bool Valido { get; set; }
         }
+
         public partial class USU
         {
             public int ID { get; set; }
@@ -34,6 +35,7 @@ namespace RioSulAPI.Class
             public DateTime? LastLogin { get; set; }
             public string Email { get; set; }
         }
+
         public partial class NEW_USU
         {
             public string Nombre { get; set; }
@@ -41,6 +43,7 @@ namespace RioSulAPI.Class
             public string Contraseña { get; set; }
             public string Email { get; set; }
         }
+
         public partial class UPD_USU
         {
             public int UsuId { get; set; }
@@ -49,6 +52,7 @@ namespace RioSulAPI.Class
             public string Contraseña { get; set; }
             public string Email { get; set; }
         }
+
         public partial class EDIT_USU
         {
             public int Id { get; set; }
@@ -57,28 +61,30 @@ namespace RioSulAPI.Class
             public string Contraseña { get; set; }
             public string Email { get; set; }
         }
+
         public partial class PERMISOS
         {
             public Models.VST_PERMISOS PerGral { get; set; }
             public List<Models.VST_PERMISOS> Per { get; set; }
         }
+
         #endregion
 
         #region Usuario
+
         public partial class REQ_USU
         {
-            [Required]
-            public NEW_USU Usuario { get; set; }
+            [Required] public NEW_USU Usuario { get; set; }
             public string PerMenu { get; set; }
         }
+
         public partial class REQ_USU_UPD
         {
-            [Required]
-            public string Key { get; set; }
-            [Required]
-            public UPD_USU Usuario { get; set; }
+            [Required] public string Key { get; set; }
+            [Required] public UPD_USU Usuario { get; set; }
             public string PerMenu { get; set; }
         }
+
         public partial class Menu
         {
             public int PANTALLA_ID { get; set; }
@@ -89,6 +95,7 @@ namespace RioSulAPI.Class
             public bool PER_CANCELAR { get; set; }
             public bool PER_ACTIVAR { get; set; }
         }
+
         public partial class RES_USU
         {
             public bool Hecho { get; set; }
@@ -107,11 +114,13 @@ namespace RioSulAPI.Class
             public string LastPassword { get; set; }
             public string NewPassword { get; set; }
         }
+
         public partial class RES_CHG_PASS
         {
             public bool Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public partial class RES_GET_USU
         {
             public bool Hecho { get; set; }
@@ -125,15 +134,18 @@ namespace RioSulAPI.Class
             public List<Menu> Menu { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region Menu
+
         public partial class RES_MENU
         {
             public List<t_sg_pantallas> Menus { get; set; }
             public List<c_sg_operaciones> Operacion { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public partial class t_sg_pantallas
         {
             public int ID { get; set; }
@@ -144,15 +156,18 @@ namespace RioSulAPI.Class
             public string Ruta { get; set; }
             public string Icon { get; set; }
         }
+
         public partial class c_sg_operaciones
         {
             public int ID { get; set; }
             public string Operacion { get; set; }
             public bool? Activo { get; set; }
         }
+
         #endregion
 
         #region Cliente
+
         public partial class ClienteRioSulApp
         {
             public string cve_cliente { get; set; }
@@ -169,6 +184,7 @@ namespace RioSulAPI.Class
             public string nom_ciudad { get; set; }
             public string nom_estado { get; set; }
         }
+
         public partial class RES_CLIENTE
         {
             public List<ClienteRioSulApp> Clientes { get; set; }
@@ -182,12 +198,14 @@ namespace RioSulAPI.Class
             public List<VST_C_ClientesReferencia> Ref_C_ClientesReferencia { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public class VST_C_Clientes
         {
             public int IdClienteRef { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
         }
+
         public class VST_C_ClientesReferencia
         {
             public int IdCliente { get; set; }
@@ -206,33 +224,27 @@ namespace RioSulAPI.Class
             public string Nom_Ciudad { get; set; }
             public string Nom_Estado { get; set; }
         }
+
         public class REQ_ClienteRef
         {
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
-            [Required]
-            public string CLI_REF { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
+            [Required] public string CLI_REF { get; set; }
         }
+
         public class VST_C_ClientesRef
         {
-            [Required]
-            public string Cve_Cliente { get; set; }
-            [Required]
-            public string Nom_Cliente { get; set; }
-            [Required]
-            public string Nom_Corto { get; set; }
+            [Required] public string Cve_Cliente { get; set; }
+            [Required] public string Nom_Cliente { get; set; }
+            [Required] public string Nom_Corto { get; set; }
             public string Num_Rfc { get; set; }
             public string Dir_Cliente { get; set; }
             public string Nom_Colonia { get; set; }
             public string Num_Cp { get; set; }
             public string Num_Telefono { get; set; }
             public string Num_Fax { get; set; }
-            [Required]
-            public string Nom_Contacto { get; set; }
-            [Required]
-            public string Nom_Estatus { get; set; }
+            [Required] public string Nom_Contacto { get; set; }
+            [Required] public string Nom_Estatus { get; set; }
             public string Nom_Ciudad { get; set; }
             public string Nom_Estado { get; set; }
         }
@@ -240,26 +252,29 @@ namespace RioSulAPI.Class
         #endregion
 
         #region CorreosElectronicos
+
         public partial class RES_CORREO
         {
             public HttpResponseMessage Message { get; set; }
             public List<Models.VST_CORREOS_AUDITORIA> CorreosA { get; set; }
         }
+
         public partial class RES_NVO_CORREO
         {
             public bool Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public partial class REQ_NVO_CORREO
         {
-            [Required]
-            public int USU_ID { get; set; }
+            [Required] public int USU_ID { get; set; }
             public bool Corte { get; set; }
             public bool Confeccion { get; set; }
             public bool ProcesosEspeciales { get; set; }
             public bool Lavanderia { get; set; }
             public bool Terminado { get; set; }
         }
+
         public partial class RES_EDT_CORREO
         {
             public HttpResponseMessage Message { get; set; }
@@ -269,23 +284,28 @@ namespace RioSulAPI.Class
             public bool Lavanderia { get; set; }
             public bool Terminado { get; set; }
         }
+
         #endregion
 
         #region CatalogoSegundas
+
         public partial class RES_SEGUNDAS
         {
             public HttpResponseMessage Message { get; set; }
             public List<Estilos> estilos { get; set; }
         }
+
         public partial class Estilos
         {
             public string estilo { get; set; }
             public string des_estilo { get; set; }
         }
+
         public partial class RES_NEW_SEGUNDA
         {
             public HttpResponseMessage Message { get; set; }
         }
+
         public partial class REQ_C_SEGUNDA
         {
             public string Estilo { get; set; }
@@ -299,6 +319,7 @@ namespace RioSulAPI.Class
             public decimal Costo_Estilo { get; set; }
             public decimal Costo_Segunda { get; set; }
         }
+
         public partial class RES_C_SEGUNDA
         {
             public int IdSegunda { get; set; }
@@ -313,39 +334,29 @@ namespace RioSulAPI.Class
             public decimal Costo_Estilo { get; set; }
             public decimal Costo_Segunda { get; set; }
         }
+
         #endregion
 
         #region CatalogoCortadores
+
         public partial class REQ_CORTADOR
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class REQ_EDT_CORTADOR
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class RES_CORTADOR
@@ -381,39 +392,29 @@ namespace RioSulAPI.Class
             public int Numerador { get; set; }
             public int Denominador { get; set; }
         }
+
         #endregion
 
         #region CatalogoCortadorTendido
+
         public partial class REQ_TENDIDO
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class REQ_EDT_TENDIDO
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class RES_TENDIDO
@@ -433,39 +434,29 @@ namespace RioSulAPI.Class
             public Models.VST_CORTADORES Vst_Cortador { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region CatalogoCortadorTipoTendido
+
         public partial class REQ_TIPO_TENDIDO
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class REQ_EDT_TIPO_TENDIDO
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
         }
 
         public partial class RES_TIPO_TENDIDO
@@ -485,23 +476,19 @@ namespace RioSulAPI.Class
             public Models.VST_CORTADORES Vst_Cortador { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region PosicionCortador
+
         public partial class REQ_POSICION_CORTE
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Posicion { get; set; }
         }
 
@@ -516,40 +503,30 @@ namespace RioSulAPI.Class
             public List<Models.VST_POSICION_CORTADOR> Vst_Posicion { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region DefectosCortador
+
         public partial class REQ_DEFECTO_CORTE
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 
         public partial class REQ_EDT_DEFECTO_CORTE
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 
@@ -570,19 +547,17 @@ namespace RioSulAPI.Class
             public Models.VST_CORTADORES Vst_Cortador { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region DefectosConfeccion
+
         public partial class REQ_DEFECTO_CONFECCION
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
@@ -590,18 +565,12 @@ namespace RioSulAPI.Class
 
         public partial class REQ_EDT_DEFECTO_CONFECCION
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 
@@ -649,12 +618,9 @@ namespace RioSulAPI.Class
 
         public partial class REQ_PLANTA_AREA
         {
-            [Required]
-            public string DescripcionPlanta { get; set; }
-            [Required]
-            public string Planta { get; set; }
-            [Required]
-            public string Areas { get; set; }
+            [Required] public string DescripcionPlanta { get; set; }
+            [Required] public string Planta { get; set; }
+            [Required] public string Areas { get; set; }
         }
 
         public partial class RES_PLANTAS_AREAS_REL
@@ -665,19 +631,17 @@ namespace RioSulAPI.Class
             public string Planta { get; set; }
             public List<Models.VST_PLANTAS_AREAS> Areas { get; set; }
         }
+
         #endregion
 
         #region ProcesosEspecialee
+
         public class REQ_DEFECTO_PROCESO_ESP
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
@@ -686,18 +650,12 @@ namespace RioSulAPI.Class
 
         public partial class REQ_POSICION_PROC_ESP
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Posicion { get; set; }
         }
 
@@ -722,24 +680,19 @@ namespace RioSulAPI.Class
 
         public partial class REQ_EDT_DEFECTO_PROCESO_ESP
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 
         #endregion
 
         #region Lavanderia
+
         public partial class RES_DEFECTO_LAV
         {
             public bool Hecho { get; set; }
@@ -748,46 +701,40 @@ namespace RioSulAPI.Class
 
         public class REQ_DEFECTO_LAV
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
 
         }
+
         public partial class RES_BUS_DEFECTO_LAVANDERIA
         {
             public List<Models.VST_LAVANDERIA> Vst_Lavanderia { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public partial class RES_EDT_LAVANDERIA
         {
             public Models.VST_LAVANDERIA Vst_Lavanderia { get; set; }
             public HttpResponseMessage Message { get; set; }
             public List<Models.VST_POSICION_PROCESOS_ESPECIALES> Vst_Posicion { get; set; }
         }
+
         public partial class REQ_EDT_DEFECTO_LAVANDERIA
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
-            [Required]
-            public string Observaciones { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
+
         #endregion
 
         #region Terminado
@@ -802,14 +749,10 @@ namespace RioSulAPI.Class
 
         public class REQ_DEFECTO_TERMINADO
         {
-            [Required]
-            public int IdSubModulo { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int IdSubModulo { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
@@ -818,16 +761,11 @@ namespace RioSulAPI.Class
 
         public partial class REQ_EDT_DEFECTO_TERMINADO
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public int IdUsuario { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
-            [Required]
-            public string Descripcion { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            [Required] public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
@@ -853,26 +791,21 @@ namespace RioSulAPI.Class
         {
             public bool Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
-            public string Message2 {get; set; }
+            public string Message2 { get; set; }
         }
 
         public class REQ_OPERACION_TERMINADO
         {
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
 
         }
 
         public class REQ_EDT_OPERACION_TERMINADO
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
         }
 
         public class RES_BUS_OPERACION_TERMINADO
@@ -886,6 +819,7 @@ namespace RioSulAPI.Class
             public Models.C_Operacion_Terminado c_operacion_t { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         #endregion
 
         #region Posicion/Terminado
@@ -899,10 +833,8 @@ namespace RioSulAPI.Class
 
         public class REQ_POSICION_TERMINADO
         {
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
         }
 
         public class RES_BUS_POSICION_TERMINADO
@@ -919,12 +851,38 @@ namespace RioSulAPI.Class
 
         public class REQ_EDIT_POSICION_TERMINADO
         {
-            [Required]
-            public int ID { get; set; }
-            [Required]
-            public string Clave { get; set; }
-            [Required]
-            public string Nombre { get; set; }
+            [Required] public int ID { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+        }
+
+        #endregion
+
+        #region Origen/Terminado
+
+        public class REQ_ORIGEN_TERMINADO
+        {
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+        }
+
+        public class RES_BUS_ORIGEN_TERMINADO
+        {
+            public List<Models.C_Origen_Terminado> c_origen_t { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class RES_BUS_ONE_ORIGEN_TERMINADO
+        {
+            public Models.C_Origen_Terminado c_origen_t { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class REQ_EDIT_ORIGEN_TERMINADO
+        {
+            [Required] public int ID { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
         }
 
         #endregion

@@ -246,7 +246,16 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Activo" Type="int" Nullable="false" />
+    <Property Name="Activo" Type="bit" />
+  </EntityType>
+  <EntityType Name="C_Origen_Terminado">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Activo" Type="bit" />
   </EntityType>
   <EntityType Name="C_Plantas_Areas">
     <Key>
@@ -1344,6 +1353,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     <EntitySet Name="C_Operacion_Lavanderia" EntityType="Self.C_Operacion_Lavanderia" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Operacion_ProcesosEspeciales" EntityType="Self.C_Operacion_ProcesosEspeciales" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Operacion_Terminado" EntityType="Self.C_Operacion_Terminado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="C_Origen_Terminado" EntityType="Self.C_Origen_Terminado" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Plantas_Areas" EntityType="Self.C_Plantas_Areas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Plantas_Dynamic" EntityType="Self.C_Plantas_Dynamic" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Posicion_Cortador" EntityType="Self.C_Posicion_Cortador" Schema="dbo" store:Type="Tables" />
