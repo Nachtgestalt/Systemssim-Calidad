@@ -499,7 +499,7 @@ namespace RioSulAPI.Controllers
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ObtienePosicionT")]
-        public ViewModel.RES_BUS_POSICION_TERMINADO ObtienePosicionT(string clave)
+        public ViewModel.RES_BUS_POSICION_TERMINADO ObtienePosicionT(string clave="")
         {
             ViewModel.RES_BUS_POSICION_TERMINADO API = new ViewModel.RES_BUS_POSICION_TERMINADO();
             try
@@ -718,7 +718,7 @@ namespace RioSulAPI.Controllers
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ObtieneOrigenT")]
-        public ViewModel.RES_BUS_ORIGEN_TERMINADO ObtieneOrigenT(string clave)
+        public ViewModel.RES_BUS_ORIGEN_TERMINADO ObtieneOrigenT(string clave="")
         {
             ViewModel.RES_BUS_ORIGEN_TERMINADO API = new ViewModel.RES_BUS_ORIGEN_TERMINADO();
             try
