@@ -12,6 +12,8 @@ namespace RioSulAPI.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class bd_calidadIIEntities : DbContext
     {
@@ -44,11 +46,13 @@ namespace RioSulAPI.Models
         public virtual DbSet<C_Operacion_Confeccion> C_Operacion_Confeccion { get; set; }
         public virtual DbSet<C_Operacion_Lavanderia> C_Operacion_Lavanderia { get; set; }
         public virtual DbSet<C_Operacion_ProcesosEspeciales> C_Operacion_ProcesosEspeciales { get; set; }
+        public virtual DbSet<C_Operacion_Terminado> C_Operacion_Terminado { get; set; }
         public virtual DbSet<C_Plantas_Areas> C_Plantas_Areas { get; set; }
         public virtual DbSet<C_Plantas_Dynamic> C_Plantas_Dynamic { get; set; }
         public virtual DbSet<C_Posicion_Cortador> C_Posicion_Cortador { get; set; }
         public virtual DbSet<C_Posicion_Lavanderia> C_Posicion_Lavanderia { get; set; }
         public virtual DbSet<C_Posicion_ProcesosEsp> C_Posicion_ProcesosEsp { get; set; }
+        public virtual DbSet<C_Posicion_Terminado> C_Posicion_Terminado { get; set; }
         public virtual DbSet<C_Procesos_Especiales> C_Procesos_Especiales { get; set; }
         public virtual DbSet<C_Segundas> C_Segundas { get; set; }
         public virtual DbSet<C_Sg_Operaciones> C_Sg_Operaciones { get; set; }
@@ -72,8 +76,112 @@ namespace RioSulAPI.Models
         public virtual DbSet<VST_PERMISOS_OPERACIONES> VST_PERMISOS_OPERACIONES { get; set; }
         public virtual DbSet<VST_PLANTAS_AREAS> VST_PLANTAS_AREAS { get; set; }
         public virtual DbSet<VST_POSICION_CORTADOR> VST_POSICION_CORTADOR { get; set; }
+        public virtual DbSet<VST_POSICION_LAVANDERIA> VST_POSICION_LAVANDERIA { get; set; }
         public virtual DbSet<VST_POSICION_PROCESOS_ESPECIALES> VST_POSICION_PROCESOS_ESPECIALES { get; set; }
         public virtual DbSet<VST_PROCESOS_ESPECIALES> VST_PROCESOS_ESPECIALES { get; set; }
         public virtual DbSet<VST_TERMINADO> VST_TERMINADO { get; set; }
+    
+        public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_alterdiagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_creatediagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var versionParameter = version.HasValue ?
+                new ObjectParameter("version", version) :
+                new ObjectParameter("version", typeof(int));
+    
+            var definitionParameter = definition != null ?
+                new ObjectParameter("definition", definition) :
+                new ObjectParameter("definition", typeof(byte[]));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_creatediagram", diagramnameParameter, owner_idParameter, versionParameter, definitionParameter);
+        }
+    
+        public virtual int sp_dropdiagram(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_dropdiagram", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagramdefinition(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagramdefinition", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_helpdiagrams(string diagramname, Nullable<int> owner_id)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_helpdiagrams", diagramnameParameter, owner_idParameter);
+        }
+    
+        public virtual int sp_renamediagram(string diagramname, Nullable<int> owner_id, string new_diagramname)
+        {
+            var diagramnameParameter = diagramname != null ?
+                new ObjectParameter("diagramname", diagramname) :
+                new ObjectParameter("diagramname", typeof(string));
+    
+            var owner_idParameter = owner_id.HasValue ?
+                new ObjectParameter("owner_id", owner_id) :
+                new ObjectParameter("owner_id", typeof(int));
+    
+            var new_diagramnameParameter = new_diagramname != null ?
+                new ObjectParameter("new_diagramname", new_diagramname) :
+                new ObjectParameter("new_diagramname", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_renamediagram", diagramnameParameter, owner_idParameter, new_diagramnameParameter);
+        }
+    
+        public virtual int sp_upgraddiagrams()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_upgraddiagrams");
+        }
     }
 }

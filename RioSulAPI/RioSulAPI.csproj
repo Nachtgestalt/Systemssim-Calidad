@@ -266,6 +266,9 @@
     <Compile Include="Models\C_Operacion_ProcesosEspeciales.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\C_Operacion_Terminado.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\C_Plantas_Areas.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
@@ -279,6 +282,9 @@
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C_Posicion_ProcesosEsp.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\C_Posicion_Terminado.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C_Procesos_Especiales.cs">
@@ -348,6 +354,9 @@
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VST_POSICION_CORTADOR.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\VST_POSICION_LAVANDERIA.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\VST_POSICION_PROCESOS_ESPECIALES.cs">

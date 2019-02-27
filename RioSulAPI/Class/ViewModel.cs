@@ -796,6 +796,7 @@ namespace RioSulAPI.Class
             public bool Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
+
         public class REQ_DEFECTO_TERMINADO
         {
             [Required]
@@ -840,7 +841,46 @@ namespace RioSulAPI.Class
             public HttpResponseMessage Message { get; set; }
         }
 
-  
+        #region Operaciones/Terminado
+
+        public partial class RES_OPERACION_TERMINADO
+        {
+            public bool Hecho { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class REQ_OPERACION_TERMINADO
+        {
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+
+        }
+
+        public class REQ_EDT_OPERACION_TERMINADO
+        {
+            [Required]
+            public int ID { get; set; }
+            [Required]
+            public string Clave { get; set; }
+            [Required]
+            public string Nombre { get; set; }
+        }
+
+        public class RES_BUS_OPERACION_TERMINADO
+        {
+            public List<Models.C_Operacion_Terminado> COperacionTerminados { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public class RES_BUS_ONE_OPERACION_TERMINADO
+        {
+            public Models.C_Operacion_Terminado c_operacion_t { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+        #endregion
+
 
         #endregion
     }

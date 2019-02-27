@@ -239,6 +239,15 @@
     <Property Name="IdOperacion" Type="int" Nullable="false" />
     <Property Name="IdDefecto" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="C_Operacion_Terminado">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Activo" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="C_Plantas_Areas">
     <Key>
       <PropertyRef Name="IdPlantaArea" />
@@ -272,6 +281,14 @@
     <Property Name="IdCortador" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="C_Posicion_ProcesosEsp">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdPosicion" Type="int" Nullable="false" />
+    <Property Name="IdCortador" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="C_Posicion_Terminado">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
@@ -682,6 +699,22 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_PLANTAS_AREAS' no tiene
   <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_POSICION_CORTADOR' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="VST_POSICION_CORTADOR">
+    <Key>
+      <PropertyRef Name="IdPosicion" />
+      <PropertyRef Name="IdCortador" />
+      <PropertyRef Name="Clave" />
+      <PropertyRef Name="Nombre" />
+      <PropertyRef Name="Descripcion" />
+    </Key>
+    <Property Name="IdPosicion" Type="int" Nullable="false" />
+    <Property Name="IdCortador" Type="int" Nullable="false" />
+    <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Descripcion" Type="varchar" MaxLength="250" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_POSICION_LAVANDERIA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="VST_POSICION_LAVANDERIA">
     <Key>
       <PropertyRef Name="IdPosicion" />
       <PropertyRef Name="IdCortador" />
@@ -1138,6 +1171,30 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado">
+    <End Role="C_Posicion_Terminado" Type="Self.C_Posicion_Terminado" Multiplicity="1" />
+    <End Role="C_Posicion_Terminado1" Type="Self.C_Posicion_Terminado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="C_Posicion_Terminado">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="C_Posicion_Terminado1">
+        <PropertyRef Name="IdPosicion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1">
+    <End Role="C_Posicion_Terminado" Type="Self.C_Posicion_Terminado" Multiplicity="1" />
+    <End Role="C_Posicion_Terminado1" Type="Self.C_Posicion_Terminado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="C_Posicion_Terminado">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="C_Posicion_Terminado1">
+        <PropertyRef Name="IdCortador" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_C_Procesos_Especiales_C_Sg_Usuarios">
     <End Role="C_Sg_Usuarios" Type="Self.C_Sg_Usuarios" Multiplicity="1" />
     <End Role="C_Procesos_Especiales" Type="Self.C_Procesos_Especiales" Multiplicity="*" />
@@ -1258,6 +1315,37 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="bd_calidadIIModelStoreContainer">
     <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Auditoria_Confeccion_Detalle" EntityType="Self.Auditoria_Confeccion_Detalle" Schema="dbo" store:Type="Tables" />
@@ -1278,11 +1366,13 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     <EntitySet Name="C_Operacion_Confeccion" EntityType="Self.C_Operacion_Confeccion" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Operacion_Lavanderia" EntityType="Self.C_Operacion_Lavanderia" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Operacion_ProcesosEspeciales" EntityType="Self.C_Operacion_ProcesosEspeciales" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="C_Operacion_Terminado" EntityType="Self.C_Operacion_Terminado" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Plantas_Areas" EntityType="Self.C_Plantas_Areas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Plantas_Dynamic" EntityType="Self.C_Plantas_Dynamic" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Posicion_Cortador" EntityType="Self.C_Posicion_Cortador" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Posicion_Lavanderia" EntityType="Self.C_Posicion_Lavanderia" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Posicion_ProcesosEsp" EntityType="Self.C_Posicion_ProcesosEsp" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="C_Posicion_Terminado" EntityType="Self.C_Posicion_Terminado" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Procesos_Especiales" EntityType="Self.C_Procesos_Especiales" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Segundas" EntityType="Self.C_Segundas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="C_Sg_Operaciones" EntityType="Self.C_Sg_Operaciones" Schema="dbo" store:Type="Tables" />
@@ -1469,6 +1559,15 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_POSICION_CORTADOR].[Descripcion] AS [Descripcion]
     FROM [dbo].[VST_POSICION_CORTADOR] AS [VST_POSICION_CORTADOR]</DefiningQuery>
     </EntitySet>
+    <EntitySet Name="VST_POSICION_LAVANDERIA" EntityType="Self.VST_POSICION_LAVANDERIA" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VST_POSICION_LAVANDERIA].[IdPosicion] AS [IdPosicion], 
+    [VST_POSICION_LAVANDERIA].[IdCortador] AS [IdCortador], 
+    [VST_POSICION_LAVANDERIA].[Clave] AS [Clave], 
+    [VST_POSICION_LAVANDERIA].[Nombre] AS [Nombre], 
+    [VST_POSICION_LAVANDERIA].[Descripcion] AS [Descripcion]
+    FROM [dbo].[VST_POSICION_LAVANDERIA] AS [VST_POSICION_LAVANDERIA]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="VST_POSICION_PROCESOS_ESPECIALES" EntityType="Self.VST_POSICION_PROCESOS_ESPECIALES" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [VST_POSICION_PROCESOS_ESPECIALES].[IdPosicion] AS [IdPosicion], 
@@ -1632,6 +1731,14 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     <AssociationSet Name="FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1" Association="Self.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1">
       <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
       <End Role="C_Posicion_ProcesosEsp" EntitySet="C_Posicion_ProcesosEsp" />
+    </AssociationSet>
+    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado" Association="Self.FK_C_Posicion_Terminado_C_Posicion_Terminado">
+      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
+      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
+    </AssociationSet>
+    <AssociationSet Name="FK_C_Posicion_Terminado_C_Posicion_Terminado1" Association="Self.FK_C_Posicion_Terminado_C_Posicion_Terminado1">
+      <End Role="C_Posicion_Terminado" EntitySet="C_Posicion_Terminado" />
+      <End Role="C_Posicion_Terminado1" EntitySet="C_Posicion_Terminado" />
     </AssociationSet>
     <AssociationSet Name="FK_C_Procesos_Especiales_C_Sg_Usuarios" Association="Self.FK_C_Procesos_Especiales_C_Sg_Usuarios">
       <End Role="C_Sg_Usuarios" EntitySet="C_Sg_Usuarios" />

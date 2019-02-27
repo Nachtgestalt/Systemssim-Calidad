@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\RioSul_Angular\RioSulAPI\RioSulAPI\RioSulAPI\Models\bd_calidadIIEntities.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\Asus.DESKTOP-JBDH3N9\Documents\GitHub\Systemssim-Calidad\RioSulAPI\Models\bd_calidadIIEntities.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

@@ -4,98 +4,103 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0c9bb5f06c8a451b81edab477fdc517e" Name="Diagram1">
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria" Width="1.5" PointX="3" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" Width="1.5" PointX="5.25" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" Width="1.5" PointX="5.25" PointY="40.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Proc_Esp_Detalle" Width="1.5" PointX="5.25" PointY="43.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Tendido_Detalle" Width="1.5" PointX="5.25" PointY="47.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Terminado_Detalle" Width="1.5" PointX="11.25" PointY="27.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Areas" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Clientes" Width="1.5" PointX="0.75" PointY="32" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_ClientesReferencia" Width="1.5" PointX="3" PointY="37.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Conf_Confeccion" Width="1.5" PointX="6" PointY="27" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_CorreosElectronicos" Width="1.5" PointX="3" PointY="50.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Cortadores" Width="1.5" PointX="6" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Tendido" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Lavanderia" Width="1.5" PointX="6" PointY="32.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Modulos" Width="1.5" PointX="1.5" PointY="18.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Confeccion" Width="1.5" PointX="8.25" PointY="31" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Lavanderia" Width="1.5" PointX="8.25" PointY="34" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_ProcesosEspeciales" Width="1.5" PointX="5.25" PointY="18.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Areas" Width="1.5" PointX="11.25" PointY="24" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Dynamic" Width="1.5" PointX="9" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Cortador" Width="1.5" PointX="8.25" PointY="23" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Lavanderia" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_ProcesosEsp" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Procesos_Especiales" Width="1.5" PointX="3" PointY="20.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Segundas" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Operaciones" Width="1.5" PointX="4.5" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_PantallasOperaciones" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Usuarios" Width="1.5" PointX="0.75" PointY="27" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_SubModulos" Width="1.5" PointX="0.75" PointY="21.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Terminado" Width="1.5" PointX="3" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Tolerancia_Corte" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.sysdiagram" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Pantallas" Width="1.5" PointX="4.5" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" Width="1.5" PointX="9" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Bitacora" Width="1.5" PointX="9" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CONFECCION" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORREOS_AUDITORIA" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORTADORES" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_LAVANDERIA" Width="1.5" PointX="11.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_OPERACION_CONFECCION" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS_OPERACIONES" Width="1.5" PointX="13.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PLANTAS_AREAS" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_CORTADOR" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_PROCESOS_ESPECIALES" Width="1.5" PointX="7.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PROCESOS_ESPECIALES" Width="1.5" PointX="14.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_TERMINADO" Width="1.5" PointX="9.75" PointY="14.75" IsExpanded="true" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_Auditoria" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_C_Modulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_ClientesReferencia_C_Clientes" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Conf_Confeccion_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Conf_Confeccion_C_SubModulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Conf_Confeccion" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_CorreosElectronicos_C_Sg_Usuarios1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Cort_Cortadores_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Cort_Cortadores_C_SubModulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Cortador_C_Cort_Cortadores" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Cortador_C_Cort_Cortadores1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Lavanderia_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Lavanderia_C_SubModulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_SubModulos_C_Modulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Procesos_Especiales_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Procesos_Especiales_C_SubModulos" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Sg_PantallasOperaciones_C_Sg_Operaciones" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Sg_PantallasOperaciones_T_Pantallas" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Cs_Sg_UsuariosOperaciones_C_Sg_PantallasOperaciones" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_T_Sc_Bitacora_C_Sg_PantallasOperaciones" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Terminado_C_Sg_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_Cs_Sg_UsuariosOperaciones_C_Usuarios" ManuallyRouted="false" />
-        <AssociationConnector Association="bd_calidadIIModel.FK_C_Terminado_C_SubModulos" ManuallyRouted="false" />
+      <Diagram DiagramId="0c9bb5f06c8a451b81edab477fdc517e" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria" Width="1.5" PointX="3" PointY="31.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" Width="1.5" PointX="5.25" PointY="40.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" Width="1.5" PointX="5.25" PointY="49" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" Width="1.5" PointX="5.25" PointY="37.375" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Proc_Esp_Detalle" Width="1.5" PointX="5.25" PointY="52.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Tendido_Detalle" Width="1.5" PointX="5.25" PointY="44" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Terminado_Detalle" Width="1.5" PointX="8.25" PointY="37.375" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Areas" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Clientes" Width="1.5" PointX="0.75" PointY="34" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_ClientesReferencia" Width="1.5" PointX="3" PointY="42.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Conf_Confeccion" Width="1.5" PointX="6" PointY="22" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_CorreosElectronicos" Width="1.5" PointX="3" PointY="39.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Cortadores" Width="1.5" PointX="3" PointY="23.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Tendido" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Lavanderia" Width="1.5" PointX="9" PointY="27.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Modulos" Width="1.5" PointX="1.5" PointY="15.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Confeccion" Width="1.5" PointX="8.25" PointY="23.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Lavanderia" Width="1.5" PointX="11.25" PointY="28" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_ProcesosEspeciales" Width="1.5" PointX="8.25" PointY="34.375" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Terminado" Width="1.5" PointX="2.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Areas" Width="1.5" PointX="8.25" PointY="21" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Dynamic" Width="1.5" PointX="6" PointY="16.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Cortador" Width="1.5" PointX="5.25" PointY="19" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Lavanderia" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_ProcesosEsp" Width="1.5" PointX="8.25" PointY="31.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Terminado" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Procesos_Especiales" Width="1.5" PointX="6" PointY="31.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Segundas" Width="1.5" PointX="4.75" PointY="3.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Operaciones" Width="1.5" PointX="1.5" PointY="18.375" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_PantallasOperaciones" Width="1.5" PointX="0.75" PointY="21.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Usuarios" Width="1.5" PointX="0.75" PointY="27" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_SubModulos" Width="1.5" PointX="3.75" PointY="14.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Terminado" Width="1.5" PointX="6" PointY="27.25" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Tolerancia_Corte" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.sysdiagram" Width="1.5" PointX="6.75" PointY="3.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Pantallas" Width="1.5" PointX="1.5" PointY="11" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" Width="1.5" PointX="3" PointY="27.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Bitacora" Width="1.5" PointX="3" PointY="8" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA" Width="1.5" PointX="6.75" PointY="6.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" Width="1.5" PointX="8.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CONFECCION" Width="1.5" PointX="8.75" PointY="5.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORREOS_AUDITORIA" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORTADORES" Width="1.5" PointX="10.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_LAVANDERIA" Width="1.5" PointX="8.75" PointY="10.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_OPERACION_CONFECCION" Width="1.5" PointX="3.75" PointY="10.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS" Width="1.5" PointX="10.75" PointY="9.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS_OPERACIONES" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PLANTAS_AREAS" Width="1.5" PointX="12.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_CORTADOR" Width="1.5" PointX="5.75" PointY="12.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_LAVANDERIA" Width="1.5" PointX="12.75" PointY="8.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_PROCESOS_ESPECIALES" Width="1.5" PointX="12.75" PointY="11.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PROCESOS_ESPECIALES" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_TERMINADO" Width="1.5" PointX="14.75" PointY="4.75" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_Auditoria" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_C_Modulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_ClientesReferencia_C_Clientes" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Conf_Confeccion_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Conf_Confeccion_C_SubModulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Conf_Confeccion" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_CorreosElectronicos_C_Sg_Usuarios1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Cort_Cortadores_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Cort_Cortadores_C_SubModulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Cortador_C_Cort_Cortadores" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Cortador_C_Cort_Cortadores1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Lavanderia_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Lavanderia_C_SubModulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_SubModulos_C_Modulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Posicion_Terminado_C_Posicion_Terminado1" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Procesos_Especiales_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Procesos_Especiales_C_SubModulos" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Sg_PantallasOperaciones_C_Sg_Operaciones" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Sg_PantallasOperaciones_T_Pantallas" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Cs_Sg_UsuariosOperaciones_C_Sg_PantallasOperaciones" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_T_Sc_Bitacora_C_Sg_PantallasOperaciones" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Terminado_C_Sg_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_Cs_Sg_UsuariosOperaciones_C_Usuarios" />
+        <AssociationConnector Association="bd_calidadIIModel.FK_C_Terminado_C_SubModulos" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

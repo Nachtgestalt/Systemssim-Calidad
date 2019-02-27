@@ -1539,6 +1539,41 @@
             <param name="IdDefecto"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevaOperacionTerminado(RioSulAPI.Class.ViewModel.REQ_OPERACION_TERMINADO)">
+            <summary>
+            CREA UNA NUEVA OPERACIÓN TERMINADO
+            </summary>
+            <param name="Operacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActualizaOperacionTerminado(RioSulAPI.Class.ViewModel.REQ_EDT_OPERACION_TERMINADO)">
+            <summary>
+            ACTUALIZAMOS ALGUN CAMPO DE UNA OPERACIÓN
+            </summary>
+            <param name="Operacion"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOperacionTerminados(System.String)">
+            <summary>
+            OBTENEMOS UNA LISTA DEL CATALOGO DE OPERACIONES DEPENDIENDO LA CLAVE
+            </summary>
+            <param name="clave"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneInfOperacionTerminado(System.Int32)">
+            <summary>
+            OBTENEMOS LA INFORMACION DEL CATALOGO DE OPERACIONES POR ID
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaOperacion(System.Int32)">
+            <summary>
+            ACTIVAMOS O DESACTIVAMOS LA OPERACION DEPENDIENDO EL CASO
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.UsuarioController.NewUser(RioSulAPI.Class.ViewModel.REQ_USU)">
             <summary>
             AGREGA UN NUEVO USUARIO RioSulApp
