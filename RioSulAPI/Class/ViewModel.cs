@@ -764,7 +764,7 @@ namespace RioSulAPI.Class
             [Required] public int ID { get; set; }
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
-            [Required] public string Nombre { get; set; }
+            public string Nombre { get; set; }
             [Required] public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
