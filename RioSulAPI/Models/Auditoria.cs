@@ -22,7 +22,6 @@ namespace RioSulAPI.Models
             this.Auditoria_Lavanderia_Detalle = new HashSet<Auditoria_Lavanderia_Detalle>();
             this.Auditoria_Proc_Esp_Detalle = new HashSet<Auditoria_Proc_Esp_Detalle>();
             this.Auditoria_Tendido_Detalle = new HashSet<Auditoria_Tendido_Detalle>();
-            this.Auditoria_Terminado_Detalle = new HashSet<Auditoria_Terminado_Detalle>();
         }
     
         public int IdAuditoria { get; set; }
@@ -58,7 +57,5 @@ namespace RioSulAPI.Models
         public virtual ICollection<Auditoria_Proc_Esp_Detalle> Auditoria_Proc_Esp_Detalle { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Auditoria_Tendido_Detalle> Auditoria_Tendido_Detalle { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Auditoria_Terminado_Detalle> Auditoria_Terminado_Detalle { get; set; }
     }
 }

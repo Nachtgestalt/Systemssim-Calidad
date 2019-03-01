@@ -72,6 +72,7 @@
     <EntitySet Name="T_Sg_Bitacora" EntityType="bd_calidadIIModel.T_Sg_Bitacora" />
     <EntitySet Name="VST_AUDITORIA" EntityType="bd_calidadIIModel.VST_AUDITORIA" />
     <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" />
+    <EntitySet Name="VST_AUDITORIA_TERMINADO_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE" />
     <EntitySet Name="VST_CONFECCION" EntityType="bd_calidadIIModel.VST_CONFECCION" />
     <EntitySet Name="VST_CORREOS_AUDITORIA" EntityType="bd_calidadIIModel.VST_CORREOS_AUDITORIA" />
     <EntitySet Name="VST_CORTADORES" EntityType="bd_calidadIIModel.VST_CORTADORES" />
@@ -112,14 +113,6 @@
     <AssociationSet Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte" Association="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
       <End Role="Auditoria" EntitySet="Auditorias" />
       <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Auditoria_Terminado_Detalle_Auditoria" Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_Auditoria">
-      <End Role="Auditoria" EntitySet="Auditorias" />
-      <End Role="Auditoria_Terminado_Detalle" EntitySet="Auditoria_Terminado_Detalle" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Auditoria_Terminado_Detalle_C_Modulos" Association="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_C_Modulos">
-      <End Role="C_Modulos" EntitySet="C_Modulos" />
-      <End Role="Auditoria_Terminado_Detalle" EntitySet="Auditoria_Terminado_Detalle" />
     </AssociationSet>
     <AssociationSet Name="FK_C_ClientesReferencia_C_Clientes" Association="bd_calidadIIModel.FK_C_ClientesReferencia_C_Clientes">
       <End Role="C_Clientes" EntitySet="C_Clientes" />
@@ -281,7 +274,6 @@
     <NavigationProperty Name="Auditoria_Lavanderia_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Lavanderia_Detalle" />
     <NavigationProperty Name="Auditoria_Proc_Esp_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Proc_Esp_Detalle" />
     <NavigationProperty Name="Auditoria_Tendido_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Tendido_Detalle" />
-    <NavigationProperty Name="Auditoria_Terminado_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Terminado_Detalle" />
   </EntityType>
   <EntityType Name="Auditoria_Confeccion_Detalle">
     <Key>
@@ -365,11 +357,10 @@
     <Property Name="IdPosicion" Type="Int32" Nullable="false" />
     <Property Name="IdOperacion" Type="Int32" Nullable="false" />
     <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
     <Property Name="Revisado" Type="Boolean" Nullable="false" />
     <Property Name="Compostura" Type="Boolean" Nullable="false" />
     <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_Auditoria" FromRole="Auditoria_Terminado_Detalle" ToRole="Auditoria" />
-    <NavigationProperty Name="C_Modulos" Relationship="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_C_Modulos" FromRole="Auditoria_Terminado_Detalle" ToRole="C_Modulos" />
   </EntityType>
   <EntityType Name="C_Areas">
     <Key>
@@ -496,7 +487,6 @@
     </Key>
     <Property Name="IdModulo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="NombreModulo" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Auditoria_Terminado_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Terminado_Detalle_C_Modulos" FromRole="C_Modulos" ToRole="Auditoria_Terminado_Detalle" />
     <NavigationProperty Name="C_SubModulos" Relationship="bd_calidadIIModel.FK_C_SubModulos_C_Modulos" FromRole="C_Modulos" ToRole="C_SubModulos" />
   </EntityType>
   <EntityType Name="C_Operacion_Confeccion">
@@ -839,6 +829,39 @@
     <Property Name="IdCortado" Type="Int32" Nullable="false" />
     <Property Name="Cortado" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="Cantidad" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="VST_AUDITORIA_TERMINADO_DETALLE">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="IdAuditoriaTerminadoDetalle" />
+      <PropertyRef Name="IdAuditoria" />
+      <PropertyRef Name="IdOrigen" />
+      <PropertyRef Name="IdOperacion" />
+      <PropertyRef Name="IdPosicion" />
+      <PropertyRef Name="IdDefecto" />
+      <PropertyRef Name="Cantidad" />
+      <PropertyRef Name="Revisado" />
+      <PropertyRef Name="Compostura" />
+      <PropertyRef Name="Defecto" />
+      <PropertyRef Name="Operacion" />
+      <PropertyRef Name="Origen" />
+      <PropertyRef Name="Posicion" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="IdAuditoriaTerminadoDetalle" Type="Int32" Nullable="false" />
+    <Property Name="IdAuditoria" Type="Int32" Nullable="false" />
+    <Property Name="IdOrigen" Type="Int32" Nullable="false" />
+    <Property Name="IdOperacion" Type="Int32" Nullable="false" />
+    <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+    <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+    <Property Name="Cantidad" Type="Int32" Nullable="false" />
+    <Property Name="Revisado" Type="Boolean" Nullable="false" />
+    <Property Name="Compostura" Type="Boolean" Nullable="false" />
+    <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Defecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="Operacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Origen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Posicion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="VST_CONFECCION">
     <Key>
@@ -1190,30 +1213,6 @@
       </Principal>
       <Dependent Role="Auditoria_Tendido_Detalle">
         <PropertyRef Name="IdAuditoriaCorte" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Auditoria_Terminado_Detalle_Auditoria">
-    <End Type="bd_calidadIIModel.Auditoria" Role="Auditoria" Multiplicity="1" />
-    <End Type="bd_calidadIIModel.Auditoria_Terminado_Detalle" Role="Auditoria_Terminado_Detalle" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Auditoria">
-        <PropertyRef Name="IdAuditoria" />
-      </Principal>
-      <Dependent Role="Auditoria_Terminado_Detalle">
-        <PropertyRef Name="IdAuditoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Auditoria_Terminado_Detalle_C_Modulos">
-    <End Type="bd_calidadIIModel.C_Modulos" Role="C_Modulos" Multiplicity="1" />
-    <End Type="bd_calidadIIModel.Auditoria_Terminado_Detalle" Role="Auditoria_Terminado_Detalle" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Modulos">
-        <PropertyRef Name="IdModulo" />
-      </Principal>
-      <Dependent Role="Auditoria_Terminado_Detalle">
-        <PropertyRef Name="IdOrigen" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

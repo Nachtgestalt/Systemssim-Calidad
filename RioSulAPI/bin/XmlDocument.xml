@@ -615,7 +615,7 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.NuevaAuditoriaTerminado(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.NuevaAuditoriaTerminado(RioSulAPI.Controllers.AuditoriaTerminadoController.REQ_NEW_AT)">
             <summary>
             Registra una nueva auditoría de lavandería
             </summary>
@@ -628,11 +628,31 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtieneAuditoriaDet(System.Int32)">
+            <summary>
+            Obtenemos el detalle de la auditoria dependiendo el ID enviado
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.CierreAuditoria(System.Int32)">
             <summary>
             Genera el cierre de auditoria de terminado
             </summary>
             <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT">
+            <summary>
+            Obtenemos todas las OT activas
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT_D(System.String)">
+            <summary>
+            Obtenemos el detalle de la OT
+            </summary>
+            <param name="OT"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.ObtieneSegundasDynamics(System.String)">

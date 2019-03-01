@@ -112,6 +112,7 @@
           <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
           <ScalarProperty Name="Compostura" ColumnName="Compostura" />
           <ScalarProperty Name="Revisado" ColumnName="Revisado" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
           <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
           <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
           <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
@@ -530,6 +531,27 @@
           <ScalarProperty Name="IdCortador" ColumnName="IdCortador" />
           <ScalarProperty Name="IdAuditoriaCorte" ColumnName="IdAuditoriaCorte" />
           <ScalarProperty Name="IdAuditoriaCorteDetalle" ColumnName="IdAuditoriaCorteDetalle" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VST_AUDITORIA_TERMINADO_DETALLE">
+      <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE">
+        <MappingFragment StoreEntitySet="VST_AUDITORIA_TERMINADO_DETALLE">
+          <ScalarProperty Name="Posicion" ColumnName="Posicion" />
+          <ScalarProperty Name="Origen" ColumnName="Origen" />
+          <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+          <ScalarProperty Name="Defecto" ColumnName="Defecto" />
+          <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
+          <ScalarProperty Name="Compostura" ColumnName="Compostura" />
+          <ScalarProperty Name="Revisado" ColumnName="Revisado" />
+          <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+          <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
+          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+          <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
+          <ScalarProperty Name="IdOrigen" ColumnName="IdOrigen" />
+          <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+          <ScalarProperty Name="IdAuditoriaTerminadoDetalle" ColumnName="IdAuditoriaTerminadoDetalle" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

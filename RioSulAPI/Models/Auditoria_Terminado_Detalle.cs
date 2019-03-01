@@ -20,11 +20,9 @@ namespace RioSulAPI.Models
         public int IdPosicion { get; set; }
         public int IdOperacion { get; set; }
         public int IdDefecto { get; set; }
+        public int Cantidad { get; set; }
         public bool Revisado { get; set; }
         public bool Compostura { get; set; }
         public string Aud_Imagen { get; set; }
-    
-        public virtual Auditoria Auditoria { get; set; }
-        public virtual C_Modulos C_Modulos { get; set; }
     }
 }

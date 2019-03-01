@@ -17,15 +17,12 @@ namespace RioSulAPI.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public C_Modulos()
         {
-            this.Auditoria_Terminado_Detalle = new HashSet<Auditoria_Terminado_Detalle>();
             this.C_SubModulos = new HashSet<C_SubModulos>();
         }
     
         public int IdModulo { get; set; }
         public string NombreModulo { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Auditoria_Terminado_Detalle> Auditoria_Terminado_Detalle { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<C_SubModulos> C_SubModulos { get; set; }
     }

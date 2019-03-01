@@ -102,6 +102,7 @@
     <Property Name="IdPosicion" Type="int" Nullable="false" />
     <Property Name="IdOperacion" Type="int" Nullable="false" />
     <Property Name="IdDefecto" Type="int" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
     <Property Name="Revisado" Type="bit" Nullable="false" />
     <Property Name="Compostura" Type="bit" Nullable="false" />
     <Property Name="Aud_Imagen" Type="varchar(max)" />
@@ -515,6 +516,41 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE
     <Property Name="Cantidad" Type="int" Nullable="false" />
   </EntityType>
   <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_TERMINADO_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="VST_AUDITORIA_TERMINADO_DETALLE">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="IdAuditoriaTerminadoDetalle" />
+      <PropertyRef Name="IdAuditoria" />
+      <PropertyRef Name="IdOrigen" />
+      <PropertyRef Name="IdOperacion" />
+      <PropertyRef Name="IdPosicion" />
+      <PropertyRef Name="IdDefecto" />
+      <PropertyRef Name="Cantidad" />
+      <PropertyRef Name="Revisado" />
+      <PropertyRef Name="Compostura" />
+      <PropertyRef Name="Defecto" />
+      <PropertyRef Name="Operacion" />
+      <PropertyRef Name="Origen" />
+      <PropertyRef Name="Posicion" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="IdAuditoriaTerminadoDetalle" Type="int" Nullable="false" />
+    <Property Name="IdAuditoria" Type="int" Nullable="false" />
+    <Property Name="IdOrigen" Type="int" Nullable="false" />
+    <Property Name="IdOperacion" Type="int" Nullable="false" />
+    <Property Name="IdPosicion" Type="int" Nullable="false" />
+    <Property Name="IdDefecto" Type="int" Nullable="false" />
+    <Property Name="Cantidad" Type="int" Nullable="false" />
+    <Property Name="Revisado" Type="bit" Nullable="false" />
+    <Property Name="Compostura" Type="bit" Nullable="false" />
+    <Property Name="Aud_Imagen" Type="varchar(max)" />
+    <Property Name="Defecto" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Operacion" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Posicion" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_CONFECCION' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="VST_CONFECCION">
     <Key>
@@ -890,30 +926,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
       </Principal>
       <Dependent Role="Auditoria_Tendido_Detalle">
         <PropertyRef Name="IdAuditoriaCorte" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Auditoria_Terminado_Detalle_Auditoria">
-    <End Role="Auditoria" Type="Self.Auditoria" Multiplicity="1" />
-    <End Role="Auditoria_Terminado_Detalle" Type="Self.Auditoria_Terminado_Detalle" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Auditoria">
-        <PropertyRef Name="IdAuditoria" />
-      </Principal>
-      <Dependent Role="Auditoria_Terminado_Detalle">
-        <PropertyRef Name="IdAuditoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Auditoria_Terminado_Detalle_C_Modulos">
-    <End Role="C_Modulos" Type="Self.C_Modulos" Multiplicity="1" />
-    <End Role="Auditoria_Terminado_Detalle" Type="Self.Auditoria_Terminado_Detalle" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="C_Modulos">
-        <PropertyRef Name="IdModulo" />
-      </Principal>
-      <Dependent Role="Auditoria_Terminado_Detalle">
-        <PropertyRef Name="IdOrigen" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1421,6 +1433,25 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA_CORTE_DETALLE].[Cantidad] AS [Cantidad]
     FROM [dbo].[VST_AUDITORIA_CORTE_DETALLE] AS [VST_AUDITORIA_CORTE_DETALLE]</DefiningQuery>
     </EntitySet>
+    <EntitySet Name="VST_AUDITORIA_TERMINADO_DETALLE" EntityType="Self.VST_AUDITORIA_TERMINADO_DETALLE" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[ID] AS [ID], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdAuditoriaTerminadoDetalle] AS [IdAuditoriaTerminadoDetalle], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdAuditoria] AS [IdAuditoria], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdOrigen] AS [IdOrigen], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdOperacion] AS [IdOperacion], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdPosicion] AS [IdPosicion], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[IdDefecto] AS [IdDefecto], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Cantidad] AS [Cantidad], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Revisado] AS [Revisado], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Compostura] AS [Compostura], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Aud_Imagen] AS [Aud_Imagen], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Defecto] AS [Defecto], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Operacion] AS [Operacion], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Origen] AS [Origen], 
+    [VST_AUDITORIA_TERMINADO_DETALLE].[Posicion] AS [Posicion]
+    FROM [dbo].[VST_AUDITORIA_TERMINADO_DETALLE] AS [VST_AUDITORIA_TERMINADO_DETALLE]</DefiningQuery>
+    </EntitySet>
     <EntitySet Name="VST_CONFECCION" EntityType="Self.VST_CONFECCION" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
     [VST_CONFECCION].[ID] AS [ID], 
@@ -1622,14 +1653,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     <AssociationSet Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte" Association="Self.FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
       <End Role="Auditoria" EntitySet="Auditoria" />
       <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Auditoria_Terminado_Detalle_Auditoria" Association="Self.FK_Auditoria_Terminado_Detalle_Auditoria">
-      <End Role="Auditoria" EntitySet="Auditoria" />
-      <End Role="Auditoria_Terminado_Detalle" EntitySet="Auditoria_Terminado_Detalle" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Auditoria_Terminado_Detalle_C_Modulos" Association="Self.FK_Auditoria_Terminado_Detalle_C_Modulos">
-      <End Role="C_Modulos" EntitySet="C_Modulos" />
-      <End Role="Auditoria_Terminado_Detalle" EntitySet="Auditoria_Terminado_Detalle" />
     </AssociationSet>
     <AssociationSet Name="FK_C_ClientesReferencia_C_Clientes" Association="Self.FK_C_ClientesReferencia_C_Clientes">
       <End Role="C_Clientes" EntitySet="C_Clientes" />

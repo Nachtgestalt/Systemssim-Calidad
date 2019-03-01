@@ -68,6 +68,7 @@ namespace RioSulAPI.Models
         public virtual DbSet<T_Sg_Bitacora> T_Sg_Bitacora { get; set; }
         public virtual DbSet<VST_AUDITORIA> VST_AUDITORIA { get; set; }
         public virtual DbSet<VST_AUDITORIA_CORTE_DETALLE> VST_AUDITORIA_CORTE_DETALLE { get; set; }
+        public virtual DbSet<VST_AUDITORIA_TERMINADO_DETALLE> VST_AUDITORIA_TERMINADO_DETALLE { get; set; }
         public virtual DbSet<VST_CONFECCION> VST_CONFECCION { get; set; }
         public virtual DbSet<VST_CORREOS_AUDITORIA> VST_CORREOS_AUDITORIA { get; set; }
         public virtual DbSet<VST_CORTADORES> VST_CORTADORES { get; set; }
