@@ -9,6 +9,7 @@ using System.Security.Policy;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using Microsoft.Ajax.Utilities;
 using RioSulAPI.Class;
 
 namespace RioSulAPI.Controllers
@@ -183,7 +184,17 @@ namespace RioSulAPI.Controllers
 				using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
 				{
 					_Conn.Open();
-					string Consulta = " SELECT WONbr FROM WOHeader where Status = 'P' ";
+					string Consulta = @"SELECT        distinct(WH.WONbr)
+                                    FROM ItemXRef AS IXR RIGHT OUTER JOIN
+                                    WOHeader AS WH INNER JOIN
+                                    SOHeader INNER JOIN
+                                    RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+                                    Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+                                    Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+                                    InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+                                    WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+                                    RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
+                                    WHERE WH.Status = 'A' and WH.ProcStage = 'O'; ";
 					API.OrdenTrabajo = new List<OT_GEN>();
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader sqlData = Command.ExecuteReader();
@@ -224,42 +235,39 @@ namespace RioSulAPI.Controllers
             
 			try
 			{
+                //DETALLE DE LA OT
 				using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
 				{
 					_Conn.Open();
-					string Consulta = @" SELECT
-								ISNULL(CM.Name, '') AS CLIENTE,
-								IV.Size AS LINEA,
-								IV.Color AS LAVADO,
-								WH.User5 AS PLANTA,
-								IADG.Style AS DIVISION,
-								ISNULL(WOB.InvtID, '') AS TELA,
-								IV.ClassID AS MARCA,
-								WH.CustID AS ESTILO,
-								WH.InvtID AS TELA_PROV,
-								WH.QtyOrig AS NUMERO_CORTADA,
-								IV.Descr AS MODELO,
-								IV.Descr AS DESCRIPCION,	                            
-								WH.User6 AS PO,
-								IV.User2 AS RUTA,
-								ISNULL(CM.CustId, 0) as CLIENT_ID
-								FROM WOHeader AS WH
-								LEFT JOIN Customer AS CM
-								ON WH.CustID = CM.CustId
-								LEFT JOIN Inventory AS IV
-								ON WH.InvtID = IV.InvtID
-								LEFT JOIN InventoryADG AS IADG
-								ON IV.InvtID = IADG.InvtID
-								LEFT JOIN WOBuildTo AS WOB
-								ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ'
-								LEFT JOIN RsTb_Plantas RSP
-								ON WH.User5 = RSP.Planta
-								LEFT JOIN ItemXRef IXR ON WH.InvtID = IXR.InvtID
-								LEFT JOIN rstb_seriesdtl AS RSD ON RSD.WoNbr = WH.WONbr
-								where WH.WONbr = '"+ OT +"'; ";
+					string Consulta = @" SELECT        
+                                    ISNULL(CM.Name, '') AS CLIENTE, 
+                                    IV.Size AS LINEA, 
+                                    IV.Color AS LAVADO, 
+                                    WH.User5 AS PLANTA,
+                                    IADG.Style AS DIVISION,
+                                    ISNULL(WOB.InvtID, '') AS TELA, 
+                                    IV.ClassID AS MARCA,
+                                    WH.CustID AS ESTILO,
+                                    WH.InvtID AS TELA_PROV,
+                                    WH.QtyOrig AS NUMERO_CORTADA,
+                                    IV.Descr AS MODELO,
+                                    IV.Descr AS DESCRIPCION, 
+                                    WH.User6 AS PO,
+                                    IV.User2 AS RUTA,
+                                    ISNULL(CM.CustId, 0) AS CLIENT_ID
+FROM            ItemXRef AS IXR RIGHT OUTER JOIN
+                         WOHeader AS WH INNER JOIN
+                         SOHeader INNER JOIN
+                         RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+                         Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+                         Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+                         InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+                         WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+                         RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
+						 WHERE WH.Status = 'A' and WH.ProcStage = 'O' and WH.WONbr = '"+ OT +"'; ";
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader reader = Command.ExecuteReader();
-                    while (reader.Read())
+                    if (reader.Read())
                     {
                         API.OT.Cliente = reader[0].ToString().Trim();
                         API.OT.Linea = reader[1].ToString().Trim();
@@ -275,11 +283,36 @@ namespace RioSulAPI.Controllers
                         API.OT.Descripcion = reader[11].ToString().Trim();
                         API.OT.PO = reader[12].ToString().Trim();
                         API.OT.Ruta = reader[13].ToString().Trim();
+                        API.OT.ID_Cliente = reader[14].ToString().Trim();
                     }
 					reader.Close();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
-			}
+                //OBTENEMOS EL ID REF DEL CLIENTE
+                using (Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities())
+                {
+                    Models.C_ClientesReferencia CliRef;
+                    Models.C_Clientes Cliente;
+                    CliRef = db.C_ClientesReferencia.Where(x => x.Cve_Cliente == API.OT.ID_Cliente).FirstOrDefault();
+
+                    if (CliRef == null)
+                    {
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                        API.Message2 = "Cliente inexistente en el catálogo";
+                        API.OT = null;
+                    }
+                    else
+                    {
+                        Cliente = db.C_Clientes.Where(x => x.IdClienteRef == CliRef.IdClienteRef).FirstOrDefault();
+                        API.OT.ID_Cliente = CliRef.IdClienteRef.ToString();
+                        API.OT.Cliente = Cliente.Descripcion;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Accepted);
+                    }
+
+                    
+                }
+
+            }
 			catch (Exception ex)
 			{
                 Utilerias.EscribirLog(ex.ToString());
@@ -354,11 +387,13 @@ namespace RioSulAPI.Controllers
 			public string Descripcion { get; set; }
 			public string PO { get; set; }
 			public string Ruta { get; set; }
+			public string ID_Cliente { get; set; }
 		}
 
 		public partial class RES_OT_DET
 		{
             public OT_DET OT { get; set; }
+            public string Message2 { get; set; }
             public HttpResponseMessage Message { get; set; }
 		}
 
