@@ -24,5 +24,6 @@ namespace RioSulAPI.Models
         public bool Revisado { get; set; }
         public bool Compostura { get; set; }
         public string Aud_Imagen { get; set; }
+        public string Nota { get; set; }
     }
 }

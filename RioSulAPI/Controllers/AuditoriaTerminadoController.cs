@@ -70,8 +70,10 @@ namespace RioSulAPI.Controllers
 								IdDefecto = item.IdDefecto,
 								Revisado = item.Revisado,
 								Compostura = item.Compostura,
-								Cantidad = item.cantidad
-							};
+								Cantidad = item.cantidad,
+                Aud_Imagen = item.Imagen,
+                Nota = item.Nota
+              };
 							db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
 						}
 						db.SaveChanges();
@@ -337,7 +339,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			public bool Revisado { get; set; }
 			public bool Compostura { get; set; }
 			public int cantidad { get; set; }
-		}
+      public string Imagen { get; set; }
+      public string Nota { get; set; }
+    }
 
 		public partial class REQ_NEW_AT
 		{

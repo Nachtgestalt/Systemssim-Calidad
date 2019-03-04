@@ -111,6 +111,7 @@
           <Property Name="Revisado" Type="bit" Nullable="false" />
           <Property Name="Compostura" Type="bit" Nullable="false" />
           <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Nota" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="C_Areas">
           <Key>
@@ -2153,6 +2154,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Revisado" Type="Boolean" Nullable="false" />
           <Property Name="Compostura" Type="Boolean" Nullable="false" />
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="C_Areas">
           <Key>
@@ -3506,6 +3508,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Terminado_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Terminado_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Terminado_Detalle">
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
                 <ScalarProperty Name="Compostura" ColumnName="Compostura" />
                 <ScalarProperty Name="Revisado" ColumnName="Revisado" />
