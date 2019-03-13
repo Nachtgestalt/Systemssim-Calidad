@@ -228,18 +228,32 @@ namespace RioSulAPI.Controllers
             try
             {
                 if (ModelState.IsValid){
-                    Models.C_Operacion_Terminado _operacion = new Models.C_Operacion_Terminado()
-                    {
-                        Activo = true,
-                        Clave = Operacion.Clave,
-                        Nombre = Operacion.Nombre.ToUpper()
-                    };
-                    db.C_Operacion_Terminado.Add(_operacion);
-                    db.SaveChanges();
 
-                    API.Hecho = true;
-                    API.Message2 = "Registro realizado con éxito";
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    Models.C_Operacion_Terminado prueba = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && (x.Clave == Operacion.Clave || x.Nombre == Operacion.Nombre)).FirstOrDefault();
+
+                    if (prueba == null)
+                    {
+                        Models.C_Operacion_Terminado _operacion = new Models.C_Operacion_Terminado()
+                        {
+                            Activo = true,
+                            Clave = Operacion.Clave,
+                            Nombre = Operacion.Nombre.ToUpper(),
+                            Tipo = "Terminado"
+                        };
+                        db.C_Operacion_Terminado.Add(_operacion);
+                        db.SaveChanges();
+
+                        API.Hecho = true;
+                        API.Message2 = "Registro realizado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Message2 = "Registro existente, favor de validar";
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+
                 }
                 else
                 {
@@ -252,18 +266,8 @@ namespace RioSulAPI.Controllers
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
-
-                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
-                {
-                    API.Message2 = "Registro existente, favor de validar";
-                    API.Hecho = false;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                }
-                else
-                {
-                    API.Hecho = false;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                }
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 
             }
             return API;
@@ -288,15 +292,26 @@ namespace RioSulAPI.Controllers
 
                     if (con != null)
                     {
-                        con.Nombre = Operacion.Nombre.ToUpper();
-                        con.Clave = Operacion.Clave;
+                        Models.C_Operacion_Terminado prueba = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && (x.Clave == Operacion.Clave || x.Nombre == Operacion.Nombre)).FirstOrDefault();
 
-                        db.Entry(con).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
+                        if (prueba == null)
+                        {
+                            con.Nombre = Operacion.Nombre.ToUpper();
+                            con.Clave = Operacion.Clave;
 
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                        API.Message2 = "Registro actualizado con éxito";
-                        API.Hecho = true;
+                            db.Entry(con).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                            API.Message2 = "Registro actualizado con éxito";
+                            API.Hecho = true;
+                        }
+                        else
+                        {
+                            API.Message2 = "Registro existente, favor de validar";
+                            API.Hecho = false;
+                            API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                        }                        
                     }
                 }
                 else
@@ -308,17 +323,8 @@ namespace RioSulAPI.Controllers
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
-                if (ex.ToString().Contains("Violation of UNIQUE KEY"))
-                {
-                    API.Message2 = "Favor de validar registros Requeridos, Imposible guardar";
-                    API.Hecho = false;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                }
-                else
-                {
-                    API.Hecho = false;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                }
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
         }
@@ -338,7 +344,7 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    API.COperacionTerminados = db.C_Operacion_Terminado.Where(x => x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    API.COperacionTerminados = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else

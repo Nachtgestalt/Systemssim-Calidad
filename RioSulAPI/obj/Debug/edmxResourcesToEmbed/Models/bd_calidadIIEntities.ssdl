@@ -24,6 +24,22 @@
     <Property Name="Terminado" Type="bit" />
     <Property Name="Lavanderia" Type="bit" />
     <Property Name="FechaRegistroFin" Type="datetime" />
+    <Property Name="Calidad" Type="bit" />
+  </EntityType>
+  <EntityType Name="Auditoria_Calidad_Detalle">
+    <Key>
+      <PropertyRef Name="IdAuditoria_Calidad_Detalle" />
+    </Key>
+    <Property Name="IdAuditoria_Calidad_Detalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdAuditoria" Type="int" Nullable="false" />
+    <Property Name="IdPosicion" Type="int" Nullable="false" />
+    <Property Name="IdOperacion" Type="int" Nullable="false" />
+    <Property Name="IdDefecto" Type="int" Nullable="false" />
+    <Property Name="Recup" Type="int" Nullable="false" />
+    <Property Name="Criterio" Type="int" Nullable="false" />
+    <Property Name="Fin" Type="int" Nullable="false" />
+    <Property Name="Aud_Imagen" Type="varchar(max)" />
+    <Property Name="Id_Origen" Type="int" />
   </EntityType>
   <EntityType Name="Auditoria_Confeccion_Detalle">
     <Key>
@@ -106,6 +122,7 @@
     <Property Name="Revisado" Type="bit" Nullable="false" />
     <Property Name="Compostura" Type="bit" Nullable="false" />
     <Property Name="Aud_Imagen" Type="varchar(max)" />
+    <Property Name="Nota" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="C_Areas">
     <Key>
@@ -247,7 +264,8 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="Activo" Type="bit" />
+    <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Activo" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="C_Origen_Terminado">
     <Key>
@@ -482,6 +500,37 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA' no tiene def
     <Property Name="Lavanderia" Type="bit" />
     <Property Name="FechaRegistroFin" Type="datetime" />
     <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+    <Property Name="Calidad" Type="bit" />
+  </EntityType>
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CALIDAD_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+  <EntityType Name="VST_AUDITORIA_CALIDAD_DETALLE">
+    <Key>
+      <PropertyRef Name="IdAuditoria" />
+      <PropertyRef Name="IdPosicion" />
+      <PropertyRef Name="IdOperacion" />
+      <PropertyRef Name="IdDefecto" />
+      <PropertyRef Name="Recup" />
+      <PropertyRef Name="Fin" />
+      <PropertyRef Name="Criterio" />
+      <PropertyRef Name="Origen" />
+      <PropertyRef Name="Operacion" />
+      <PropertyRef Name="Posicion" />
+      <PropertyRef Name="Defecto" />
+    </Key>
+    <Property Name="IdAuditoria" Type="int" Nullable="false" />
+    <Property Name="IdPosicion" Type="int" Nullable="false" />
+    <Property Name="IdOperacion" Type="int" Nullable="false" />
+    <Property Name="IdDefecto" Type="int" Nullable="false" />
+    <Property Name="Recup" Type="int" Nullable="false" />
+    <Property Name="Fin" Type="int" Nullable="false" />
+    <Property Name="Criterio" Type="int" Nullable="false" />
+    <Property Name="Id_Origen" Type="int" />
+    <Property Name="Aud_Imagen" Type="varchar(max)" />
+    <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Operacion" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Posicion" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Defecto" Type="varchar" MaxLength="150" Nullable="false" />
   </EntityType>
   <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1346,6 +1395,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
   <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="bd_calidadIIModelStoreContainer">
     <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Auditoria_Calidad_Detalle" EntityType="Self.Auditoria_Calidad_Detalle" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Auditoria_Confeccion_Detalle" EntityType="Self.Auditoria_Confeccion_Detalle" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Auditoria_Corte_Detalle" EntityType="Self.Auditoria_Corte_Detalle" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Auditoria_Lavanderia_Detalle" EntityType="Self.Auditoria_Lavanderia_Detalle" Schema="dbo" store:Type="Tables" />
@@ -1413,8 +1463,26 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA].[Terminado] AS [Terminado], 
     [VST_AUDITORIA].[Lavanderia] AS [Lavanderia], 
     [VST_AUDITORIA].[FechaRegistroFin] AS [FechaRegistroFin], 
-    [VST_AUDITORIA].[FechaRegistro] AS [FechaRegistro]
+    [VST_AUDITORIA].[FechaRegistro] AS [FechaRegistro], 
+    [VST_AUDITORIA].[Calidad] AS [Calidad]
     FROM [dbo].[VST_AUDITORIA] AS [VST_AUDITORIA]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VST_AUDITORIA_CALIDAD_DETALLE" EntityType="Self.VST_AUDITORIA_CALIDAD_DETALLE" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdAuditoria] AS [IdAuditoria], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdPosicion] AS [IdPosicion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdOperacion] AS [IdOperacion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdDefecto] AS [IdDefecto], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Recup] AS [Recup], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Fin] AS [Fin], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Criterio] AS [Criterio], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Id_Origen] AS [Id_Origen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Aud_Imagen] AS [Aud_Imagen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Origen] AS [Origen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Operacion] AS [Operacion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Posicion] AS [Posicion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Defecto] AS [Defecto]
+    FROM [dbo].[VST_AUDITORIA_CALIDAD_DETALLE] AS [VST_AUDITORIA_CALIDAD_DETALLE]</DefiningQuery>
     </EntitySet>
     <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="Self.VST_AUDITORIA_CORTE_DETALLE" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 

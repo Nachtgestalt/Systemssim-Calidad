@@ -29,6 +29,22 @@
           <Property Name="Terminado" Type="bit" />
           <Property Name="Lavanderia" Type="bit" />
           <Property Name="FechaRegistroFin" Type="datetime" />
+          <Property Name="Calidad" Type="bit" />
+        </EntityType>
+        <EntityType Name="Auditoria_Calidad_Detalle">
+          <Key>
+            <PropertyRef Name="IdAuditoria_Calidad_Detalle" />
+          </Key>
+          <Property Name="IdAuditoria_Calidad_Detalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAuditoria" Type="int" Nullable="false" />
+          <Property Name="IdPosicion" Type="int" Nullable="false" />
+          <Property Name="IdOperacion" Type="int" Nullable="false" />
+          <Property Name="IdDefecto" Type="int" Nullable="false" />
+          <Property Name="Recup" Type="int" Nullable="false" />
+          <Property Name="Criterio" Type="int" Nullable="false" />
+          <Property Name="Fin" Type="int" Nullable="false" />
+          <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Id_Origen" Type="int" />
         </EntityType>
         <EntityType Name="Auditoria_Confeccion_Detalle">
           <Key>
@@ -253,7 +269,8 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Activo" Type="bit" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Activo" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="C_Origen_Terminado">
           <Key>
@@ -488,6 +505,37 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA' no tiene def
           <Property Name="Lavanderia" Type="bit" />
           <Property Name="FechaRegistroFin" Type="datetime" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="Calidad" Type="bit" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CALIDAD_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VST_AUDITORIA_CALIDAD_DETALLE">
+          <Key>
+            <PropertyRef Name="IdAuditoria" />
+            <PropertyRef Name="IdPosicion" />
+            <PropertyRef Name="IdOperacion" />
+            <PropertyRef Name="IdDefecto" />
+            <PropertyRef Name="Recup" />
+            <PropertyRef Name="Fin" />
+            <PropertyRef Name="Criterio" />
+            <PropertyRef Name="Origen" />
+            <PropertyRef Name="Operacion" />
+            <PropertyRef Name="Posicion" />
+            <PropertyRef Name="Defecto" />
+          </Key>
+          <Property Name="IdAuditoria" Type="int" Nullable="false" />
+          <Property Name="IdPosicion" Type="int" Nullable="false" />
+          <Property Name="IdOperacion" Type="int" Nullable="false" />
+          <Property Name="IdDefecto" Type="int" Nullable="false" />
+          <Property Name="Recup" Type="int" Nullable="false" />
+          <Property Name="Fin" Type="int" Nullable="false" />
+          <Property Name="Criterio" Type="int" Nullable="false" />
+          <Property Name="Id_Origen" Type="int" />
+          <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Operacion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Posicion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Defecto" Type="varchar" MaxLength="150" Nullable="false" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1352,6 +1400,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="bd_calidadIIModelStoreContainer">
           <EntitySet Name="Auditoria" EntityType="Self.Auditoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Auditoria_Calidad_Detalle" EntityType="Self.Auditoria_Calidad_Detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Auditoria_Confeccion_Detalle" EntityType="Self.Auditoria_Confeccion_Detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Auditoria_Corte_Detalle" EntityType="Self.Auditoria_Corte_Detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Auditoria_Lavanderia_Detalle" EntityType="Self.Auditoria_Lavanderia_Detalle" Schema="dbo" store:Type="Tables" />
@@ -1419,8 +1468,26 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA].[Terminado] AS [Terminado], 
     [VST_AUDITORIA].[Lavanderia] AS [Lavanderia], 
     [VST_AUDITORIA].[FechaRegistroFin] AS [FechaRegistroFin], 
-    [VST_AUDITORIA].[FechaRegistro] AS [FechaRegistro]
+    [VST_AUDITORIA].[FechaRegistro] AS [FechaRegistro], 
+    [VST_AUDITORIA].[Calidad] AS [Calidad]
     FROM [dbo].[VST_AUDITORIA] AS [VST_AUDITORIA]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VST_AUDITORIA_CALIDAD_DETALLE" EntityType="Self.VST_AUDITORIA_CALIDAD_DETALLE" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdAuditoria] AS [IdAuditoria], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdPosicion] AS [IdPosicion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdOperacion] AS [IdOperacion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[IdDefecto] AS [IdDefecto], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Recup] AS [Recup], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Fin] AS [Fin], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Criterio] AS [Criterio], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Id_Origen] AS [Id_Origen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Aud_Imagen] AS [Aud_Imagen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Origen] AS [Origen], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Operacion] AS [Operacion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Posicion] AS [Posicion], 
+    [VST_AUDITORIA_CALIDAD_DETALLE].[Defecto] AS [Defecto]
+    FROM [dbo].[VST_AUDITORIA_CALIDAD_DETALLE] AS [VST_AUDITORIA_CALIDAD_DETALLE]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="Self.VST_AUDITORIA_CORTE_DETALLE" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1825,6 +1892,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="Auditorias" EntityType="bd_calidadIIModel.Auditoria" />
+          <EntitySet Name="Auditoria_Calidad_Detalle" EntityType="bd_calidadIIModel.Auditoria_Calidad_Detalle" />
           <EntitySet Name="Auditoria_Confeccion_Detalle" EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" />
           <EntitySet Name="Auditoria_Corte_Detalle" EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" />
           <EntitySet Name="Auditoria_Lavanderia_Detalle" EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" />
@@ -1864,6 +1932,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySet Name="T_Sg_UsuariosOperaciones" EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" />
           <EntitySet Name="T_Sg_Bitacora" EntityType="bd_calidadIIModel.T_Sg_Bitacora" />
           <EntitySet Name="VST_AUDITORIA" EntityType="bd_calidadIIModel.VST_AUDITORIA" />
+          <EntitySet Name="VST_AUDITORIA_CALIDAD_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE" />
           <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" />
           <EntitySet Name="VST_AUDITORIA_TERMINADO_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE" />
           <EntitySet Name="VST_CONFECCION" EntityType="bd_calidadIIModel.VST_CONFECCION" />
@@ -2060,6 +2129,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Terminado" Type="Boolean" />
           <Property Name="Lavanderia" Type="Boolean" />
           <Property Name="FechaRegistroFin" Type="DateTime" Precision="3" />
+          <Property Name="Calidad" Type="Boolean" />
           <NavigationProperty Name="Auditoria_Confeccion_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Confeccion_Detalle" />
           <NavigationProperty Name="C_Clientes" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" FromRole="Auditoria" ToRole="C_Clientes" />
           <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" FromRole="Auditoria" ToRole="C_Sg_Usuarios" />
@@ -2067,6 +2137,21 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <NavigationProperty Name="Auditoria_Lavanderia_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Lavanderia_Detalle" />
           <NavigationProperty Name="Auditoria_Proc_Esp_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Proc_Esp_Detalle" />
           <NavigationProperty Name="Auditoria_Tendido_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Tendido_Detalle" />
+        </EntityType>
+        <EntityType Name="Auditoria_Calidad_Detalle">
+          <Key>
+            <PropertyRef Name="IdAuditoria_Calidad_Detalle" />
+          </Key>
+          <Property Name="IdAuditoria_Calidad_Detalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAuditoria" Type="Int32" Nullable="false" />
+          <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+          <Property Name="IdOperacion" Type="Int32" Nullable="false" />
+          <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+          <Property Name="Recup" Type="Int32" Nullable="false" />
+          <Property Name="Criterio" Type="Int32" Nullable="false" />
+          <Property Name="Fin" Type="Int32" Nullable="false" />
+          <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Id_Origen" Type="Int32" />
         </EntityType>
         <EntityType Name="Auditoria_Confeccion_Detalle">
           <Key>
@@ -2320,7 +2405,8 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Activo" Type="Boolean" />
+          <Property Name="Tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Activo" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="C_Origen_Terminado">
           <Key>
@@ -2593,6 +2679,35 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Lavanderia" Type="Boolean" />
           <Property Name="FechaRegistroFin" Type="DateTime" Precision="3" />
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Calidad" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="VST_AUDITORIA_CALIDAD_DETALLE">
+          <Key>
+            <PropertyRef Name="IdAuditoria" />
+            <PropertyRef Name="IdPosicion" />
+            <PropertyRef Name="IdOperacion" />
+            <PropertyRef Name="IdDefecto" />
+            <PropertyRef Name="Recup" />
+            <PropertyRef Name="Fin" />
+            <PropertyRef Name="Criterio" />
+            <PropertyRef Name="Origen" />
+            <PropertyRef Name="Operacion" />
+            <PropertyRef Name="Posicion" />
+            <PropertyRef Name="Defecto" />
+          </Key>
+          <Property Name="IdAuditoria" Type="Int32" Nullable="false" />
+          <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+          <Property Name="IdOperacion" Type="Int32" Nullable="false" />
+          <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+          <Property Name="Recup" Type="Int32" Nullable="false" />
+          <Property Name="Fin" Type="Int32" Nullable="false" />
+          <Property Name="Criterio" Type="Int32" Nullable="false" />
+          <Property Name="Id_Origen" Type="Int32" />
+          <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Origen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Operacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Posicion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Defecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VST_AUDITORIA_CORTE_DETALLE">
           <Key>
@@ -3410,6 +3525,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditorias">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria">
               <MappingFragment StoreEntitySet="Auditoria">
+                <ScalarProperty Name="Calidad" ColumnName="Calidad" />
                 <ScalarProperty Name="FechaRegistroFin" ColumnName="FechaRegistroFin" />
                 <ScalarProperty Name="Lavanderia" ColumnName="Lavanderia" />
                 <ScalarProperty Name="Terminado" ColumnName="Terminado" />
@@ -3430,6 +3546,22 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="OrdenTrabajo" ColumnName="OrdenTrabajo" />
                 <ScalarProperty Name="IdClienteRef" ColumnName="IdClienteRef" />
                 <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Auditoria_Calidad_Detalle">
+            <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Calidad_Detalle">
+              <MappingFragment StoreEntitySet="Auditoria_Calidad_Detalle">
+                <ScalarProperty Name="Id_Origen" ColumnName="Id_Origen" />
+                <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+                <ScalarProperty Name="Recup" ColumnName="Recup" />
+                <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
+                <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
+                <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+                <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+                <ScalarProperty Name="IdAuditoria_Calidad_Detalle" ColumnName="IdAuditoria_Calidad_Detalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3671,6 +3803,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             <EntityTypeMapping TypeName="bd_calidadIIModel.C_Operacion_Terminado">
               <MappingFragment StoreEntitySet="C_Operacion_Terminado">
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -3891,6 +4024,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="VST_AUDITORIA">
             <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA">
               <MappingFragment StoreEntitySet="VST_AUDITORIA">
+                <ScalarProperty Name="Calidad" ColumnName="Calidad" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
                 <ScalarProperty Name="FechaRegistroFin" ColumnName="FechaRegistroFin" />
                 <ScalarProperty Name="Lavanderia" ColumnName="Lavanderia" />
@@ -3911,6 +4045,25 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="PO" ColumnName="PO" />
                 <ScalarProperty Name="OrdenTrabajo" ColumnName="OrdenTrabajo" />
                 <ScalarProperty Name="IdClienteRef" ColumnName="IdClienteRef" />
+                <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VST_AUDITORIA_CALIDAD_DETALLE">
+            <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE">
+              <MappingFragment StoreEntitySet="VST_AUDITORIA_CALIDAD_DETALLE">
+                <ScalarProperty Name="Defecto" ColumnName="Defecto" />
+                <ScalarProperty Name="Posicion" ColumnName="Posicion" />
+                <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
+                <ScalarProperty Name="Id_Origen" ColumnName="Id_Origen" />
+                <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+                <ScalarProperty Name="Fin" ColumnName="Fin" />
+                <ScalarProperty Name="Recup" ColumnName="Recup" />
+                <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
+                <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
+                <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
                 <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
               </MappingFragment>
             </EntityTypeMapping>

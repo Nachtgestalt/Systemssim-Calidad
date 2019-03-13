@@ -32,6 +32,7 @@
     </FunctionImport>
     <FunctionImport Name="sp_upgraddiagrams" />
     <EntitySet Name="Auditorias" EntityType="bd_calidadIIModel.Auditoria" />
+    <EntitySet Name="Auditoria_Calidad_Detalle" EntityType="bd_calidadIIModel.Auditoria_Calidad_Detalle" />
     <EntitySet Name="Auditoria_Confeccion_Detalle" EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" />
     <EntitySet Name="Auditoria_Corte_Detalle" EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" />
     <EntitySet Name="Auditoria_Lavanderia_Detalle" EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" />
@@ -71,6 +72,7 @@
     <EntitySet Name="T_Sg_UsuariosOperaciones" EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" />
     <EntitySet Name="T_Sg_Bitacora" EntityType="bd_calidadIIModel.T_Sg_Bitacora" />
     <EntitySet Name="VST_AUDITORIA" EntityType="bd_calidadIIModel.VST_AUDITORIA" />
+    <EntitySet Name="VST_AUDITORIA_CALIDAD_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE" />
     <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" />
     <EntitySet Name="VST_AUDITORIA_TERMINADO_DETALLE" EntityType="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE" />
     <EntitySet Name="VST_CONFECCION" EntityType="bd_calidadIIModel.VST_CONFECCION" />
@@ -267,6 +269,7 @@
     <Property Name="Terminado" Type="Boolean" />
     <Property Name="Lavanderia" Type="Boolean" />
     <Property Name="FechaRegistroFin" Type="DateTime" Precision="3" />
+    <Property Name="Calidad" Type="Boolean" />
     <NavigationProperty Name="Auditoria_Confeccion_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Confeccion_Detalle" />
     <NavigationProperty Name="C_Clientes" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" FromRole="Auditoria" ToRole="C_Clientes" />
     <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" FromRole="Auditoria" ToRole="C_Sg_Usuarios" />
@@ -274,6 +277,21 @@
     <NavigationProperty Name="Auditoria_Lavanderia_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Lavanderia_Detalle" />
     <NavigationProperty Name="Auditoria_Proc_Esp_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Proc_Esp_Detalle" />
     <NavigationProperty Name="Auditoria_Tendido_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Tendido_Detalle" />
+  </EntityType>
+  <EntityType Name="Auditoria_Calidad_Detalle">
+    <Key>
+      <PropertyRef Name="IdAuditoria_Calidad_Detalle" />
+    </Key>
+    <Property Name="IdAuditoria_Calidad_Detalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdAuditoria" Type="Int32" Nullable="false" />
+    <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+    <Property Name="IdOperacion" Type="Int32" Nullable="false" />
+    <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+    <Property Name="Recup" Type="Int32" Nullable="false" />
+    <Property Name="Criterio" Type="Int32" Nullable="false" />
+    <Property Name="Fin" Type="Int32" Nullable="false" />
+    <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Id_Origen" Type="Int32" />
   </EntityType>
   <EntityType Name="Auditoria_Confeccion_Detalle">
     <Key>
@@ -361,6 +379,7 @@
     <Property Name="Revisado" Type="Boolean" Nullable="false" />
     <Property Name="Compostura" Type="Boolean" Nullable="false" />
     <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="C_Areas">
     <Key>
@@ -526,7 +545,8 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
     <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="Activo" Type="Boolean" />
+    <Property Name="Tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Activo" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="C_Origen_Terminado">
     <Key>
@@ -799,6 +819,35 @@
     <Property Name="Lavanderia" Type="Boolean" />
     <Property Name="FechaRegistroFin" Type="DateTime" Precision="3" />
     <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Calidad" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="VST_AUDITORIA_CALIDAD_DETALLE">
+    <Key>
+      <PropertyRef Name="IdAuditoria" />
+      <PropertyRef Name="IdPosicion" />
+      <PropertyRef Name="IdOperacion" />
+      <PropertyRef Name="IdDefecto" />
+      <PropertyRef Name="Recup" />
+      <PropertyRef Name="Fin" />
+      <PropertyRef Name="Criterio" />
+      <PropertyRef Name="Origen" />
+      <PropertyRef Name="Operacion" />
+      <PropertyRef Name="Posicion" />
+      <PropertyRef Name="Defecto" />
+    </Key>
+    <Property Name="IdAuditoria" Type="Int32" Nullable="false" />
+    <Property Name="IdPosicion" Type="Int32" Nullable="false" />
+    <Property Name="IdOperacion" Type="Int32" Nullable="false" />
+    <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+    <Property Name="Recup" Type="Int32" Nullable="false" />
+    <Property Name="Fin" Type="Int32" Nullable="false" />
+    <Property Name="Criterio" Type="Int32" Nullable="false" />
+    <Property Name="Id_Origen" Type="Int32" />
+    <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Origen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Operacion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Posicion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Defecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="VST_AUDITORIA_CORTE_DETALLE">
     <Key>

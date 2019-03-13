@@ -481,6 +481,26 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.NuevaAuditoriaCalidad(RioSulAPI.Controllers.AuditoriaCalidadController.REQ_NEW_AT)">
+            <summary>
+            Registra una nueva auditoría de Calidad
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.ObtieneAuditoriaTerminado">
+            <summary>
+            Obtiene auditoría de Lavandería
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.ObtieneAuditoriaDet(System.Int32)">
+            <summary>
+            Obtenemos el detalle de la auditoria dependiendo el ID enviado
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
             <summary>
             Registra nueva auditoria confección

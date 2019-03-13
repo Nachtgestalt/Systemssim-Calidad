@@ -11,6 +11,7 @@
     <EntitySetMapping Name="Auditorias">
       <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria">
         <MappingFragment StoreEntitySet="Auditoria">
+          <ScalarProperty Name="Calidad" ColumnName="Calidad" />
           <ScalarProperty Name="FechaRegistroFin" ColumnName="FechaRegistroFin" />
           <ScalarProperty Name="Lavanderia" ColumnName="Lavanderia" />
           <ScalarProperty Name="Terminado" ColumnName="Terminado" />
@@ -31,6 +32,22 @@
           <ScalarProperty Name="OrdenTrabajo" ColumnName="OrdenTrabajo" />
           <ScalarProperty Name="IdClienteRef" ColumnName="IdClienteRef" />
           <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Auditoria_Calidad_Detalle">
+      <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Calidad_Detalle">
+        <MappingFragment StoreEntitySet="Auditoria_Calidad_Detalle">
+          <ScalarProperty Name="Id_Origen" ColumnName="Id_Origen" />
+          <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
+          <ScalarProperty Name="Fin" ColumnName="Fin" />
+          <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+          <ScalarProperty Name="Recup" ColumnName="Recup" />
+          <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
+          <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
+          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+          <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+          <ScalarProperty Name="IdAuditoria_Calidad_Detalle" ColumnName="IdAuditoria_Calidad_Detalle" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -109,6 +126,7 @@
     <EntitySetMapping Name="Auditoria_Terminado_Detalle">
       <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Terminado_Detalle">
         <MappingFragment StoreEntitySet="Auditoria_Terminado_Detalle">
+          <ScalarProperty Name="Nota" ColumnName="Nota" />
           <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
           <ScalarProperty Name="Compostura" ColumnName="Compostura" />
           <ScalarProperty Name="Revisado" ColumnName="Revisado" />
@@ -271,6 +289,7 @@
       <EntityTypeMapping TypeName="bd_calidadIIModel.C_Operacion_Terminado">
         <MappingFragment StoreEntitySet="C_Operacion_Terminado">
           <ScalarProperty Name="Activo" ColumnName="Activo" />
+          <ScalarProperty Name="Tipo" ColumnName="Tipo" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="Clave" ColumnName="Clave" />
           <ScalarProperty Name="ID" ColumnName="ID" />
@@ -491,6 +510,7 @@
     <EntitySetMapping Name="VST_AUDITORIA">
       <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA">
         <MappingFragment StoreEntitySet="VST_AUDITORIA">
+          <ScalarProperty Name="Calidad" ColumnName="Calidad" />
           <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
           <ScalarProperty Name="FechaRegistroFin" ColumnName="FechaRegistroFin" />
           <ScalarProperty Name="Lavanderia" ColumnName="Lavanderia" />
@@ -511,6 +531,25 @@
           <ScalarProperty Name="PO" ColumnName="PO" />
           <ScalarProperty Name="OrdenTrabajo" ColumnName="OrdenTrabajo" />
           <ScalarProperty Name="IdClienteRef" ColumnName="IdClienteRef" />
+          <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VST_AUDITORIA_CALIDAD_DETALLE">
+      <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE">
+        <MappingFragment StoreEntitySet="VST_AUDITORIA_CALIDAD_DETALLE">
+          <ScalarProperty Name="Defecto" ColumnName="Defecto" />
+          <ScalarProperty Name="Posicion" ColumnName="Posicion" />
+          <ScalarProperty Name="Operacion" ColumnName="Operacion" />
+          <ScalarProperty Name="Origen" ColumnName="Origen" />
+          <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
+          <ScalarProperty Name="Id_Origen" ColumnName="Id_Origen" />
+          <ScalarProperty Name="Criterio" ColumnName="Criterio" />
+          <ScalarProperty Name="Fin" ColumnName="Fin" />
+          <ScalarProperty Name="Recup" ColumnName="Recup" />
+          <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
+          <ScalarProperty Name="IdOperacion" ColumnName="IdOperacion" />
+          <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
           <ScalarProperty Name="IdAuditoria" ColumnName="IdAuditoria" />
         </MappingFragment>
       </EntityTypeMapping>

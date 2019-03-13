@@ -28,6 +28,7 @@ namespace RioSulAPI.Models
         }
     
         public virtual DbSet<Auditoria> Auditorias { get; set; }
+        public virtual DbSet<Auditoria_Calidad_Detalle> Auditoria_Calidad_Detalle { get; set; }
         public virtual DbSet<Auditoria_Confeccion_Detalle> Auditoria_Confeccion_Detalle { get; set; }
         public virtual DbSet<Auditoria_Corte_Detalle> Auditoria_Corte_Detalle { get; set; }
         public virtual DbSet<Auditoria_Lavanderia_Detalle> Auditoria_Lavanderia_Detalle { get; set; }
@@ -67,6 +68,7 @@ namespace RioSulAPI.Models
         public virtual DbSet<T_Sg_UsuariosOperaciones> T_Sg_UsuariosOperaciones { get; set; }
         public virtual DbSet<T_Sg_Bitacora> T_Sg_Bitacora { get; set; }
         public virtual DbSet<VST_AUDITORIA> VST_AUDITORIA { get; set; }
+        public virtual DbSet<VST_AUDITORIA_CALIDAD_DETALLE> VST_AUDITORIA_CALIDAD_DETALLE { get; set; }
         public virtual DbSet<VST_AUDITORIA_CORTE_DETALLE> VST_AUDITORIA_CORTE_DETALLE { get; set; }
         public virtual DbSet<VST_AUDITORIA_TERMINADO_DETALLE> VST_AUDITORIA_TERMINADO_DETALLE { get; set; }
         public virtual DbSet<VST_CONFECCION> VST_CONFECCION { get; set; }

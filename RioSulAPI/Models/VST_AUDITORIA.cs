@@ -35,5 +35,6 @@ namespace RioSulAPI.Models
         public Nullable<bool> Lavanderia { get; set; }
         public Nullable<System.DateTime> FechaRegistroFin { get; set; }
         public System.DateTime FechaRegistro { get; set; }
+        public Nullable<bool> Calidad { get; set; }
     }
 }

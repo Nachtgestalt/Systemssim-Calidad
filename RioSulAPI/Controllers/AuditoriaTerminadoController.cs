@@ -71,8 +71,8 @@ namespace RioSulAPI.Controllers
 								Revisado = item.Revisado,
 								Compostura = item.Compostura,
 								Cantidad = item.cantidad,
-                Aud_Imagen = item.Imagen,
-                Nota = item.Nota
+                                Aud_Imagen = item.Imagen,
+                                Nota = item.Nota
               };
 							db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
 						}

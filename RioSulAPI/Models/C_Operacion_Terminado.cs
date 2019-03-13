@@ -17,6 +17,7 @@ namespace RioSulAPI.Models
         public int ID { get; set; }
         public string Clave { get; set; }
         public string Nombre { get; set; }
-        public Nullable<bool> Activo { get; set; }
+        public string Tipo { get; set; }
+        public bool Activo { get; set; }
     }
 }
