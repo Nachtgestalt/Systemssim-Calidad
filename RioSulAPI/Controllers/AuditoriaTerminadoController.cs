@@ -196,7 +196,7 @@ namespace RioSulAPI.Controllers
                                     InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
                                     WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
                                     RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
-                                    WHERE WH.Status = 'A' and WH.ProcStage = 'O'; ";
+                                    WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";
 					API.OrdenTrabajo = new List<OT_GEN>();
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader sqlData = Command.ExecuteReader();
@@ -266,7 +266,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
                          InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
                          WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
                          RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
-						 WHERE WH.Status = 'A' and WH.ProcStage = 'O' and WH.WONbr = '"+ OT +"'; ";
+                        WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R') and WH.WONbr = '" + OT +"'; ";
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader reader = Command.ExecuteReader();
                     if (reader.Read())

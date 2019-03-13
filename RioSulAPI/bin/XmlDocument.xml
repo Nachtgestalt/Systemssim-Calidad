@@ -501,6 +501,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.CierreAuditoria(System.Int32)">
+            <summary>
+            Genera el cierre de auditoria de terminado
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
             <summary>
             Registra nueva auditoria confección

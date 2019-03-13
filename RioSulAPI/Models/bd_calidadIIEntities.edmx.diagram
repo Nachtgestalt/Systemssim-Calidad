@@ -5,63 +5,63 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0c9bb5f06c8a451b81edab477fdc517e" Name="Diagram1" ZoomLevel="94">
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria" Width="1.5" PointX="3" PointY="17.625" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Calidad_Detalle" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" Width="1.5" PointX="5.25" PointY="34.5" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" Width="1.5" PointX="5.25" PointY="15.625" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" Width="1.5" PointX="5.25" PointY="12.25" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Proc_Esp_Detalle" Width="1.5" PointX="5.25" PointY="37.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Tendido_Detalle" Width="1.5" PointX="5.25" PointY="7.5" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Terminado_Detalle" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Areas" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Clientes" Width="1.5" PointX="0.75" PointY="19.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_ClientesReferencia" Width="1.5" PointX="3" PointY="12.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Conf_Confeccion" Width="1.5" PointX="6" PointY="29.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria" Width="1.5" PointX="3" PointY="29.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Calidad_Detalle" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Confeccion_Detalle" Width="1.5" PointX="5.25" PointY="36.25" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Corte_Detalle" Width="1.5" PointX="5.25" PointY="50.25" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Lavanderia_Detalle" Width="1.5" PointX="5.25" PointY="43.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Proc_Esp_Detalle" Width="1.5" PointX="5.25" PointY="47" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Tendido_Detalle" Width="1.5" PointX="5.25" PointY="39.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.Auditoria_Terminado_Detalle" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Areas" Width="1.5" PointX="3.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Clientes" Width="1.5" PointX="0.75" PointY="31.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_ClientesReferencia" Width="1.5" PointX="3" PointY="36.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Conf_Confeccion" Width="1.5" PointX="9" PointY="24.875" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_CorreosElectronicos" Width="1.5" PointX="3" PointY="69.5" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Cortadores" Width="1.5" PointX="6" PointY="20" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Cort_Tendido" Width="1.5" PointX="5.75" PointY="4.75" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Lavanderia" Width="1.5" PointX="6" PointY="25" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Modulos" Width="1.5" PointX="1.5" PointY="4" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Confeccion" Width="1.5" PointX="8.25" PointY="33.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Modulos" Width="1.5" PointX="1.5" PointY="13" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Confeccion" Width="1.5" PointX="11.25" PointY="28.625" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Lavanderia" Width="1.5" PointX="8.25" PointY="29.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_ProcesosEspeciales" Width="1.5" PointX="5.25" PointY="41.5" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Terminado" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_ProcesosEspeciales" Width="1.5" PointX="5.25" PointY="16.5" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Operacion_Terminado" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Origen_Terminado" Width="1.5" PointX="7.75" PointY="3.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Areas" Width="1.5" PointX="11.25" PointY="30.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Dynamic" Width="1.5" PointX="9" PointY="36.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Areas" Width="1.5" PointX="11.25" PointY="25.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Plantas_Dynamic" Width="1.5" PointX="9" PointY="32.875" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Cortador" Width="1.5" PointX="8.25" PointY="20.875" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Lavanderia" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_ProcesosEsp" Width="1.5" PointX="5.25" PointY="44.25" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Terminado" Width="1.5" PointX="7.75" PointY="6.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_ProcesosEsp" Width="1.5" PointX="5.25" PointY="33.25" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Posicion_Terminado" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Procesos_Especiales" Width="1.5" PointX="3" PointY="24.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Segundas" Width="1.5" PointX="9.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Operaciones" Width="1.5" PointX="1.5" PointY="38.625" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_PantallasOperaciones" Width="1.5" PointX="0.75" PointY="31.625" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Segundas" Width="1.5" PointX="8.75" PointY="6.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Operaciones" Width="1.5" PointX="1.5" PointY="6.25" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_PantallasOperaciones" Width="1.5" PointX="3.75" PointY="7.625" />
         <EntityTypeShape EntityType="bd_calidadIIModel.C_Sg_Usuarios" Width="1.5" PointX="0.75" PointY="24.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_SubModulos" Width="1.5" PointX="3.75" PointY="3.5" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Terminado" Width="1.5" PointX="9" PointY="25.125" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.C_Tolerancia_Corte" Width="1.5" PointX="9.75" PointY="5.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.sysdiagram" Width="1.5" PointX="7.75" PointY="9.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Pantallas" Width="1.5" PointX="1.5" PointY="35.25" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" Width="1.5" PointX="3" PointY="29.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Bitacora" Width="1.5" PointX="3" PointY="41.875" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA" Width="1.5" PointX="9.75" PointY="8.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE" Width="1.5" PointX="11.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" Width="1.5" PointX="11.75" PointY="5.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE" Width="1.5" PointX="11.75" PointY="10.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CONFECCION" Width="1.5" PointX="13.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORREOS_AUDITORIA" Width="1.5" PointX="13.75" PointY="5.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORTADORES" Width="1.5" PointX="13.75" PointY="9.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_LAVANDERIA" Width="1.5" PointX="7.75" PointY="14.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_OPERACION_CONFECCION" Width="1.5" PointX="13.75" PointY="14.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS" Width="1.5" PointX="15.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS_OPERACIONES" Width="1.5" PointX="15.75" PointY="5.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PLANTAS_AREAS" Width="1.5" PointX="15.75" PointY="9.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_CORTADOR" Width="1.5" PointX="9.75" PointY="15.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_LAVANDERIA" Width="1.5" PointX="15.75" PointY="13.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_PROCESOS_ESPECIALES" Width="1.5" PointX="15.75" PointY="16.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PROCESOS_ESPECIALES" Width="1.5" PointX="17.75" PointY="0.75" />
-        <EntityTypeShape EntityType="bd_calidadIIModel.VST_TERMINADO" Width="1.5" PointX="17.75" PointY="4.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_SubModulos" Width="1.5" PointX="3.75" PointY="12.5" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Terminado" Width="1.5" PointX="3" PointY="20.125" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.C_Tolerancia_Corte" Width="1.5" PointX="9.75" PointY="3.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.sysdiagram" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Pantallas" Width="1.5" PointX="1.5" PointY="8.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_UsuariosOperaciones" Width="1.5" PointX="6" PointY="29.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.T_Sg_Bitacora" Width="1.5" PointX="6" PointY="7.875" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA" Width="1.5" PointX="10.75" PointY="6.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CALIDAD_DETALLE" Width="1.5" PointX="5.75" PointY="10.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE" Width="1.5" PointX="7.75" PointY="11.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_AUDITORIA_TERMINADO_DETALLE" Width="1.5" PointX="12.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CONFECCION" Width="1.5" PointX="12.75" PointY="5.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORREOS_AUDITORIA" Width="1.5" PointX="9.75" PointY="12.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_CORTADORES" Width="1.5" PointX="12.75" PointY="10.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_LAVANDERIA" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_OPERACION_CONFECCION" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS" Width="1.5" PointX="14.75" PointY="9.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PERMISOS_OPERACIONES" Width="1.5" PointX="14.75" PointY="14.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PLANTAS_AREAS" Width="1.5" PointX="0.75" PointY="15.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_CORTADOR" Width="1.5" PointX="11.75" PointY="15.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_LAVANDERIA" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_POSICION_PROCESOS_ESPECIALES" Width="1.5" PointX="16.75" PointY="3.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_PROCESOS_ESPECIALES" Width="1.5" PointX="16.75" PointY="6.75" />
+        <EntityTypeShape EntityType="bd_calidadIIModel.VST_TERMINADO" Width="1.5" PointX="16.75" PointY="10.75" />
         <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" />
         <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" />
         <AssociationConnector Association="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" />
