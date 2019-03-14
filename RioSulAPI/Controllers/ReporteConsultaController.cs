@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
@@ -31,59 +32,47 @@ namespace RioSulAPI.Controllers
             A_RES_AUDIOTRIA API = new A_RES_AUDIOTRIA();
             API.Auditoria = new List<RES_AUDITORIA>();
             List<VST_AUDITORIA> consulta = new List<VST_AUDITORIA>();
-
             try
             {
                 switch (Filtro.Auditoria)
                 {
                     case "Calidad":
-                        if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null && Filtro.Corte == null && Filtro.Planta == null && Filtro.Estilo == null)
+                        var aux = db.VST_AUDITORIA.
+                            Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i 
+                                                         && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f);
+
+                        if (Filtro.IdCliente != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f).ToList();
+                            int id = Convert.ToInt16(Filtro.IdCliente);
+                            aux = aux.Where(x=> x.IdClienteRef == id);
                         }
 
-                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null && Filtro.Corte == null &&
-                            Filtro.Planta == null && Filtro.Estilo == null)
+                        if (Filtro.Marca != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f
-                                           && x.Marca == Filtro.Marca).ToList();
+                            aux = aux.Where(x => x.Marca == Filtro.Marca);
                         }
 
-                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO != null && Filtro.Corte == null &&
-                            Filtro.Planta == null && Filtro.Estilo == null)
+                        if (Filtro.PO != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f
-                                           && x.Marca == Filtro.Marca && x.PO == Filtro.PO ).ToList();
+                            aux = aux.Where(x => x.PO == Filtro.PO);
                         }
 
-                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null && Filtro.Corte != null &&
-                            Filtro.Planta == null && Filtro.Estilo == null)
+                        if (Filtro.Corte != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f
-                                           && x.Marca == Filtro.Marca && x.NumCortada == Filtro.Corte).ToList();
+                            aux = aux.Where(x => x.NumCortada == Filtro.Corte);
                         }
 
-                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null && Filtro.Corte == null &&
-                            Filtro.Planta != null && Filtro.Estilo == null)
+                        if (Filtro.Planta != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f
-                                           && x.Marca == Filtro.Marca && x.Planta == Filtro.Planta).ToList();
+                            aux = aux.Where(x => x.Planta == Filtro.Planta);
                         }
 
-                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null && Filtro.Corte == null &&
-                            Filtro.Planta == null && Filtro.Estilo != null)
+                        if (Filtro.Estilo != null)
                         {
-                            consulta = db.VST_AUDITORIA.
-                                Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f
-                                           && x.Marca == Filtro.Marca && x.Estilo == Filtro.Estilo).ToList();
+                            aux = aux.Where(x => x.Estilo == Filtro.Estilo);
                         }
 
-
+                        consulta = aux.ToList();
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();
@@ -115,6 +104,7 @@ namespace RioSulAPI.Controllers
 
                             API.Auditoria.Add(A);
                         }
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         break;
                 }
 
@@ -123,6 +113,7 @@ namespace RioSulAPI.Controllers
             catch (Exception e)
             {
                 API.Auditoria = null;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
 
@@ -162,6 +153,7 @@ namespace RioSulAPI.Controllers
         public partial class A_RES_AUDIOTRIA
         {
             public List<RES_AUDITORIA> Auditoria { get; set; }
+            public HttpResponseMessage Message { get; set; }
         }
 
     }
