@@ -438,7 +438,7 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Filtro"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/Cliente/ ")]
+        [System.Web.Http.Route("api/Cliente/GetCorte")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
         public CORTE GetCorte([FromBody] C_CLIENTE_CORTE Filtro)
@@ -587,12 +587,13 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Filtro"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/Cliente/ ")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Cliente/GetPlanta")]
+        [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public PLANTA GetPlanta()
+        public PLANTAS GetPlanta()
         {
-            PLANTA API = new PLANTA();
+            PLANTAS API = new PLANTAS();
+            API.P = new List<PLANTA>();
 
             try
             {
@@ -600,51 +601,84 @@ namespace RioSulAPI.Controllers
                     .ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = @" SELECT        
-                                    ISNULL(CM.Name, '') AS CLIENTE, 
-                                    IV.Size AS LINEA, 
-                                    IV.Color AS LAVADO, 
-                                    WH.User5 AS PLANTA,
-                                    IADG.Style AS DIVISION,
-                                    ISNULL(WOB.InvtID, '') AS TELA, 
-                                    IV.ClassID AS MARCA,
-                                    WH.CustID AS ESTILO,
-                                    WH.InvtID AS TELA_PROV,
-                                    WH.QtyOrig AS NUMERO_CORTADA,
-                                    IV.Descr AS MODELO,
-                                    IV.Descr AS DESCRIPCION, 
-                                    WH.User6 AS PO,
-                                    IV.User2 AS RUTA,
-                                    ISNULL(CM.CustId, 0) AS CLIENT_ID
-FROM            ItemXRef AS IXR RIGHT OUTER JOIN
-                         WOHeader AS WH INNER JOIN
-                         SOHeader INNER JOIN
-                         RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
-                         Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
-                         Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
-                         InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
-                         WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
-                         RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
-                        WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R'); ";
+                    string Consulta = " select Planta, Descr from RsTb_Plantas ";
                     SqlCommand Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader reader = Command.ExecuteReader();
                     while (reader.Read())
                     {
-                        
+                        PLANTA p = new PLANTA();
+
+                        p.Planta = reader[0].ToString().Trim();
+                        p.Descripcion = reader[1].ToString().Trim();
+
+                        API.P.Add(p);
                     }
                     reader.Close();
                 }
             }
             catch (Exception ex)
             {
-                API.Planta = null;
-                API.Descripcion = null;
+                API.P = null;
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filtro"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cliente/GetEstilo")]
+        [System.Web.Http.HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ESTILOS GetEstilo()
+        {
+            ESTILOS API = new ESTILOS();
+            API.E = new List<ESTILO>();
+
+            try
+            {
+                using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager
+                    .ConnectionStrings["dbRioSulApp"].ToString()))
+                {
+                    _Conn.Open();
+                    string Consulta = " select ProdMgrID, Descr from Inventory ";
+                    SqlCommand Command = new SqlCommand(Consulta, _Conn);
+                    SqlDataReader reader = Command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        ESTILO p = new ESTILO();
+
+                        p.Estilo = reader[0].ToString().Trim();
+                        p.Descripcion = reader[1].ToString().Trim();
+
+                        API.E.Add(p);
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                API.E = null;
             }
 
             return API;
         }
 
         #endregion
+
+        public partial class PLANTA
+        {
+            public string Planta { get; set; }
+            public string Descripcion { get; set; }
+        }
+
+        public partial class ESTILO
+        {
+            public string Estilo { get; set; }
+            public string Descripcion { get; set; }
+        }
 
         public partial class MARCAS
         {
@@ -664,10 +698,14 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
             public HttpResponseMessage HttpResponseMessage { get; set; }
         }
 
-        public partial class PLANTA
+        public partial class PLANTAS
         {
-            public string Planta { get; set; }
-            public string Descripcion { get; set; }
+            public List<PLANTA> P { get; set; }
+        }
+
+        public partial class ESTILOS
+        {
+            public List<ESTILO> E { get; set; }
         }
 
         public partial class C_CLIENTE
