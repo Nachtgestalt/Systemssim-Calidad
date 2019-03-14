@@ -643,7 +643,7 @@ namespace RioSulAPI.Controllers
                     .ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = " select ProdMgrID, Descr from Inventory ";
+                    string Consulta = " select distinct left(invtid,26) as Estilo, Descr from inventory where MaterialType='PROD. TERM' ";
                     SqlCommand Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader reader = Command.ExecuteReader();
                     while (reader.Read())

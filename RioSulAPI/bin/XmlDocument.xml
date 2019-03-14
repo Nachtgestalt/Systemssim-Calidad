@@ -1571,11 +1571,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ReporteConsultaController.GetMarcas(RioSulAPI.Controllers.ReporteConsultaController.C_CLIENTE)">
+        <member name="M:RioSulAPI.Controllers.ReporteConsultaController.GetConsulta(RioSulAPI.Controllers.ReporteConsultaController.C_CONSULTA)">
             <summary>
-            
+            Genera el cierre de auditoria de terminado
             </summary>
-            <param name="Filtro"></param>
+            <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.ReportesController.WipCorte(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">
