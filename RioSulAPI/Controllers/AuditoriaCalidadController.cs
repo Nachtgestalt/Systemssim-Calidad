@@ -16,6 +16,9 @@ namespace RioSulAPI.Controllers
         private JavaScriptSerializer _objSerializer = new JavaScriptSerializer();
         private Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities();
 
+        #region AUDITORIA
+
+      
         /// <summary>
         /// Registra una nueva auditoría de Calidad
         /// </summary>
@@ -169,6 +172,7 @@ namespace RioSulAPI.Controllers
             }
         }
 
+        #endregion
 
         public partial class DET_AUDITORIA_CALIDAD
         {

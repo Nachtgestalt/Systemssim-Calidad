@@ -1,6 +1,7 @@
 ﻿using RioSulAPI.Class;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Microsoft.Ajax.Utilities;
 
 namespace RioSulAPI.Controllers
 {
@@ -17,6 +19,8 @@ namespace RioSulAPI.Controllers
     {
         private Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities();
         private JavaScriptSerializer _objSerializer = new JavaScriptSerializer();
+
+        #region CLIENTE
 
         /// <summary>
         /// Obtiene los clientes, por nombre, nombre corto o clave
@@ -292,6 +296,403 @@ namespace RioSulAPI.Controllers
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
+        }
+
+        #endregion
+
+        #region CONSULTA
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filtro"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cliente/GetMarca")]
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public MARCAS GetMarcas([FromBody] C_CLIENTE Filtro)
+        {
+            MARCAS API = new MARCAS();
+            API.Marcas = new List<string>();
+            List<string> consulta = new List<string>();
+            int idClienteRef;
+
+            try
+            {
+                switch (Filtro.Auditoria)
+                {
+                    case "Calidad":
+                        if (Filtro.IdCliente == null)
+                        {
+                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.Marcas.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Marcas = null;
+                API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filtro"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cliente/GetPO")]
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public PO GetPo([FromBody] C_CLIENTE_MARCA Filtro)
+        {
+            PO API = new PO();
+            API.PoList = new List<string>();
+            List<string> consulta = new List<string>();
+            int idClienteRef;
+
+            try
+            {
+                switch (Filtro.Auditoria)
+                {
+                    case "Calidad":
+                        if (Filtro.IdCliente == null && Filtro.Marca == null)
+                        {
+                            API.PoList = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.PoList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.PoList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.PoList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                API.PoList = null;
+                API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filtro"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cliente/ ")]
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public CORTE GetCorte([FromBody] C_CLIENTE_CORTE Filtro)
+        {
+            CORTE API = new CORTE();
+            API.CorteList = new List<string>();
+            List<string> consulta = new List<string>();
+            int idClienteRef;
+
+            try
+            {
+                switch (Filtro.Auditoria)
+                {
+                    case "Calidad":
+                        if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null)
+                        {
+                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.PO)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.PO == item).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+
+                                foreach (var item2 in Filtro.PO)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.PO == item2).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                foreach (var item2 in Filtro.PO)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item && x.PO == item2).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    foreach (var item3 in Filtro.PO)
+                                    {
+                                        consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                        foreach (var item4 in consulta)
+                                        {
+                                            API.CorteList.Add(item4);
+                                        }
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                API.CorteList = null;
+                API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Filtro"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cliente/ ")]
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public PLANTA GetPlanta()
+        {
+            PLANTA API = new PLANTA();
+
+            try
+            {
+                using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager
+                    .ConnectionStrings["dbRioSulApp"].ToString()))
+                {
+                    _Conn.Open();
+                    string Consulta = @" SELECT        
+                                    ISNULL(CM.Name, '') AS CLIENTE, 
+                                    IV.Size AS LINEA, 
+                                    IV.Color AS LAVADO, 
+                                    WH.User5 AS PLANTA,
+                                    IADG.Style AS DIVISION,
+                                    ISNULL(WOB.InvtID, '') AS TELA, 
+                                    IV.ClassID AS MARCA,
+                                    WH.CustID AS ESTILO,
+                                    WH.InvtID AS TELA_PROV,
+                                    WH.QtyOrig AS NUMERO_CORTADA,
+                                    IV.Descr AS MODELO,
+                                    IV.Descr AS DESCRIPCION, 
+                                    WH.User6 AS PO,
+                                    IV.User2 AS RUTA,
+                                    ISNULL(CM.CustId, 0) AS CLIENT_ID
+FROM            ItemXRef AS IXR RIGHT OUTER JOIN
+                         WOHeader AS WH INNER JOIN
+                         SOHeader INNER JOIN
+                         RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+                         Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+                         Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+                         InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+                         WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+                         RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
+                        WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R'); ";
+                    SqlCommand Command = new SqlCommand(Consulta, _Conn);
+                    SqlDataReader reader = Command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Planta = null;
+                API.Descripcion = null;
+            }
+
+            return API;
+        }
+
+        #endregion
+
+        public partial class MARCAS
+        {
+            public List<string> Marcas { get; set; }
+            public HttpResponseMessage HttpResponseMessage { get; set; }
+        }
+
+        public partial class PO
+        {
+            public List<string> PoList { get; set; }
+            public HttpResponseMessage HttpResponseMessage { get; set; }
+        }
+
+        public partial class CORTE
+        {
+            public List<string> CorteList { get; set; }
+            public HttpResponseMessage HttpResponseMessage { get; set; }
+        }
+
+        public partial class PLANTA
+        {
+            public string Planta { get; set; }
+            public string Descripcion { get; set; }
+        }
+
+        public partial class C_CLIENTE
+        {
+            public string[] IdCliente { get; set; }
+
+            [Required]
+            public string Auditoria { get; set; }
+        }
+
+        public partial class C_CLIENTE_MARCA
+        {
+            public string[] IdCliente { get; set; }
+            public string[] Marca { get; set; }
+            [Required]
+            public string Auditoria { get; set; }
+        }
+
+        public partial class C_CLIENTE_CORTE
+        {
+            public string[] IdCliente { get; set; }
+            public string[] Marca { get; set; }
+            public string[] PO { get; set; }
+            [Required]
+            public string Auditoria { get; set; }
         }
     }
 }

@@ -772,6 +772,27 @@
             <param name="IdCliente"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.GetMarcas(RioSulAPI.Controllers.ClienteController.C_CLIENTE)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.GetPo(RioSulAPI.Controllers.ClienteController.C_CLIENTE_MARCA)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.GetCorte(RioSulAPI.Controllers.ClienteController.C_CLIENTE_CORTE)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoDefectoConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
             <summary>
             Registra un nuevo defecto confeccion
@@ -1534,6 +1555,13 @@
             <summary>
             Obtiene los defectos activos para relacionar a la posición
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ReporteConsultaController.GetMarcas(RioSulAPI.Controllers.ReporteConsultaController.C_CLIENTE)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.ReportesController.WipCorte(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">

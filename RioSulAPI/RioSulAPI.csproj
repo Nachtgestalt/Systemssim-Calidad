@@ -189,6 +189,7 @@
     <Compile Include="Controllers\LavanderiaController.cs" />
     <Compile Include="Controllers\LogInController.cs" />
     <Compile Include="Controllers\ProcesosEspecialesController.cs" />
+    <Compile Include="Controllers\ReporteConsultaController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\TerminadoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
