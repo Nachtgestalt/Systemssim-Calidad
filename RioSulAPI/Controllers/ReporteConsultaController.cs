@@ -38,9 +38,14 @@ namespace RioSulAPI.Controllers
                 {
                     case "Calidad":
                         var aux = db.VST_AUDITORIA.
-                            Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i 
-                                                         && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                            Where(x => x.Calidad == true);
 
+                        if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
+                        {
+                            aux = aux.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
+                                                 && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                        }
+                        
                         if (Filtro.IdCliente != null)
                         {
                             int id = Convert.ToInt16(Filtro.IdCliente);
@@ -86,6 +91,7 @@ namespace RioSulAPI.Controllers
                             A.Cliente = Cliente.Descripcion;
 
                             A.Marca = itemAuditoria.Marca;
+                            A.IdAuditoria = itemAuditoria.IdAuditoria;
                             A.PO = itemAuditoria.PO;
                             A.Corte = itemAuditoria.NumCortada;
                             A.Planta = itemAuditoria.Planta;
@@ -148,6 +154,7 @@ namespace RioSulAPI.Controllers
             public int pzas_2 { get; set; }
             public int total { get; set; }
             public string status { get; set; }
+            public int IdAuditoria { get; set; }
         }
 
         public partial class A_RES_AUDIOTRIA
