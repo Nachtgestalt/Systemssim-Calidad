@@ -39,7 +39,7 @@ namespace RioSulAPI.Controllers
                     case "Calidad":
                         var aux = db.VST_AUDITORIA.
                             Where(x => x.Calidad == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i 
-                                                         && DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_f);
+                                                         && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
 
                         if (Filtro.IdCliente != null)
                         {
