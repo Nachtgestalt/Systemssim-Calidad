@@ -828,7 +828,7 @@
             <param name="Filtro"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ClienteController.GetEstilo">
+        <member name="M:RioSulAPI.Controllers.ClienteController.GetEstilo(System.String)">
             <summary>
             
             </summary>

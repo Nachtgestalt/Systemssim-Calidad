@@ -632,7 +632,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cliente/GetEstilo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ESTILOS GetEstilo()
+        public ESTILOS GetEstilo(string estilo = "")
         {
             ESTILOS API = new ESTILOS();
             API.E = new List<ESTILO>();
@@ -643,7 +643,7 @@ namespace RioSulAPI.Controllers
                     .ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = " select distinct left(invtid,26) as Estilo, Descr from inventory where MaterialType='PROD. TERM' ";
+                    string Consulta = " select distinct left(invtid,26) as Estilo, Descr from inventory where MaterialType='PROD. TERM' and left(invtid,26) like '%"+ estilo +"%' ";
                     SqlCommand Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader reader = Command.ExecuteReader();
                     while (reader.Read())
