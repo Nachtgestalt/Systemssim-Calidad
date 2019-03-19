@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using System.Web.Script.Serialization;
 using Microsoft.Ajax.Utilities;
 using RioSulAPI.Class;
+using RioSulAPI.Models;
 
 namespace RioSulAPI.Controllers
 {
@@ -71,9 +72,9 @@ namespace RioSulAPI.Controllers
 								Revisado = item.Revisado,
 								Compostura = item.Compostura,
 								Cantidad = item.cantidad,
-                                Aud_Imagen = item.Imagen,
-                                Nota = item.Nota
-              };
+								Aud_Imagen = item.Imagen,
+								Nota = item.Nota
+			  };
 							db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
 						}
 						db.SaveChanges();
@@ -187,16 +188,16 @@ namespace RioSulAPI.Controllers
 				{
 					_Conn.Open();
 					string Consulta = @"SELECT        distinct(WH.WONbr)
-                                    FROM ItemXRef AS IXR RIGHT OUTER JOIN
-                                    WOHeader AS WH INNER JOIN
-                                    SOHeader INNER JOIN
-                                    RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
-                                    Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
-                                    Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
-                                    InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
-                                    WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
-                                    RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
-                                    WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";
+									FROM ItemXRef AS IXR RIGHT OUTER JOIN
+									WOHeader AS WH INNER JOIN
+									SOHeader INNER JOIN
+									RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+									Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+									Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+									InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+									WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+									RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
+									WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";
 					API.OrdenTrabajo = new List<OT_GEN>();
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader sqlData = Command.ExecuteReader();
@@ -222,105 +223,192 @@ namespace RioSulAPI.Controllers
 			return API;
 		}
 
-        /// <summary>
-        /// Obtenemos el detalle de la OT
-        /// </summary>
-        /// <param name="OT"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// Obtenemos el detalle de la OT
+		/// </summary>
+		/// <param name="OT"></param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/ObtenemosOT_D")]
 		public RES_OT_DET ObtenemosOT_D(string OT)
 		{
 			RES_OT_DET API = new RES_OT_DET();
-            API.OT = new OT_DET();
-            
+			API.OT = new OT_DET();
+			
 			try
 			{
-                //DETALLE DE LA OT
+				//DETALLE DE LA OT
 				using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
 				{
 					_Conn.Open();
 					string Consulta = @" SELECT        
-                                    ISNULL(CM.Name, '') AS CLIENTE, 
-                                    IV.Size AS LINEA, 
-                                    IV.Color AS LAVADO, 
-                                    WH.User5 AS PLANTA,
-                                    IADG.Style AS DIVISION,
-                                    ISNULL(WOB.InvtID, '') AS TELA, 
-                                    IV.ClassID AS MARCA,
-                                    WH.CustID AS ESTILO,
-                                    WH.InvtID AS TELA_PROV,
-                                    WH.QtyOrig AS NUMERO_CORTADA,
-                                    IV.Descr AS MODELO,
-                                    IV.Descr AS DESCRIPCION, 
-                                    WH.User6 AS PO,
-                                    IV.User2 AS RUTA,
-                                    ISNULL(CM.CustId, 0) AS CLIENT_ID
+									ISNULL(CM.Name, '') AS CLIENTE, 
+									IV.Size AS LINEA, 
+									IV.Color AS LAVADO, 
+									WH.User5 AS PLANTA,
+									IADG.Style AS DIVISION,
+									ISNULL(WOB.InvtID, '') AS TELA, 
+									IV.ClassID AS MARCA,
+									WH.CustID AS ESTILO,
+									WH.InvtID AS TELA_PROV,
+									WH.QtyOrig AS NUMERO_CORTADA,
+									IV.Descr AS MODELO,
+									IV.Descr AS DESCRIPCION, 
+									WH.User6 AS PO,
+									IV.User2 AS RUTA,
+									ISNULL(CM.CustId, 0) AS CLIENT_ID
 FROM            ItemXRef AS IXR RIGHT OUTER JOIN
-                         WOHeader AS WH INNER JOIN
-                         SOHeader INNER JOIN
-                         RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
-                         Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
-                         Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
-                         InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
-                         WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
-                         RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
-                        WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R') and WH.WONbr = '" + OT +"'; ";
+						 WOHeader AS WH INNER JOIN
+						 SOHeader INNER JOIN
+						 RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+						 Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+						 Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+						 InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+						 WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+						 RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
+						WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R') and WH.WONbr = '" + OT +"'; ";
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader reader = Command.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        API.OT.Cliente = reader[0].ToString().Trim();
-                        API.OT.Linea = reader[1].ToString().Trim();
-                        API.OT.Lavado = reader[2].ToString().Trim();
-                        API.OT.Planta = reader[3].ToString().Trim();
-                        API.OT.Division = reader[4].ToString().Trim();
-                        API.OT.Tela_Int = reader[5].ToString().Trim();
-                        API.OT.Marca = reader[6].ToString().Trim();
-                        API.OT.Estilo = reader[7].ToString().Trim();
-                        API.OT.Tela_Prov = reader[8].ToString().Trim();
-                        API.OT.No_Cortada = reader[9].ToString().Trim();
-                        API.OT.Modelo = reader[10].ToString().Trim();
-                        API.OT.Descripcion = reader[11].ToString().Trim();
-                        API.OT.PO = reader[12].ToString().Trim();
-                        API.OT.Ruta = reader[13].ToString().Trim();
-                        API.OT.ID_Cliente = reader[14].ToString().Trim();
-                    }
+					if (reader.Read())
+					{
+						API.OT.Cliente = reader[0].ToString().Trim();
+						API.OT.Linea = reader[1].ToString().Trim();
+						API.OT.Lavado = reader[2].ToString().Trim();
+						API.OT.Planta = reader[3].ToString().Trim();
+						API.OT.Division = reader[4].ToString().Trim();
+						API.OT.Tela_Int = reader[5].ToString().Trim();
+						API.OT.Marca = reader[6].ToString().Trim();
+						API.OT.Estilo = reader[7].ToString().Trim();
+						API.OT.Tela_Prov = reader[8].ToString().Trim();
+						API.OT.No_Cortada = reader[9].ToString().Trim();
+						API.OT.Modelo = reader[10].ToString().Trim();
+						API.OT.Descripcion = reader[11].ToString().Trim();
+						API.OT.PO = reader[12].ToString().Trim();
+						API.OT.Ruta = reader[13].ToString().Trim();
+						API.OT.ID_Cliente = reader[14].ToString().Trim();
+					}
 					reader.Close();
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                }
-                //OBTENEMOS EL ID REF DEL CLIENTE
-                using (Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities())
-                {
-                    Models.C_ClientesReferencia CliRef;
-                    Models.C_Clientes Cliente;
-                    CliRef = db.C_ClientesReferencia.Where(x => x.Cve_Cliente == API.OT.ID_Cliente).FirstOrDefault();
+					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+				}
+				//OBTENEMOS EL ID REF DEL CLIENTE
+				using (Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities())
+				{
+					Models.C_ClientesReferencia CliRef;
+					Models.C_Clientes Cliente;
+					CliRef = db.C_ClientesReferencia.Where(x => x.Cve_Cliente == API.OT.ID_Cliente).FirstOrDefault();
 
-                    if (CliRef == null)
-                    {
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                        API.Message2 = "Cliente inexistente en el catálogo";
-                        API.OT = null;
-                    }
-                    else
-                    {
-                        Cliente = db.C_Clientes.Where(x => x.IdClienteRef == CliRef.IdClienteRef).FirstOrDefault();
-                        API.OT.ID_Cliente = CliRef.IdClienteRef.ToString();
-                        API.OT.Cliente = Cliente.Descripcion;
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Accepted);
-                    }
+					if (CliRef == null)
+					{
+						API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+						API.Message2 = "Cliente inexistente en el catálogo";
+						API.OT = null;
+					}
+					else
+					{
+						Cliente = db.C_Clientes.Where(x => x.IdClienteRef == CliRef.IdClienteRef).FirstOrDefault();
+						API.OT.ID_Cliente = CliRef.IdClienteRef.ToString();
+						API.OT.Cliente = Cliente.Descripcion;
+						API.Message = new HttpResponseMessage(HttpStatusCode.Accepted);
+					}
 
-                    
-                }
+					
+				}
 
-            }
+			}
 			catch (Exception ex)
 			{
-                Utilerias.EscribirLog(ex.ToString());
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.OT = null;
-            }
+				Utilerias.EscribirLog(ex.ToString());
+				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+				API.OT = null;
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPut]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaTerminado/ActualizaAuditoriaDet")]
+		public MESSAGE ActualizaAuditoria([FromBody]ACT_DET_AUDITORIA_T AT)
+		{
+			MESSAGE API = new MESSAGE();
+
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					Models.Auditoria_Terminado_Detalle ATD = new Auditoria_Terminado_Detalle()
+					{
+						IdAuditoria = AT.IdAuditoria,
+						IdOrigen = AT.IdOrigen,
+						IdPosicion = AT.IdPosicion,
+						IdOperacion = AT.IdOperacion,
+						IdDefecto = AT.IdDefecto,
+						Revisado = AT.Revisado,
+						Compostura = AT.Compostura,
+						Cantidad = AT.cantidad,
+						Aud_Imagen = AT.Imagen,
+						Nota = AT.Nota
+					};
+					db.Auditoria_Terminado_Detalle.Add(ATD);
+					db.SaveChanges();
+
+					API.Message = "Elemento agregado con éxito";
+					API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+				}
+				else
+				{
+					API.Message = "Formato inválido";
+					API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+				}
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// ELIMINAMOS EL DETALLE DE LA AUDITORIA
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpDelete]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaTerminado/ActualizaAuditoriaDet")]
+		public MESSAGE EliminaAuditoria(int IdAuditoriaDet)
+		{
+			MESSAGE API = new MESSAGE();
+
+			try
+			{
+				Models.Auditoria_Terminado_Detalle ATD = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoriaTerminadoDetalle == IdAuditoriaDet).FirstOrDefault();
+				if (ATD != null)
+				{
+					db.Auditoria_Terminado_Detalle.Remove(ATD);
+					db.SaveChanges();
+					API.Message = "Elemento eliminado con éxito";
+					API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+				}
+				else
+				{
+					API.Message = "No se encontro el detalle solicitado";
+					API.Response = new HttpResponseMessage(HttpStatusCode.Conflict);
+				}
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+			}
 
 			return API;
 		}
@@ -339,9 +427,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			public bool Revisado { get; set; }
 			public bool Compostura { get; set; }
 			public int cantidad { get; set; }
-      public string Imagen { get; set; }
-      public string Nota { get; set; }
-    }
+			public string Imagen { get; set; }
+			public string Nota { get; set; }
+	}
 
 		public partial class REQ_NEW_AT
 		{
@@ -396,9 +484,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 
 		public partial class RES_OT_DET
 		{
-            public OT_DET OT { get; set; }
-            public string Message2 { get; set; }
-            public HttpResponseMessage Message { get; set; }
+			public OT_DET OT { get; set; }
+			public string Message2 { get; set; }
+			public HttpResponseMessage Message { get; set; }
 		}
 
 		public partial class RES_OT_GEN
@@ -406,5 +494,31 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			public HttpResponseMessage Message { get; set; }
 			public List<OT_GEN> OrdenTrabajo { get; set; }
 		}
+
+		public partial class MESSAGE
+		{
+			public string Message { get; set; }
+			public HttpResponseMessage Response { get; set; }
+		}
+
+		public partial class ACT_DET_AUDITORIA_T
+		{
+			[Required]
+			public int IdAuditoria { get; set; }
+			[Required]
+			public int IdPosicion { get; set; }
+			[Required]
+			public int IdOperacion { get; set; }
+			[Required]
+			public int IdOrigen { get; set; }
+			[Required]
+			public int IdDefecto { get; set; }
+			public bool Revisado { get; set; }
+			public bool Compostura { get; set; }
+			public int cantidad { get; set; }
+			public string Imagen { get; set; }
+			public string Nota { get; set; }
+		}
+
 	}
 }

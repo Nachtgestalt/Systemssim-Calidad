@@ -508,6 +508,20 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaCalidadController.ACT_DET_AUDITORIA_C)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.EliminaAuditoria(System.Int32)">
+            <summary>
+            ELIMINAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
             <summary>
             Registra nueva auditoria confección
@@ -680,6 +694,20 @@
             Obtenemos el detalle de la OT
             </summary>
             <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaTerminadoController.ACT_DET_AUDITORIA_T)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.EliminaAuditoria(System.Int32)">
+            <summary>
+            ELIMINAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.CatalogoSegundasController.ObtieneSegundasDynamics(System.String)">
