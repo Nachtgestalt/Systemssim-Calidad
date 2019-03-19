@@ -821,7 +821,7 @@
             <param name="Filtro"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ClienteController.GetPlanta">
+        <member name="M:RioSulAPI.Controllers.ClienteController.GetPlanta(System.String)">
             <summary>
             
             </summary>

@@ -590,7 +590,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cliente/GetPlanta")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public PLANTAS GetPlanta()
+        public PLANTAS GetPlanta(string planta = "")
         {
             PLANTAS API = new PLANTAS();
             API.P = new List<PLANTA>();
@@ -601,7 +601,7 @@ namespace RioSulAPI.Controllers
                     .ConnectionStrings["dbRioSulApp"].ToString()))
                 {
                     _Conn.Open();
-                    string Consulta = " select Planta, Descr from RsTb_Plantas ";
+                    string Consulta = " select Planta, Descr from RsTb_Plantas where Planta like '%"+ planta +"%' ";
                     SqlCommand Command = new SqlCommand(Consulta, _Conn);
                     SqlDataReader reader = Command.ExecuteReader();
                     while (reader.Read())
