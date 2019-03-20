@@ -74,6 +74,8 @@ namespace RioSulAPI.Controllers
 								Criterio = item.Criterio,
 								Fin = item.Fin,
 								Aud_Imagen = item.Imagen,
+								Archivo = item.Archivo,
+								Nota = item.Nota
 
 							};
 							db.Auditoria_Calidad_Detalle.Add(auditoria_calidad);
@@ -277,6 +279,8 @@ namespace RioSulAPI.Controllers
 			public int Fin { get; set; }
 
 			public string Imagen { get; set; }
+			public string Archivo { get; set; }
+			public string Nota { get; set; }
 		}
 
 		public partial class REQ_NEW_AT

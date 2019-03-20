@@ -24,5 +24,7 @@ namespace RioSulAPI.Models
         public int Fin { get; set; }
         public string Aud_Imagen { get; set; }
         public Nullable<int> Id_Origen { get; set; }
+        public string Nota { get; set; }
+        public string Archivo { get; set; }
     }
 }

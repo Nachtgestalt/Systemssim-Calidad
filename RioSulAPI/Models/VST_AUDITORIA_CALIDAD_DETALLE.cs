@@ -27,5 +27,7 @@ namespace RioSulAPI.Models
         public string Operacion { get; set; }
         public string Posicion { get; set; }
         public string Defecto { get; set; }
+        public string Nota { get; set; }
+        public string Archivo { get; set; }
     }
 }

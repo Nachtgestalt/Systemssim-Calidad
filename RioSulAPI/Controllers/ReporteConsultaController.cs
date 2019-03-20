@@ -170,7 +170,45 @@ namespace RioSulAPI.Controllers
                         consulta = aux2.ToList();
                         foreach (var itemAuditoria in consulta)
                         {
-                                                       
+                            RES_AUDITORIA A = new RES_AUDITORIA();
+                            Models.Auditoria_Terminado_Detalle ACD = db.Auditoria_Terminado_Detalle
+                                .Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).FirstOrDefault();
+
+                            if (ACD != null)
+                            {
+                                A.pzas_r = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Cantidad);
+                                A.total = A.pzas_r;
+                            }
+                            else
+                            {
+                                A.pzas_r = 0;
+                                A.total = 0;
+                            }
+
+
+                            Models.C_Clientes Cliente;
+                            Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
+                            A.Cliente = Cliente.Descripcion;
+
+                            A.Marca = itemAuditoria.Marca;
+                            A.IdAuditoria = itemAuditoria.IdAuditoria;
+                            A.PO = itemAuditoria.PO;
+                            A.Corte = itemAuditoria.NumCortada;
+                            A.Planta = itemAuditoria.Planta;
+                            A.Estilo = itemAuditoria.Estilo;
+                            A.Fecha_i = itemAuditoria.FechaRegistro;
+                            A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+
+                            if (itemAuditoria.FechaRegistroFin == null)
+                            {
+                                A.status = "ACTIVA";
+                            }
+                            else
+                            {
+                                A.status = "CERRADA";
+                            }
+
+                            API.Auditoria.Add(A);
                         }
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         break;
