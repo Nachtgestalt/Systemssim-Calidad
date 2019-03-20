@@ -81,11 +81,25 @@ namespace RioSulAPI.Controllers
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();
-                            A.pzas_r = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Recup);
-                            A.pzas_c = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Criterio);
-                            A.pzas_2 = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Fin);
-                            A.total = A.pzas_2 + A.pzas_c + A.pzas_r;
+                            Models.Auditoria_Calidad_Detalle ACD = db.Auditoria_Calidad_Detalle
+                                .Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).FirstOrDefault();
 
+                            if (ACD != null)
+                            {
+                                A.pzas_r = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Recup);
+                                A.pzas_c = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Criterio);
+                                A.pzas_2 = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Fin);
+                                A.total = A.pzas_2 + A.pzas_c + A.pzas_r;
+                            }
+                            else
+                            {
+                                A.pzas_r = 0;
+                                A.pzas_c = 0;
+                                A.pzas_2 = 0;
+                                A.total = 0;
+                            }
+
+                           
                             Models.C_Clientes Cliente;
                             Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
                             A.Cliente = Cliente.Descripcion;
@@ -109,6 +123,54 @@ namespace RioSulAPI.Controllers
                             }
 
                             API.Auditoria.Add(A);
+                        }
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        break;
+                    case "Terminado":
+                        var aux2 = db.VST_AUDITORIA.
+                            Where(x => x.Terminado == true);
+
+                        if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
+                        {
+                            aux2 = aux2.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
+                                                 && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                        }
+
+                        if (Filtro.IdCliente != null)
+                        {
+                            int id = Convert.ToInt16(Filtro.IdCliente);
+                            aux2 = aux2.Where(x => x.IdClienteRef == id);
+                        }
+
+                        if (Filtro.Marca != null)
+                        {
+                            aux2 = aux2.Where(x => x.Marca == Filtro.Marca);
+                        }
+
+                        if (Filtro.PO != null)
+                        {
+                            aux2 = aux2.Where(x => x.PO == Filtro.PO);
+                        }
+
+                        if (Filtro.Corte != null)
+                        {
+                            aux2 = aux2.Where(x => x.NumCortada == Filtro.Corte);
+                        }
+
+                        if (Filtro.Planta != null)
+                        {
+                            aux2 = aux2.Where(x => x.Planta == Filtro.Planta);
+                        }
+
+                        if (Filtro.Estilo != null)
+                        {
+                            aux2 = aux2.Where(x => x.Estilo == Filtro.Estilo);
+                        }
+
+                        consulta = aux2.ToList();
+                        foreach (var itemAuditoria in consulta)
+                        {
+                                                       
                         }
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         break;
