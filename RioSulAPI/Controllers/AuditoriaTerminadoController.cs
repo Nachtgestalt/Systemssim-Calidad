@@ -342,23 +342,31 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			{
 				if (ModelState.IsValid)
 				{
-					Models.Auditoria_Terminado_Detalle ATD = new Auditoria_Terminado_Detalle()
-					{
-						IdAuditoria = AT.IdAuditoria,
-						IdOrigen = AT.IdOrigen,
-						IdPosicion = AT.IdPosicion,
-						IdOperacion = AT.IdOperacion,
-						IdDefecto = AT.IdDefecto,
-						Revisado = AT.Revisado,
-						Compostura = AT.Compostura,
-						Cantidad = AT.cantidad,
-						Aud_Imagen = AT.Imagen,
-						Nota = AT.Nota
-					};
-					db.Auditoria_Terminado_Detalle.Add(ATD);
+					Models.Auditoria_Terminado_Detalle ATD = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == AT.IdAuditoria).FirstOrDefault();
+
+					db.Auditoria_Terminado_Detalle.Remove(ATD);
 					db.SaveChanges();
 
-					API.Message = "Elemento agregado con éxito";
+					foreach (DET_AUDITORIA_TERMINADO item in AT.Det)
+					{
+						Models.Auditoria_Terminado_Detalle auditoria_Terminado = new Models.Auditoria_Terminado_Detalle()
+						{
+							IdAuditoria = AT.IdAuditoria,
+							IdOrigen = item.IdOrigen,
+							IdPosicion = item.IdPosicion,
+							IdOperacion = item.IdOperacion,
+							IdDefecto = item.IdDefecto,
+							Revisado = item.Revisado,
+							Compostura = item.Compostura,
+							Cantidad = item.cantidad,
+							Aud_Imagen = item.Imagen,
+							Nota = item.Nota
+						};
+						db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
+					}
+					db.SaveChanges();
+
+					API.Message = "Auditoria modificada correctamente";
 					API.Response = new HttpResponseMessage(HttpStatusCode.OK);
 				}
 				else
@@ -505,19 +513,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		{
 			[Required]
 			public int IdAuditoria { get; set; }
+
 			[Required]
-			public int IdPosicion { get; set; }
-			[Required]
-			public int IdOperacion { get; set; }
-			[Required]
-			public int IdOrigen { get; set; }
-			[Required]
-			public int IdDefecto { get; set; }
-			public bool Revisado { get; set; }
-			public bool Compostura { get; set; }
-			public int cantidad { get; set; }
-			public string Imagen { get; set; }
-			public string Nota { get; set; }
+			public List<DET_AUDITORIA_TERMINADO> Det { get; set; }
 		}
 
 	}
