@@ -21,7 +21,6 @@ namespace RioSulAPI.Models
         public int Recup { get; set; }
         public int Fin { get; set; }
         public int Criterio { get; set; }
-        public Nullable<int> Id_Origen { get; set; }
         public string Aud_Imagen { get; set; }
         public string Origen { get; set; }
         public string Operacion { get; set; }
@@ -29,5 +28,6 @@ namespace RioSulAPI.Models
         public string Defecto { get; set; }
         public string Nota { get; set; }
         public string Archivo { get; set; }
+        public Nullable<int> IdOrigen { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace RioSulAPI.Controllers
         }
 
         //----------------------------------------DEFECTOS------------------------------------------------
+        #region DEFECTOS
 
         /// <summary>
         /// Registra un nuevo Lavandería
@@ -215,7 +216,11 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        #endregion
+
         //----------------------------------------OPERACIONES------------------------------------------------
+
+        #region OPERACIONES
 
         /// <summary>
         /// Registra una nueva operación lavandería
@@ -419,5 +424,242 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        #endregion
+
+        //----------------------------------------POSICIONES------------------------------------------------
+
+        #region POSICIONES
+        /// <summary>
+        /// Registra una nueva posición de lavandería
+        /// </summary>
+        /// <param name="Defecto"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Lavanderia/PosicionLavanderia")]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_POSICION_LAV NuevaPosicionLavanderia([FromBody]ViewModel.N_POSICION_LAV Posicion)
+        {
+            ViewModel.RES_POSICION_LAV API = new ViewModel.RES_POSICION_LAV();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Lavanderia Verifica = db.C_Lavanderia.Where(x =>
+                            x.IdSubModulo == 20 && (x.Clave == Posicion.Clave || x.Nombre == Posicion.Nombre))
+                        .FirstOrDefault();
+
+                    if (Verifica == null)
+                    {
+                        Models.C_Lavanderia c_Lavanderia = new Models.C_Lavanderia()
+                        {
+                            Activo = true,
+                            FechaCreacion = DateTime.Now,
+                            Clave = Posicion.Clave,
+                            Descripcion = Posicion.Descripcion,
+                            IdSubModulo = 20,
+                            IdUsuario = Posicion.IdUsuario,
+                            Nombre = Posicion.Nombre,
+                            Observaciones = Posicion.Observaciones,
+                            Imagen = Posicion.Imagen
+                        };
+                        db.C_Lavanderia.Add(c_Lavanderia);
+                        db.SaveChanges();
+
+                        foreach (ViewModel.OPERACION_REF item in Posicion.Operacion)
+                        {
+                            Models.C_Posicion_Lavanderia c_Posicion_Lavanderia = new Models.C_Posicion_Lavanderia()
+                            {
+                                IdPosicion = c_Lavanderia.ID,
+                                IdCortador = item.IdOperacion
+                            };
+                            db.C_Posicion_Lavanderia.Add(c_Posicion_Lavanderia);
+                        }
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro realizado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro existente, favor de validar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+
+                    
+                }
+                else
+                {
+                    API.Hecho = "Formato inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error interno";
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Activa o inactiva la posición de lavandería
+        /// </summary>
+        /// <param name="IdLavanderia"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Lavanderia/ActivaInactivaPosicionLavanderia")]
+        public ViewModel.RES_POSICION_LAV ActivaInactivaPosicionLavanderia(int IdLavanderia)
+        {
+            ViewModel.RES_POSICION_LAV API = new ViewModel.RES_POSICION_LAV();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Lavanderia c_Lav = db.C_Lavanderia.Where(x => x.ID == IdLavanderia && x.IdSubModulo == 20).FirstOrDefault();
+                    c_Lav.Activo = (c_Lav.Activo == false ? true : false);
+
+                    db.Entry(c_Lav).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    API.Hecho = "Posición modificada con éxito";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = "Formato Inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Hecho = "Error Interno";
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Obtiene Posicion por Clave y/o Nombre
+        /// </summary>
+        /// <param name="Clave"></param>
+        /// <param name="Nombre"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Lavanderia/PosicionLavanderia")]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_BUS_DEFECTO_LAVANDERIA ObtienePosicionLavanderia(string Clave = "", string Nombre = "")
+        {
+            ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.Vst_Lavanderia = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Vst_Lavanderia = null;
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Actualiza los datos de la posición de lavandría
+        /// </summary>
+        /// <param name="Defecto"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("api/Lavanderia/PosicionLavanderia")]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_POSICION_LAV ActualizaPosicionLav([FromBody]ViewModel.E_POSICION_LAV Posicion)
+        {
+            ViewModel.RES_POSICION_LAV API = new ViewModel.RES_POSICION_LAV();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Lavanderia Vst = db.C_Lavanderia.Where(x => x.ID == Posicion.ID && x.IdSubModulo == 20).FirstOrDefault();
+                    //VERIFICAMOS SI EL ELEMENTO EXISTE EN BASE
+                    if (Vst != null)
+                    {
+                        Vst.IdUsuario = Posicion.IdUsuario;
+                        Vst.Nombre = Posicion.Nombre;
+                        Vst.Observaciones = Posicion.Observaciones;
+                        Vst.Descripcion = Posicion.Descripcion;
+                        Vst.Clave = Posicion.Clave;
+                        Vst.Imagen = Posicion.Imagen;
+
+                        //VERIFICAMOS SI LA CLAVE O NOMBRE YA EXISTEN EN BASE
+                        Models.C_Lavanderia Verifica = db.C_Lavanderia.Where(x => x.IdSubModulo == 20 && x.ID != Posicion.ID &&(x.Clave == Posicion.Clave || x.Nombre == Posicion.Nombre)).FirstOrDefault();
+
+                        if (Verifica == null)
+                        {
+                            db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                            //ELIMNAMOS LAS OPERACIONES RELACIONADAS
+                            List<Models.C_Posicion_Lavanderia> PT = db.C_Posicion_Lavanderia.Where(x => x.IdPosicion == Posicion.ID).ToList();
+
+                            foreach (Models.C_Posicion_Lavanderia item in PT)
+                            {
+                                db.C_Posicion_Lavanderia.Remove(item);
+                                db.SaveChanges();
+                            }
+
+                            //GUARDAMOS LAS OPERACIONES
+                            foreach (ViewModel.OPERACION_REF item in Posicion.Operacion)
+                            {
+                                Models.C_Posicion_Lavanderia c_Posicion_Lavanderia = new Models.C_Posicion_Lavanderia()
+                                {
+                                    IdPosicion = Vst.ID,
+                                    IdCortador = item.IdOperacion
+                                };
+                                db.C_Posicion_Lavanderia.Add(c_Posicion_Lavanderia);
+                            }
+                            db.SaveChanges();
+
+                            API.Hecho = "Posición actualizada con éxito";
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            API.Hecho = "Registro existente, favor de validar";
+                            API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                        }
+                    }
+                    else
+                    {
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                        API.Hecho = "Registro no encontrado";
+                    }
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                    API.Hecho = "Formato Inválido";
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error interno";
+            }
+            return API;
+        }
+
+        #endregion
     }
 }

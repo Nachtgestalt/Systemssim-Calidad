@@ -1443,6 +1443,35 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevaPosicionLavanderia(RioSulAPI.Class.ViewModel.N_POSICION_LAV)">
+            <summary>
+            Registra una nueva posición de lavandería
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ActivaInactivaPosicionLavanderia(System.Int32)">
+            <summary>
+            Activa o inactiva la posición de lavandería
+            </summary>
+            <param name="IdLavanderia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtienePosicionLavanderia(System.String,System.String)">
+            <summary>
+            Obtiene Posicion por Clave y/o Nombre
+            </summary>
+            <param name="Clave"></param>
+            <param name="Nombre"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ActualizaPosicionLav(RioSulAPI.Class.ViewModel.E_POSICION_LAV)">
+            <summary>
+            Actualiza los datos de la posición de lavandría
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.LogInController.IniciaSesion(RioSulAPI.Class.ViewModel.REQ_LOGIN)">
             POST api/Login/IniciaSesion
             <summary>

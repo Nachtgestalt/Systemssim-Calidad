@@ -699,6 +699,12 @@ namespace RioSulAPI.Class
             public HttpResponseMessage Message { get; set; }
         }
 
+        public partial class RES_POSICION_LAV
+        {
+            public string Hecho { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
         public class REQ_DEFECTO_LAV
         {
             [Required] public int IdSubModulo { get; set; }
@@ -709,6 +715,34 @@ namespace RioSulAPI.Class
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
 
+        }
+
+        public partial class OPERACION_REF
+        {
+            public int IdOperacion { get; set; }
+        }
+
+        public partial class N_POSICION_LAV
+        {
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+            public List<OPERACION_REF> Operacion { get; set; }
+        }
+
+        public partial class E_POSICION_LAV
+        {
+            [Required] public int ID { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+            public List<OPERACION_REF> Operacion { get; set; }
         }
 
         public partial class RES_BUS_DEFECTO_LAVANDERIA
