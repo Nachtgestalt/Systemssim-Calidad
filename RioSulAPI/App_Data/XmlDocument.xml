@@ -515,9 +515,23 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.EliminaAuditoria(System.Int32)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.EliminaAuditoriaD(System.Int32)">
             <summary>
             ELIMINAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.ActivaAuditoria(System.Int32)">
+            <summary>
+            ACTIVAMOS O DESACTIVAMOS LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCalidadController.EliminaAuditoria(System.Int32)">
+            <summary>
+            ELIMINAMOS LA AUDITORIA
             </summary>
             <param name="id"></param>
             <returns></returns>
@@ -703,9 +717,23 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.EliminaAuditoria(System.Int32)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.EliminaAuditoriaD(System.Int32)">
             <summary>
             ELIMINAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ActivaAuditoria(System.Int32)">
+            <summary>
+            ACTIVAMOS O DESACTIVAMOS LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.EliminaAuditoria(System.Int32)">
+            <summary>
+            ELIMINAMOS LA AUDITORIA
             </summary>
             <param name="id"></param>
             <returns></returns>

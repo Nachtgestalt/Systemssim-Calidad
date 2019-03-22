@@ -38,7 +38,7 @@ namespace RioSulAPI.Controllers
                 {
                     case "Calidad":
                         var aux = db.VST_AUDITORIA.
-                            Where(x => x.Calidad == true);
+                            Where(x => x.Calidad == true && x.Activo == true);
 
                         if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
                         {
@@ -129,7 +129,7 @@ namespace RioSulAPI.Controllers
 
                     case "Terminado":
                         var aux2 = db.VST_AUDITORIA.
-                            Where(x => x.Terminado == true);
+                            Where(x => x.Terminado == true && x.Activo == true);
 
                         if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
                         {
@@ -216,7 +216,7 @@ namespace RioSulAPI.Controllers
 
                     case "Lavanderia":
                         var aux3 = db.VST_AUDITORIA.
-                            Where(x => x.Terminado == true);
+                            Where(x => x.Terminado == true && x.Activo == true);
 
                         if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
                         {

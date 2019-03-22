@@ -55,7 +55,9 @@ namespace RioSulAPI.Controllers
 							Lavanderia = false,
 							Terminado = true,
 							Confeccion = false,
-							ProcesosEspeciales = false
+							ProcesosEspeciales = false,
+							Calidad = false,
+							Activo = true
 						};
 						db.Auditorias.Add(auditoria);
 						db.SaveChanges();
@@ -73,7 +75,8 @@ namespace RioSulAPI.Controllers
 								Compostura = item.Compostura,
 								Cantidad = item.cantidad,
 								Aud_Imagen = item.Imagen,
-								Nota = item.Nota
+								Nota = item.Nota,
+								Archivo = item.Archivo
 			  };
 							db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
 						}
@@ -363,7 +366,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 							Compostura = item.Compostura,
 							Cantidad = item.cantidad,
 							Aud_Imagen = item.Imagen,
-							Nota = item.Nota
+							Nota = item.Nota,
+							Archivo = item.Archivo
 						};
 						db.Auditoria_Terminado_Detalle.Add(auditoria_Terminado);
 					}
@@ -395,7 +399,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		[HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/ActualizaAuditoriaDet")]
-		public MESSAGE EliminaAuditoria(int IdAuditoriaDet)
+		public MESSAGE EliminaAuditoriaD(int IdAuditoriaDet)
 		{
 			MESSAGE API = new MESSAGE();
 
@@ -424,6 +428,74 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			return API;
 		}
 
+		/// <summary>
+		/// ACTIVAMOS O DESACTIVAMOS LA AUDITORIA
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPut]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCalidad/EliminaAuditoria")]
+		public AuditoriaTerminadoController.MESSAGE ActivaAuditoria(int IdAuditoria = 0)
+		{
+			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+			try
+			{
+				Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
+				AUD.Activo = (AUD.Activo == false ? true : false);
+
+				db.Entry(AUD).State = System.Data.Entity.EntityState.Modified;
+				db.SaveChanges();
+
+				API.Message = "Auditoria modificada con éxito";
+				API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// ELIMINAMOS LA AUDITORIA
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpDelete]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCalidad/EliminaAuditoria")]
+		public AuditoriaTerminadoController.MESSAGE EliminaAuditoria(int IdAuditoria = 0)
+		{
+			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+			try
+			{
+				Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
+
+				db.Auditorias.Remove(AUD);
+				db.SaveChanges();
+
+				List<Models.Auditoria_Terminado_Detalle> AD = db.Auditoria_Terminado_Detalle
+					.Where(x => x.IdAuditoria == IdAuditoria).ToList();
+
+				db.Auditoria_Terminado_Detalle.RemoveRange(AD);
+				db.SaveChanges();
+
+				API.Message = "Auditoria eliminada con éxito";
+				API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+
+			return API;
+		}
 
 		public partial class DET_AUDITORIA_TERMINADO
 		{
@@ -440,6 +512,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			public int cantidad { get; set; }
 			public string Imagen { get; set; }
 			public string Nota { get; set; }
+			public string Archivo { get; set; }
 	}
 
 		public partial class REQ_NEW_AT

@@ -36,5 +36,6 @@ namespace RioSulAPI.Models
         public Nullable<System.DateTime> FechaRegistroFin { get; set; }
         public System.DateTime FechaRegistro { get; set; }
         public Nullable<bool> Calidad { get; set; }
+        public Nullable<bool> Activo { get; set; }
     }
 }

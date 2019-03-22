@@ -53,7 +53,9 @@ namespace RioSulAPI.Controllers
                             Lavanderia = false,
                             Terminado = true,
                             Confeccion = false,
-                            ProcesosEspeciales = false
+                            ProcesosEspeciales = false,
+                            Calidad = false,
+                            Activo = true
                         };
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();

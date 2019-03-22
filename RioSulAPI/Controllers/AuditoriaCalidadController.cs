@@ -56,7 +56,8 @@ namespace RioSulAPI.Controllers
                             Terminado = false,
                             Confeccion = false,
                             ProcesosEspeciales = false,
-                            Calidad = true
+                            Calidad = true,
+                            Activo = true
                         };
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();
@@ -246,7 +247,7 @@ namespace RioSulAPI.Controllers
         [HttpDelete]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/AuditoriaCalidad/ActualizaAuditoriaDet")]
-        public AuditoriaTerminadoController.MESSAGE EliminaAuditoria(int IdAuditoriaDet)
+        public AuditoriaTerminadoController.MESSAGE EliminaAuditoriaD(int IdAuditoriaDet)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
 
@@ -270,6 +271,75 @@ namespace RioSulAPI.Controllers
             {
                 API.Message = e.Message;
                 API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// ACTIVAMOS O DESACTIVAMOS LA AUDITORIA
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/AuditoriaCalidad/EliminaAuditoria")]
+        public AuditoriaTerminadoController.MESSAGE ActivaAuditoria(int IdAuditoria = 0)
+        {
+            AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+            try
+            {
+                Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
+                AUD.Activo = (AUD.Activo == false ? true : false);
+
+                db.Entry(AUD).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                API.Message = "Auditoria modificada con éxito";
+                API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                API.Message = e.Message;
+                API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+
+            return API;
+        }
+
+        /// <summary>
+        /// ELIMINAMOS LA AUDITORIA
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/AuditoriaCalidad/EliminaAuditoria")]
+        public AuditoriaTerminadoController.MESSAGE EliminaAuditoria(int IdAuditoria = 0)
+        {
+            AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+            try
+            {
+                Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
+
+                db.Auditorias.Remove(AUD);
+                db.SaveChanges();
+
+                List<Models.Auditoria_Calidad_Detalle> AD = db.Auditoria_Calidad_Detalle
+                    .Where(x => x.IdAuditoria == IdAuditoria).ToList();
+
+                db.Auditoria_Calidad_Detalle.RemoveRange(AD);
+                db.SaveChanges();
+
+                API.Message = "Auditoria eliminada con éxito";
+                API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                API.Message = e.Message;
+                API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
 
             return API;

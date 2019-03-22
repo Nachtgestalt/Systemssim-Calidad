@@ -15,19 +15,21 @@ namespace RioSulAPI.Models
     public partial class VST_AUDITORIA_TERMINADO_DETALLE
     {
         public int ID { get; set; }
-        public int IdAuditoriaTerminadoDetalle { get; set; }
-        public int IdAuditoria { get; set; }
-        public int IdOrigen { get; set; }
-        public int IdOperacion { get; set; }
-        public int IdPosicion { get; set; }
-        public int IdDefecto { get; set; }
-        public int Cantidad { get; set; }
-        public bool Revisado { get; set; }
-        public bool Compostura { get; set; }
-        public string Aud_Imagen { get; set; }
         public string Defecto { get; set; }
         public string Operacion { get; set; }
         public string Origen { get; set; }
         public string Posicion { get; set; }
+        public int IdOrigen { get; set; }
+        public int IdPosicion { get; set; }
+        public int IdOperacion { get; set; }
+        public int IdDefecto { get; set; }
+        public int IdAuditoria { get; set; }
+        public int IdAuditoriaTerminadoDetalle { get; set; }
+        public int Cantidad { get; set; }
+        public bool Revisado { get; set; }
+        public bool Compostura { get; set; }
+        public string Nota { get; set; }
+        public string Aud_Imagen { get; set; }
+        public string Archivo { get; set; }
     }
 }

@@ -324,7 +324,7 @@ namespace RioSulAPI.Controllers
                     case "Calidad":
                         if (Filtro.IdCliente == null)
                         {
-                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
                         else
@@ -332,7 +332,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.Marcas.Add(item2);
@@ -344,7 +344,7 @@ namespace RioSulAPI.Controllers
                     case "Terminado":
                         if (Filtro.IdCliente == null)
                         {
-                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Terminado == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
                         else
@@ -352,7 +352,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.Marcas.Add(item2);
@@ -364,7 +364,7 @@ namespace RioSulAPI.Controllers
                     case "Lavanderia":
                         if (Filtro.IdCliente == null)
                         {
-                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
                         else
@@ -372,7 +372,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.Marcas.Add(item2);
@@ -414,7 +414,7 @@ namespace RioSulAPI.Controllers
                     case "Calidad":
                         if (Filtro.IdCliente == null && Filtro.Marca == null)
                         {
-                            API.PoList = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                            API.PoList = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -423,7 +423,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -436,7 +436,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -452,7 +452,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.PoList.Add(item3);
@@ -466,7 +466,7 @@ namespace RioSulAPI.Controllers
                     case "Terminado":
                         if (Filtro.IdCliente == null && Filtro.Marca == null)
                         {
-                            API.PoList = db.VST_AUDITORIA.Where(x => x.Terminado == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                            API.PoList = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -475,7 +475,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -488,7 +488,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -504,7 +504,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.PoList.Add(item3);
@@ -518,7 +518,7 @@ namespace RioSulAPI.Controllers
                     case "Lavanderia":
                         if (Filtro.IdCliente == null && Filtro.Marca == null)
                         {
-                            API.PoList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                            API.PoList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -527,7 +527,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -540,7 +540,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.PoList.Add(item2);
@@ -556,7 +556,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.PoList.Add(item3);
@@ -599,7 +599,7 @@ namespace RioSulAPI.Controllers
                     case "Calidad":
                         if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null)
                         {
-                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Calidad == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -608,7 +608,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -621,7 +621,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -637,7 +637,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -651,7 +651,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.PO)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.PO == item).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.PO == item && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -669,7 +669,7 @@ namespace RioSulAPI.Controllers
 
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.PO == item2).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.IdClienteRef == idClienteRef && x.PO == item2 && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -685,7 +685,7 @@ namespace RioSulAPI.Controllers
                             {
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item && x.PO == item2).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item && x.PO == item2 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -704,7 +704,7 @@ namespace RioSulAPI.Controllers
                                 {
                                     foreach (var item3 in Filtro.PO)
                                     {
-                                        consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                        consulta = db.VST_AUDITORIA.Where(x => x.Calidad == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                         foreach (var item4 in consulta)
                                         {
                                             API.CorteList.Add(item4);
@@ -719,7 +719,7 @@ namespace RioSulAPI.Controllers
                     case "Terminado":
                         if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null)
                         {
-                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Terminado == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -728,7 +728,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -741,7 +741,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -757,7 +757,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -771,7 +771,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.PO)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.PO == item).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.PO == item && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -789,7 +789,7 @@ namespace RioSulAPI.Controllers
 
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef && x.PO == item2).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.IdClienteRef == idClienteRef && x.PO == item2 && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -805,7 +805,7 @@ namespace RioSulAPI.Controllers
                             {
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item && x.PO == item2).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item && x.PO == item2 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -824,7 +824,7 @@ namespace RioSulAPI.Controllers
                                 {
                                     foreach (var item3 in Filtro.PO)
                                     {
-                                        consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                        consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                         foreach (var item4 in consulta)
                                         {
                                             API.CorteList.Add(item4);
@@ -839,7 +839,7 @@ namespace RioSulAPI.Controllers
                     case "Lavanderia":
                         if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null)
                         {
-                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
 
@@ -848,7 +848,7 @@ namespace RioSulAPI.Controllers
                             foreach (var item in Filtro.IdCliente)
                             {
                                 idClienteRef = Convert.ToInt16(item);
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -861,7 +861,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.Marca)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -877,7 +877,7 @@ namespace RioSulAPI.Controllers
                                 idClienteRef = Convert.ToInt16(item);
                                 foreach (var item2 in Filtro.Marca)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -891,7 +891,7 @@ namespace RioSulAPI.Controllers
                         {
                             foreach (var item in Filtro.PO)
                             {
-                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.PO == item).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.PO == item && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                 foreach (var item2 in consulta)
                                 {
                                     API.CorteList.Add(item2);
@@ -909,7 +909,7 @@ namespace RioSulAPI.Controllers
 
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.PO == item2).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.PO == item2 && x.Activo == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -925,7 +925,7 @@ namespace RioSulAPI.Controllers
                             {
                                 foreach (var item2 in Filtro.PO)
                                 {
-                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item && x.PO == item2).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item && x.PO == item2 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.CorteList.Add(item3);
@@ -944,7 +944,7 @@ namespace RioSulAPI.Controllers
                                 {
                                     foreach (var item3 in Filtro.PO)
                                     {
-                                        consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                        consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3 && x.Activo == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                         foreach (var item4 in consulta)
                                         {
                                             API.CorteList.Add(item4);
