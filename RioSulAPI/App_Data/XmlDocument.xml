@@ -683,7 +683,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtieneAuditoriaDet(System.Int32)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtieneAuditoriaDet(System.Int32,System.String)">
             <summary>
             Obtenemos el detalle de la auditoria dependiendo el ID enviado
             </summary>

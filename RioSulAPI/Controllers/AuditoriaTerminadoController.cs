@@ -129,14 +129,28 @@ namespace RioSulAPI.Controllers
 		[HttpGet]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/ObtieneAuditoriaDet")]
-		public RES_AUDITORIA_T_DET ObtieneAuditoriaDet(int id)
+		public RES_AUDITORIA_T_DET ObtieneAuditoriaDet(int id, string tipo = "")
 		{
 			RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
 
 			try
 			{
 				API.RES = db.VST_AUDITORIA.Where(x => x.IdAuditoria == id).FirstOrDefault();
-				API.RES_DET = db.VST_AUDITORIA_TERMINADO_DETALLE.Where(x => x.IdAuditoria == id).ToList();
+				var aux = db.VST_AUDITORIA_TERMINADO_DETALLE.Where(x => x.IdAuditoria == id);
+
+				switch (tipo)
+				{
+					case "Compostura":
+						aux = aux.Where(x => x.Compostura == true);
+						break;
+					case "Segundas":
+						aux = aux.Where(x => x.Compostura == false);
+						break;
+					default:
+						break;
+				}
+				
+				API.RES_DET = aux.ToList();
 				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
 			}
 			catch (Exception ex)
