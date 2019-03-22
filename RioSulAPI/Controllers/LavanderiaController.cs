@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -614,7 +615,7 @@ namespace RioSulAPI.Controllers
 
                             foreach (Models.C_Posicion_Lavanderia item in PT)
                             {
-                                db.C_Posicion_Lavanderia.Remove(item);
+                                db.Entry(item).State = EntityState.Deleted;
                                 db.SaveChanges();
                             }
 

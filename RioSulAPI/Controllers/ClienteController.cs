@@ -361,6 +361,26 @@ namespace RioSulAPI.Controllers
                             API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                         }
                         break;
+                    case "Lavanderia":
+                        if (Filtro.IdCliente == null)
+                        {
+                            API.Marcas = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.Marca).Select(x => x.Marca).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.Marcas.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
@@ -485,6 +505,58 @@ namespace RioSulAPI.Controllers
                                 foreach (var item2 in Filtro.Marca)
                                 {
                                     consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.PoList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+
+                    case "Lavanderia":
+                        if (Filtro.IdCliente == null && Filtro.Marca == null)
+                        {
+                            API.PoList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.PoList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.PoList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                     foreach (var item3 in consulta)
                                     {
                                         API.PoList.Add(item3);
@@ -753,6 +825,126 @@ namespace RioSulAPI.Controllers
                                     foreach (var item3 in Filtro.PO)
                                     {
                                         consulta = db.VST_AUDITORIA.Where(x => x.Terminado == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                        foreach (var item4 in consulta)
+                                        {
+                                            API.CorteList.Add(item4);
+                                        }
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+
+                    case "Lavanderia":
+                        if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO == null)
+                        {
+                            API.CorteList = db.VST_AUDITORIA.Where(x => x.Lavanderia == true).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null && Filtro.PO == null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca == null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.PO)
+                            {
+                                consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.PO == item).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                foreach (var item2 in consulta)
+                                {
+                                    API.CorteList.Add(item2);
+                                }
+                            }
+
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca == null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+
+                                foreach (var item2 in Filtro.PO)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.IdClienteRef == idClienteRef && x.PO == item2).DistinctBy(x => x.NumCortada).Select(x => x.NumCortada).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente == null && Filtro.Marca != null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.Marca)
+                            {
+                                foreach (var item2 in Filtro.PO)
+                                {
+                                    consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item && x.PO == item2).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
+                                    foreach (var item3 in consulta)
+                                    {
+                                        API.CorteList.Add(item3);
+                                    }
+                                }
+                            }
+                            API.HttpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        if (Filtro.IdCliente != null && Filtro.Marca != null && Filtro.PO != null)
+                        {
+                            foreach (var item in Filtro.IdCliente)
+                            {
+                                idClienteRef = Convert.ToInt16(item);
+                                foreach (var item2 in Filtro.Marca)
+                                {
+                                    foreach (var item3 in Filtro.PO)
+                                    {
+                                        consulta = db.VST_AUDITORIA.Where(x => x.Lavanderia == true && x.Marca == item2 && x.IdClienteRef == idClienteRef && x.PO == item3).DistinctBy(x => x.PO).Select(x => x.PO).ToList();
                                         foreach (var item4 in consulta)
                                         {
                                             API.CorteList.Add(item4);
