@@ -342,11 +342,14 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			{
 				if (ModelState.IsValid)
 				{
-					Models.Auditoria_Terminado_Detalle ATD = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == AT.IdAuditoria).FirstOrDefault();
+					List<Models.Auditoria_Terminado_Detalle> ATD = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == AT.IdAuditoria).ToList();
 
-					db.Auditoria_Terminado_Detalle.Remove(ATD);
-					db.SaveChanges();
-
+					foreach (Models.Auditoria_Terminado_Detalle item in ATD)
+					{
+						db.Auditoria_Terminado_Detalle.Remove(item);
+						db.SaveChanges();
+					}
+					
 					foreach (DET_AUDITORIA_TERMINADO item in AT.Det)
 					{
 						Models.Auditoria_Terminado_Detalle auditoria_Terminado = new Models.Auditoria_Terminado_Detalle()

@@ -191,10 +191,14 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Models.Auditoria_Calidad_Detalle ATD = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == AC.IdAuditoria).FirstOrDefault();
+                    List<Models.Auditoria_Calidad_Detalle> ATD = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == AC.IdAuditoria).ToList();
 
-                    db.Auditoria_Calidad_Detalle.Remove(ATD);
-                    db.SaveChanges();
+                    foreach (Models.Auditoria_Calidad_Detalle item in ATD)
+                    {
+                        db.Auditoria_Calidad_Detalle.Remove(item);
+                        db.SaveChanges();
+                    }
+                   
 
                     foreach (DET_AUDITORIA_CALIDAD item in AC.Det)
                     {
