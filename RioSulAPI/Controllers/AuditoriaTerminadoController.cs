@@ -435,7 +435,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		/// <returns></returns>
 		[HttpPut]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		[Route("api/AuditoriaCalidad/EliminaAuditoria")]
+		[Route("api/AuditoriaTerminado/EliminaAuditoria")]
 		public AuditoriaTerminadoController.MESSAGE ActivaAuditoria(int IdAuditoria = 0)
 		{
 			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
@@ -467,7 +467,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		/// <returns></returns>
 		[HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		[Route("api/AuditoriaCalidad/EliminaAuditoria")]
+		[Route("api/AuditoriaTerminado/EliminaAuditoria")]
 		public AuditoriaTerminadoController.MESSAGE EliminaAuditoria(int IdAuditoria = 0)
 		{
 			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
