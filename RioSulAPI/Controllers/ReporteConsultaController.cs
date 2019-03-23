@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Policy;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using CrystalDecisions.CrystalReports.Engine;
 using Microsoft.Ajax.Utilities;
 using RioSulAPI.Models;
+using RioSulAPI.Reportes;
 
 namespace RioSulAPI.Controllers
 {
@@ -24,9 +30,9 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="IdAuditoria"></param>
         /// <returns></returns>
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/ReporteConsulta/GetConsulta")]
+        [System.Web.Http.Route("api/ReporteConsulta/GetConsulta")]
         public A_RES_AUDIOTRIA GetConsulta([FromBody] C_CONSULTA Filtro)
         {
             A_RES_AUDIOTRIA API = new A_RES_AUDIOTRIA();
@@ -312,6 +318,79 @@ namespace RioSulAPI.Controllers
 
 
             return API;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idAuditoria"></param>
+        /// <param name="tipo"></param>
+        /// <returns></returns>
+        [System.Web.Http.HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [System.Web.Http.Route("api/ReporteConsulta/GetConsulta")]
+        public HttpResponseMessage createPdf(int idAuditoria, string auditoria = "", string tipo = "")
+        {
+            dsConsulta ds = new dsConsulta();
+            crConsulta cr = new crConsulta();
+
+            Models.Auditoria auditoria_gen = new Auditoria();
+            List<Models.VST_AUDITORIA_TERMINADO_DETALLE> auditoria_t = new List<VST_AUDITORIA_TERMINADO_DETALLE>();
+            Models.C_Clientes clientes = new C_Clientes();
+
+            switch (auditoria)
+            {
+                case "Terminado":
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    if (tipo == "Compostura")
+                    {
+                        auditoria_t = db.VST_AUDITORIA_TERMINADO_DETALLE
+                            .Where(x => x.IdAuditoria == idAuditoria && x.Compostura == true).ToList();
+                    }
+                    else
+                    {
+                        auditoria_t = db.VST_AUDITORIA_TERMINADO_DETALLE
+                            .Where(x => x.IdAuditoria == idAuditoria && x.Compostura == false).ToList();
+                    }
+
+
+                    break;
+            }
+
+            if (auditoria_gen != null)
+            {
+                ds.dtGeneral.AdddtGeneralRow(auditoria_gen.OrdenTrabajo, clientes.Descripcion, auditoria_gen.Marca,
+                    auditoria_gen.Estilo, auditoria_gen.PO,
+                    "", auditoria_gen.NumCortada, auditoria_gen.Planta, auditoria_gen.Tela, auditoria_gen.Lavado,
+                    auditoria_gen.Ruta, tipo.ToUpper() + " " + auditoria.ToUpper());
+
+                foreach (VST_AUDITORIA_TERMINADO_DETALLE item in auditoria_t)
+                {
+                    ds.dtDetalle.AdddtDetalleRow(item.Defecto, item.Operacion, item.Posicion, item.Origen,
+                        item.Cantidad, item.Nota);
+                }
+            }
+
+            cr.SetDataSource(ds);
+
+            
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            //FileStream fs = new FileStream(@"C:\Imagen\ejemplo.pdf",FileMode.OpenOrCreate);
+            //fs.Write(stream.ToArray(),0,stream.ToArray().Length);
+            //fs.Close();
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
         }
 
         public partial class C_CONSULTA

@@ -1663,6 +1663,14 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.ReporteConsultaController.createPdf(System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="idAuditoria"></param>
+            <param name="tipo"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.ReportesController.WipCorte(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32)">
             <summary>
             Filtra la información por submodulos
@@ -1869,6 +1877,41 @@
             </summary>
             <param name="User"></param>
             <returns></returns>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta">
+             <summary>
+            Represents a strongly typed in-memory cache of data.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtGeneralDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtDetalleDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtGeneralRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtDetalleRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtGeneralRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dtDetalleRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
         </member>
     </members>
 </doc>
