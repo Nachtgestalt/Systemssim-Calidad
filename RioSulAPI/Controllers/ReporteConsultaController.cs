@@ -86,9 +86,9 @@ namespace RioSulAPI.Controllers
 
                             if (ACD != null)
                             {
-                                A.pzas_r = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Recup);
-                                A.pzas_c = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Criterio);
-                                A.pzas_2 = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Fin);
+                                A.pzas_r = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Select(x => x.Recup).DefaultIfEmpty(0).Sum();
+                                A.pzas_c = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Select(x => x.Criterio).DefaultIfEmpty(0).Sum();
+                                A.pzas_2 = db.Auditoria_Calidad_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Select(x => x.Fin).DefaultIfEmpty(0).Sum();
                                 A.total = A.pzas_2 + A.pzas_c + A.pzas_r;
                             }
                             else
@@ -177,8 +177,10 @@ namespace RioSulAPI.Controllers
 
                             if (ACD != null)
                             {
-                                A.pzas_r = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Cantidad);
-                                A.total = A.pzas_r;
+                                A.pzas_c = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria && x.Compostura == true).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                                A.pzas_2 = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria && x.Compostura == false).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+
+                                A.total = A.pzas_c + A.pzas_2;
                             }
                             else
                             {
@@ -264,7 +266,7 @@ namespace RioSulAPI.Controllers
 
                             if (ACD != null)
                             {
-                                A.pzas_r = db.Auditoria_Lavanderia_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Sum(x => x.Cantidad);
+                                A.pzas_r = db.Auditoria_Lavanderia_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
                                 A.total = A.pzas_r;
                             }
                             else
