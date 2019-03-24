@@ -77,7 +77,8 @@ namespace RioSulAPI.Controllers
                         Corte = REQ.Corte,
                         Lavandería = REQ.Lavanderia,
                         ProcesosEspeciales = REQ.ProcesosEspeciales,
-                        Terminado = REQ.Terminado
+                        Terminado = REQ.Terminado,
+                        Calidad = REQ.Calidad
                     };
 
                     db.C_CorreosElectronicos.Add(c_CorreosElectronicos);

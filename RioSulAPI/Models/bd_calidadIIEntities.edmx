@@ -195,6 +195,7 @@
           <Property Name="ProcesosEspeciales" Type="bit" Nullable="false" />
           <Property Name="Lavandería" Type="bit" Nullable="false" />
           <Property Name="Terminado" Type="bit" Nullable="false" />
+          <Property Name="Calidad" Type="bit" />
         </EntityType>
         <EntityType Name="C_Cort_Cortadores">
           <Key>
@@ -663,6 +664,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_CORREOS_AUDITORIA' no t
           <Property Name="ProcesosEspeciales" Type="bit" Nullable="false" />
           <Property Name="Lavandería" Type="bit" Nullable="false" />
           <Property Name="Terminado" Type="bit" Nullable="false" />
+          <Property Name="Calidad" Type="bit" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_CORTADORES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1565,7 +1567,8 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_CORREOS_AUDITORIA].[Confeccion] AS [Confeccion], 
     [VST_CORREOS_AUDITORIA].[ProcesosEspeciales] AS [ProcesosEspeciales], 
     [VST_CORREOS_AUDITORIA].[Lavandería] AS [Lavandería], 
-    [VST_CORREOS_AUDITORIA].[Terminado] AS [Terminado]
+    [VST_CORREOS_AUDITORIA].[Terminado] AS [Terminado], 
+    [VST_CORREOS_AUDITORIA].[Calidad] AS [Calidad]
     FROM [dbo].[VST_CORREOS_AUDITORIA] AS [VST_CORREOS_AUDITORIA]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VST_CORTADORES" EntityType="Self.VST_CORTADORES" store:Type="Views" store:Schema="dbo">
@@ -2329,6 +2332,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ProcesosEspeciales" Type="Boolean" Nullable="false" />
           <Property Name="Lavandería" Type="Boolean" Nullable="false" />
           <Property Name="Terminado" Type="Boolean" Nullable="false" />
+          <Property Name="Calidad" Type="Boolean" />
           <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_C_CorreosElectronicos_C_Sg_Usuarios1" FromRole="C_CorreosElectronicos" ToRole="C_Sg_Usuarios" />
         </EntityType>
         <EntityType Name="C_Cort_Cortadores">
@@ -2841,6 +2845,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ProcesosEspeciales" Type="Boolean" Nullable="false" />
           <Property Name="Lavandería" Type="Boolean" Nullable="false" />
           <Property Name="Terminado" Type="Boolean" Nullable="false" />
+          <Property Name="Calidad" Type="Boolean" />
         </EntityType>
         <EntityType Name="VST_CORTADORES">
           <Key>
@@ -3739,6 +3744,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="C_CorreosElectronicos">
             <EntityTypeMapping TypeName="bd_calidadIIModel.C_CorreosElectronicos">
               <MappingFragment StoreEntitySet="C_CorreosElectronicos">
+                <ScalarProperty Name="Calidad" ColumnName="Calidad" />
                 <ScalarProperty Name="Terminado" ColumnName="Terminado" />
                 <ScalarProperty Name="Lavandería" ColumnName="Lavandería" />
                 <ScalarProperty Name="ProcesosEspeciales" ColumnName="ProcesosEspeciales" />
@@ -4162,6 +4168,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="VST_CORREOS_AUDITORIA">
             <EntityTypeMapping TypeName="bd_calidadIIModel.VST_CORREOS_AUDITORIA">
               <MappingFragment StoreEntitySet="VST_CORREOS_AUDITORIA">
+                <ScalarProperty Name="Calidad" ColumnName="Calidad" />
                 <ScalarProperty Name="Terminado" ColumnName="Terminado" />
                 <ScalarProperty Name="Lavandería" ColumnName="Lavandería" />
                 <ScalarProperty Name="ProcesosEspeciales" ColumnName="ProcesosEspeciales" />

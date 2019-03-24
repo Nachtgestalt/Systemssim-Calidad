@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Security.Policy;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -175,10 +176,59 @@ namespace RioSulAPI.Controllers
 		{
 			try
 			{
+				Boolean notas = false;
 				Models.Auditoria API = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria && x.Terminado == true).FirstOrDefault();
 				API.FechaRegistroFin = DateTime.Now;
 				db.Entry(API).State = System.Data.Entity.EntityState.Modified;
 				db.SaveChanges();
+
+				List<Models.VST_CORREOS_AUDITORIA> correos = db.VST_CORREOS_AUDITORIA.Where(x => x.Calidad == true).ToList();
+				List<Models.Auditoria_Terminado_Detalle> auditoria_det = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == IdAuditoria).ToList();
+
+				MailMessage mensaje = new MailMessage();
+
+				mensaje.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["Mail"].ToString());
+				var password = System.Configuration.ConfigurationManager.AppSettings["Password"].ToString();
+
+				foreach (VST_CORREOS_AUDITORIA item in correos)
+				{
+					mensaje.To.Add(item.Email);
+				}
+
+				var sub = "AUDITORÍA OT: " + API.OrdenTrabajo.ToUpper();
+				var body = "Se ha cerrado la auditoría de la orden de trabajo con número de corte: " + API.NumCortada.ToUpper() + " en el área del terminado.";
+
+				foreach (Auditoria_Terminado_Detalle item in auditoria_det)
+				{
+
+					if (item.Nota != "null" || item.Nota != "")
+					{
+						notas = true;
+					}
+				}
+
+				if (notas)
+				{
+					body = body + " \n La Auditoría contiene NOTAS favor de revisar";
+				}
+
+				var smtp = new SmtpClient
+				{
+					Host = System.Configuration.ConfigurationManager.AppSettings["Host"].ToString(),
+					Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Port"].ToString()),
+					EnableSsl = true,
+					DeliveryMethod = SmtpDeliveryMethod.Network,
+					UseDefaultCredentials = false,
+					Credentials = new NetworkCredential(mensaje.From.Address, password)
+				};
+				using (var mess = new MailMessage(mensaje.From.Address, mensaje.To.ToString())
+				{
+					Subject = sub,
+					Body = body
+				})
+				{
+					smtp.Send(mess);
+				}
 
 				return new HttpResponseMessage(HttpStatusCode.OK);
 			}

@@ -273,6 +273,7 @@ namespace RioSulAPI.Class
             public bool ProcesosEspeciales { get; set; }
             public bool Lavanderia { get; set; }
             public bool Terminado { get; set; }
+            public bool Calidad { get; set; }
         }
 
         public partial class RES_EDT_CORREO

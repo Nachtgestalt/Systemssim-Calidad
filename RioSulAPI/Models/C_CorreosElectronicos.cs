@@ -21,6 +21,7 @@ namespace RioSulAPI.Models
         public bool ProcesosEspeciales { get; set; }
         public bool Lavandería { get; set; }
         public bool Terminado { get; set; }
+        public Nullable<bool> Calidad { get; set; }
     
         public virtual C_Sg_Usuarios C_Sg_Usuarios { get; set; }
     }
