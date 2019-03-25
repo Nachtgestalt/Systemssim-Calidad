@@ -202,7 +202,7 @@ namespace RioSulAPI.Controllers
                 {
                     Host = System.Configuration.ConfigurationManager.AppSettings["Host"].ToString(),
                     Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Port"].ToString()),
-                    EnableSsl = true,
+                    EnableSsl = false,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(mensaje.From.Address, password)

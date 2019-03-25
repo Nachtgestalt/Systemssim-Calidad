@@ -332,10 +332,11 @@ namespace RioSulAPI.Controllers
         public HttpResponseMessage createPdf(int idAuditoria, string auditoria = "", string tipo = "")
         {
             dsConsulta ds = new dsConsulta();
-            crConsulta cr = new crConsulta();
+            ReportDocument cr = new ReportDocument();
 
             Models.Auditoria auditoria_gen = new Auditoria();
             List<Models.VST_AUDITORIA_TERMINADO_DETALLE> auditoria_t = new List<VST_AUDITORIA_TERMINADO_DETALLE>();
+            List<Models.VST_AUDITORIA_CALIDAD_DETALLE> auditoria_c = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
             Models.C_Clientes clientes = new C_Clientes();
 
             switch (auditoria)
@@ -355,7 +356,29 @@ namespace RioSulAPI.Controllers
                             .Where(x => x.IdAuditoria == idAuditoria && x.Compostura == false).ToList();
                     }
 
+                    foreach (VST_AUDITORIA_TERMINADO_DETALLE item in auditoria_t)
+                    {
+                        ds.dtDetalle.AdddtDetalleRow(item.Defecto, item.Operacion, item.Posicion, item.Origen,
+                            item.Cantidad, item.Nota);
+                    }
 
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsulta.rpt"));
+
+                    break;
+                case "Calidad":
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    auditoria_c = db.VST_AUDITORIA_CALIDAD_DETALLE
+                        .Where(x => x.IdAuditoria == idAuditoria).ToList();
+
+                    foreach (VST_AUDITORIA_CALIDAD_DETALLE item in auditoria_c)
+                    {
+                        ds.dtDetalleC.AdddtDetalleCRow(item.Defecto, item.Operacion, item.Posicion, item.Origen,
+                            item.Recup, item.Criterio, item.Fin, item.Nota);
+                    }
+
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaCalidad.rpt"));
                     break;
             }
 
@@ -364,13 +387,7 @@ namespace RioSulAPI.Controllers
                 ds.dtGeneral.AdddtGeneralRow(auditoria_gen.OrdenTrabajo, clientes.Descripcion, auditoria_gen.Marca,
                     auditoria_gen.Estilo, auditoria_gen.PO,
                     "", auditoria_gen.NumCortada, auditoria_gen.Planta, auditoria_gen.Tela, auditoria_gen.Lavado,
-                    auditoria_gen.Ruta, tipo.ToUpper() + " " + auditoria.ToUpper());
-
-                foreach (VST_AUDITORIA_TERMINADO_DETALLE item in auditoria_t)
-                {
-                    ds.dtDetalle.AdddtDetalleRow(item.Defecto, item.Operacion, item.Posicion, item.Origen,
-                        item.Cantidad, item.Nota);
-                }
+                    auditoria_gen.Ruta, tipo.ToUpper() + " " + auditoria.ToUpper());                
             }
 
             cr.SetDataSource(ds);
