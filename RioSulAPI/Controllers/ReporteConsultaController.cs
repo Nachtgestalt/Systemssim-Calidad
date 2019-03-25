@@ -83,7 +83,7 @@ namespace RioSulAPI.Controllers
                             aux = aux.Where(x => x.Estilo == Filtro.Estilo);
                         }
 
-                        consulta = aux.ToList();
+                        consulta = aux.OrderByDescending(x=> x.FechaRegistro).ToList();
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();
@@ -174,7 +174,7 @@ namespace RioSulAPI.Controllers
                             aux2 = aux2.Where(x => x.Estilo == Filtro.Estilo);
                         }
 
-                        consulta = aux2.ToList();
+                        consulta = aux2.OrderByDescending(x => x.FechaRegistro).ToList();
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();
@@ -263,7 +263,7 @@ namespace RioSulAPI.Controllers
                             aux3 = aux3.Where(x => x.Estilo == Filtro.Estilo);
                         }
 
-                        consulta = aux3.ToList();
+                        consulta = aux3.OrderByDescending(x => x.FechaRegistro).ToList();
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();

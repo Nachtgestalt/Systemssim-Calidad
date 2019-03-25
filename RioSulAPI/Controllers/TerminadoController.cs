@@ -292,7 +292,7 @@ namespace RioSulAPI.Controllers
 
                     if (con != null)
                     {
-                        Models.C_Operacion_Terminado prueba = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && (x.Clave == Operacion.Clave || x.Nombre == Operacion.Nombre)).FirstOrDefault();
+                        Models.C_Operacion_Terminado prueba = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && (x.Clave == Operacion.Clave || x.Nombre == Operacion.Nombre) && x.ID != Operacion.ID).FirstOrDefault();
 
                         if (prueba == null)
                         {
