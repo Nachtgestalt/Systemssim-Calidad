@@ -630,7 +630,7 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.NuevaAuditoriaLavanderia(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.NuevaAuditoriaLavanderia(RioSulAPI.Controllers.AuditoriaLavanderiaController.REQ_NEW_OT)">
             <summary>
             Registra una nueva auditoría de Lavandería
             </summary>
@@ -643,11 +643,32 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.ObtieneAuditoriaDet(System.Int32)">
+            <summary>
+            Obtenemos el detalle de la auditoria dependiendo el ID enviado
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.CierreAuditoria(System.Int32)">
             <summary>
             Genera el cierre de auditoria de corte
             </summary>
             <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.ActivaAuditoria(System.Int32)">
+            <summary>
+            ACTIVAMOS O DESACTIVAMOS LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.EliminaAuditoria(System.Int32)">
+            <summary>
+            ELIMINAMOS LA AUDITORIA
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.NuevaAuditoriaProcEsp(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
