@@ -1493,6 +1493,13 @@
             <param name="Nombre"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneInfoPosicionLavanderia(System.Int32)">
+            <summary>
+            Actualiza el Id Lavanderia
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.LavanderiaController.ActualizaPosicionLav(RioSulAPI.Class.ViewModel.E_POSICION_LAV)">
             <summary>
             Actualiza los datos de la posición de lavandría

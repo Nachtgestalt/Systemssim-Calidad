@@ -228,8 +228,8 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Defecto"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("api/Lavanderia/NuevaOperacionLavanderia")]
+        [HttpPost]
+        [Route("api/Lavanderia/OperacionLavanderia")]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_LAV NuevaOperacionLavanderia([FromBody]ViewModel.REQ_DEFECTO_LAV Defecto)
         {
@@ -253,9 +253,7 @@ namespace RioSulAPI.Controllers
                     db.C_Lavanderia.Add(c_Lavanderia);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(Defecto.Imagen);
-
-                    foreach (JSON_POS_DEF item in POS)
+                    foreach (ViewModel.DEFECTO_REF item in Defecto.Defecto)
                     {
                         Models.C_Operacion_Lavanderia c_Operacion_Lavanderia = new Models.C_Operacion_Lavanderia()
                         {
@@ -332,7 +330,7 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="IdLavanderia"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Lavanderia/ActivaInactivaOperacionesLavanderia")]
         public ViewModel.RES_DEFECTO_LAV ActivaInactivaOperacionesLavanderia(int IdLavanderia)
@@ -374,7 +372,7 @@ namespace RioSulAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/Lavanderia/ObtieneOperacionLavanderia")]
+        [Route("api/Lavanderia/OperacionLavanderia")]
         public ViewModel.RES_BUS_DEFECTO_LAVANDERIA ObtieneOperacionLavanderia(string Clave = "", string Nombre = "")
         {
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
@@ -382,7 +380,7 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17).OrderBy(x => x.Nombre).ToList();
+                    API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19).OrderBy(x => x.Nombre).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -405,9 +403,9 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/Lavanderia/ObtieneInfoOperacionLavanderia")]
+        [Route("api/Lavanderia/OperacionLavanderia")]
         public ViewModel.RES_EDT_LAVANDERIA ObtieneInfoOperacionLavanderia(int ID)
         {
             ViewModel.RES_EDT_LAVANDERIA API = new ViewModel.RES_EDT_LAVANDERIA();
@@ -415,12 +413,29 @@ namespace RioSulAPI.Controllers
             {
                 API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == ID).FirstOrDefault();
+                API.Defecto = new List<ViewModel.DEFECTO_OPEREACION>();
+
+                List<Models.C_Operacion_Lavanderia> Defectos = db.C_Operacion_Lavanderia.Where(x => x.IdOperacion == ID).ToList();
+                foreach (Models.C_Operacion_Lavanderia item in Defectos)
+                {
+                    Models.VST_LAVANDERIA Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == item.IdDefecto).FirstOrDefault();
+
+                    ViewModel.DEFECTO_OPEREACION DO = new ViewModel.DEFECTO_OPEREACION();
+
+                    DO.ID = Lavanderia.ID;
+                    DO.Clave = Lavanderia.Clave;
+                    DO.Descripcion = Lavanderia.Descripcion;
+                    DO.Nombre = Lavanderia.Nombre;
+
+                    API.Defecto.Add(DO);
+                }
             }
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 API.Vst_Lavanderia = null;
+                API.Defecto = null;
             }
             return API;
         }
@@ -577,6 +592,48 @@ namespace RioSulAPI.Controllers
         }
 
         /// <summary>
+        /// Actualiza el Id Lavanderia
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Lavanderia/PosicionLavanderia")]
+        public ViewModel.LAVANDERIA_P ObtieneInfoPosicionLavanderia(int ID)
+        {
+            ViewModel.LAVANDERIA_P API = new ViewModel.LAVANDERIA_P();
+            try
+            {
+                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == ID).FirstOrDefault();
+                API.Opereacion = new List<ViewModel.DEFECTO_OPEREACION>();
+
+                List<Models.C_Posicion_Lavanderia> Defectos = db.C_Posicion_Lavanderia.Where(x => x.IdPosicion == ID).ToList();
+                foreach (Models.C_Posicion_Lavanderia item in Defectos)
+                {
+                    Models.VST_LAVANDERIA Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == item.IdCortador).FirstOrDefault();
+
+                    ViewModel.DEFECTO_OPEREACION DO = new ViewModel.DEFECTO_OPEREACION();
+
+                    DO.ID = Lavanderia.ID;
+                    DO.Clave = Lavanderia.Clave;
+                    DO.Descripcion = Lavanderia.Descripcion;
+                    DO.Nombre = Lavanderia.Nombre;
+
+                    API.Opereacion.Add(DO);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Vst_Lavanderia = null;
+                API.Opereacion = null;
+            }
+            return API;
+        }
+
+        /// <summary>
         /// Actualiza los datos de la posición de lavandría
         /// </summary>
         /// <param name="Defecto"></param>
@@ -615,7 +672,7 @@ namespace RioSulAPI.Controllers
 
                             foreach (Models.C_Posicion_Lavanderia item in PT)
                             {
-                                db.Entry(item).State = EntityState.Deleted;
+                                db.C_Posicion_Lavanderia.Remove(item);
                                 db.SaveChanges();
                             }
 

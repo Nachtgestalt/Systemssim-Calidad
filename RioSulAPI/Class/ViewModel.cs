@@ -708,14 +708,18 @@ namespace RioSulAPI.Class
 
         public class REQ_DEFECTO_LAV
         {
-            [Required] public int IdSubModulo { get; set; }
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
             [Required] public string Nombre { get; set; }
             public string Descripcion { get; set; }
             public string Observaciones { get; set; }
             public string Imagen { get; set; }
+            public List<DEFECTO_REF> Defecto { get; set; }
+        }
 
+        public partial class DEFECTO_REF
+        {
+            public int IdDefecto { get; set; }
         }
 
         public partial class OPERACION_REF
@@ -755,8 +759,16 @@ namespace RioSulAPI.Class
         public partial class RES_EDT_LAVANDERIA
         {
             public Models.VST_LAVANDERIA Vst_Lavanderia { get; set; }
-            public HttpResponseMessage Message { get; set; }
-            public List<Models.VST_POSICION_PROCESOS_ESPECIALES> Vst_Posicion { get; set; }
+            public List<DEFECTO_OPEREACION> Defecto { get; set; }
+            public HttpResponseMessage Message { get; set; }            
+        }
+
+        public partial class DEFECTO_OPEREACION
+        {
+            public int ID { get; set; }
+            public string Clave { get; set; }
+            public string Nombre { get; set; }
+            public string Descripcion { get; set; }
         }
 
         public partial class REQ_EDT_DEFECTO_LAVANDERIA
@@ -768,6 +780,13 @@ namespace RioSulAPI.Class
             [Required] public string Descripcion { get; set; }
             [Required] public string Observaciones { get; set; }
             public string Imagen { get; set; }
+        }
+
+        public partial class LAVANDERIA_P
+        {
+            public Models.VST_LAVANDERIA Vst_Lavanderia { get; set; }
+            public List<DEFECTO_OPEREACION> Opereacion { get; set; }
+            public HttpResponseMessage Message { get; set; }
         }
 
         #endregion
