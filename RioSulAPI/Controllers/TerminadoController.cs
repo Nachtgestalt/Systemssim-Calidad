@@ -221,6 +221,53 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Activa o inactiva el defecto por IdDefecto
+        /// </summary>
+        /// <param name="IdDefecto"></param>
+        /// <returns></returns>
+        [Route("api/Terminado/Defecto")]
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public MESSAGE EliminaDefecto(int ID)
+        {
+            MESSAGE API = new MESSAGE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
+
+                    if (AUD == null)
+                    {
+                        Models.C_Terminado c_Cort = db.C_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Terminado.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Defecto eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                }
+                else
+                {
+                    API.Hecho = "Formato Inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = "Error interno";
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
         #endregion
 
         #region OPERACIONES
@@ -435,6 +482,54 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
 
                         API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                }
+                else
+                {
+                    API.Hecho = "Formato Inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Hecho = "Error interno";
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// ACTIVAMOS O DESACTIVAMOS LA OPERACION DEPENDIENDO EL CASO
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/Operacion")]
+        public MESSAGE EliminaOperacion(int ID)
+        {
+            MESSAGE API = new MESSAGE();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOperacion == ID).FirstOrDefault();
+
+                    if (AUD == null)
+                    {
+                        Models.C_Operacion_Terminado op = db.C_Operacion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Operacion_Terminado.Remove(op);
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro eliminado con éxito";
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                     }
                     else
@@ -686,6 +781,52 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Activamos o desactivamos el registro de Posición depenediendo el caso
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/Posicion")]
+        public MESSAGE EliminaPosicion(int ID)
+        {
+            MESSAGE API = new MESSAGE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
+
+                    if (AUD == null)
+                    {
+                        Models.C_Posicion_Terminado posicion = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Posicion_Terminado.Remove(posicion);
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                }
+                else
+                {
+                    API.Hecho = "Formato Inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = "Error interno";
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
         #endregion
 
         #region ORIGEN
@@ -892,6 +1033,52 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
 
                         API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                }
+                else
+                {
+                    API.Hecho = "Formato Inválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = "Error interno";
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Activamos o desactivamos el registro de Posición depenediendo el caso
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Terminado/Origen")]
+        public MESSAGE EliminaOrigen(int ID)
+        {
+            MESSAGE API = new MESSAGE();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOrigen == ID).FirstOrDefault();
+
+                    if (AUD == null)
+                    {
+                        Models.C_Origen_Terminado origen = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Origen_Terminado.Remove(origen);
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro eliminado con éxito";
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                     }
                     else

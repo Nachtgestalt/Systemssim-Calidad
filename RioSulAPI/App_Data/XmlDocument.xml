@@ -1756,6 +1756,13 @@
             <param name="IdDefecto"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.EliminaDefecto(System.Int32)">
+            <summary>
+            Activa o inactiva el defecto por IdDefecto
+            </summary>
+            <param name="IdDefecto"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.TerminadoController.NuevaOperacionTerminado(RioSulAPI.Class.ViewModel.REQ_OPERACION_TERMINADO)">
             <summary>
             CREA UNA NUEVA OPERACIÓN TERMINADO
@@ -1785,6 +1792,13 @@
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaOperacion(System.Int32)">
+            <summary>
+            ACTIVAMOS O DESACTIVAMOS LA OPERACION DEPENDIENDO EL CASO
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.EliminaOperacion(System.Int32)">
             <summary>
             ACTIVAMOS O DESACTIVAMOS LA OPERACION DEPENDIENDO EL CASO
             </summary>
@@ -1826,6 +1840,13 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.EliminaPosicion(System.Int32)">
+            <summary>
+            Activamos o desactivamos el registro de Posición depenediendo el caso
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoOrigenT(RioSulAPI.Class.ViewModel.REQ_ORIGEN_TERMINADO)">
             <summary>
             Creamos un nuevo registro de Origen/Terminado
@@ -1855,6 +1876,13 @@
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.TerminadoController.ActivaInactivaOrigenT(System.Int32)">
+            <summary>
+            Activamos o desactivamos el registro de Posición depenediendo el caso
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.TerminadoController.EliminaOrigen(System.Int32)">
             <summary>
             Activamos o desactivamos el registro de Posición depenediendo el caso
             </summary>
