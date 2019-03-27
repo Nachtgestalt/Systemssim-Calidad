@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
@@ -29,22 +31,31 @@ namespace RioSulAPI.Controllers
         [HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/NuevoDefectoTerminado")]
-        public ViewModel.RES_DEFECTO_TERMINADO NuevoDefectoTerminado([FromBody]ViewModel.REQ_DEFECTO_TERMINADO Terminado)
+        public ViewModel.RES_DEFECTO_TERMINADO NuevoDefectoTerminado()
         {
+            string imageName = null;
+            var httpRequest = HttpContext.Current.Request;
+            // Imagen cargada
+            var postedFile = httpRequest.Files["Imagen"];
             ViewModel.RES_DEFECTO_TERMINADO API = new ViewModel.RES_DEFECTO_TERMINADO();
             try
             {
+                // Creando custom filename
+                imageName = new String(Path.GetFileNameWithoutExtension(postedFile.FileName).Take(10).ToArray()).Replace(" ", "-");
+                imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(postedFile.FileName);
+                var filePath = HttpContext.Current.Server.MapPath("~/Imagenes/" + imageName);
+                postedFile.SaveAs(filePath);
                 Models.C_Terminado _Terminado = new Models.C_Terminado()
                 {
                     Activo = true,
                     FechaCreacion = DateTime.Now,
-                    Clave = Terminado.Clave,
-                    IdUsuario = Terminado.IdUsuario,
+                    Clave = httpRequest["Clave"],
+                    IdUsuario = Int32.Parse(httpRequest["IdUsuario"]),
                     IdSubModulo = 21,
-                    Descripcion = Terminado.Descripcion,
-                    Nombre = Terminado.Nombre,
-                    Observaciones = Terminado.Observaciones,
-                    Imagen = Terminado.Imagen
+                    Descripcion = httpRequest["Descripcion"],
+                    Nombre = httpRequest["Nombre"],
+                    Observaciones = httpRequest["Observaciones"],
+                    Imagen = imageName
                 };
                 db.C_Terminado.Add(_Terminado);
                 db.SaveChanges();
@@ -108,7 +119,18 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Terminado = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
+                    var consulta = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
+
+                    var filePath = HttpContext.Current.Server.MapPath("~/Imagenes/" + consulta.Imagen);
+                    if (File.Exists(filePath))
+                    {
+                        var extension = Path.GetExtension(consulta.Imagen).Remove(0, 1);
+
+                        consulta.Imagen = "data:image/" + extension + ";base64," + Convert.ToBase64String(File.ReadAllBytes(filePath));
+                    }
+
+                    //API.Vst_Terminado = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
+                    API.Vst_Terminado = consulta;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
