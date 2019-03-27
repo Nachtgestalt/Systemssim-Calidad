@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
@@ -31,6 +33,8 @@ namespace RioSulAPI.Controllers
         [Route("api/AuditoriaCalidad/NuevaAuditoriaCalidad")]
         public HttpResponseMessage NuevaAuditoriaCalidad([FromBody]AuditoriaCalidadController.REQ_NEW_AT OT)
         {
+            string image_name = "";
+            int num_detalle = 0;
             try
             {
                 if (ModelState.IsValid)
@@ -63,8 +67,22 @@ namespace RioSulAPI.Controllers
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();
 
+                        int a = OT.Det.Count();
+
                         foreach (AuditoriaCalidadController.DET_AUDITORIA_CALIDAD item in OT.Det)
                         {
+                            num_detalle = num_detalle + 1;
+                            string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "Auditoria_Calidad_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                            using (var image_file = new FileStream(@"C:\Imagenes\" + image_name +".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+
                             Models.Auditoria_Calidad_Detalle auditoria_calidad = new Models.Auditoria_Calidad_Detalle()
                             {
                                 IdAuditoria = auditoria.IdAuditoria,
@@ -75,11 +93,11 @@ namespace RioSulAPI.Controllers
                                 Recup = item.Recup,
                                 Criterio = item.Criterio,
                                 Fin = item.Fin,
-                                Aud_Imagen = item.Imagen,
+                                Aud_Imagen = image_name,
                                 Archivo = item.Archivo,
                                 Nota = item.Nota
 
-                            };
+                            };                           
                             db.Auditoria_Calidad_Detalle.Add(auditoria_calidad);
                         }
                         db.SaveChanges();
@@ -134,11 +152,22 @@ namespace RioSulAPI.Controllers
         public RES_AUDITORIA_T_DET ObtieneAuditoriaDet(int id)
         {
             RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
+            List<VST_AUDITORIA_CALIDAD_DETALLE> calidad = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
+            API.RES_DET = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
+            string file_path = @"C:\Imagenes\";
 
             try
             {
                 API.RES = db.VST_AUDITORIA.Where(x => x.IdAuditoria == id && x.Calidad == true).FirstOrDefault();
-                API.RES_DET = db.VST_AUDITORIA_CALIDAD_DETALLE.Where(x => x.IdAuditoria == id).ToList();
+                calidad = db.VST_AUDITORIA_CALIDAD_DETALLE.Where(x => x.IdAuditoria == id).ToList();
+
+                foreach (VST_AUDITORIA_CALIDAD_DETALLE item in calidad)
+                {
+                    file_path = file_path + item.Aud_Imagen + ".jpg" ;
+                    item.Aud_Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    API.RES_DET.Add(item);
+                }
+
                 API.Message = new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -452,5 +481,7 @@ namespace RioSulAPI.Controllers
             [Required]
             public List<DET_AUDITORIA_CALIDAD> Det { get; set; }
         }
+
+
     }
 }
