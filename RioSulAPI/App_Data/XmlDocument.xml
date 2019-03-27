@@ -671,6 +671,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaLavanderiaController.ACT_DET_AUDITORIA_L)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.NuevaAuditoriaProcEsp(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
             <summary>
             Registra una nueva auditoría de procesos especiales

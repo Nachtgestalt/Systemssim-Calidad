@@ -178,33 +178,44 @@ namespace RioSulAPI.Controllers
         /// <param name="IdDefecto"></param>
         /// <returns></returns>
         [Route("api/Terminado/ActivaInactivaDefecto")]
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_TERMINADO ActivaInactivaDefecto(int IdDefecto)
+        public MESSAGE ActivaInactivaDefecto(int ID)
         {
-            ViewModel.RES_DEFECTO_TERMINADO API = new ViewModel.RES_DEFECTO_TERMINADO();
+            MESSAGE API = new MESSAGE();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Terminado c_Cort = db.C_Terminado.Where(x => x.ID == IdDefecto).FirstOrDefault();
-                    c_Cort.Activo = (c_Cort.Activo == false ? true : false);
 
-                    db.Entry(c_Cort).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
 
-                    API.Hecho = true;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    if (AUD == null)
+                    {
+                        Models.C_Terminado c_Cort = db.C_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        c_Cort.Activo = (c_Cort.Activo == false ? true : false);
+
+                        db.Entry(c_Cort).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                   
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato Inválido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
             catch (Exception ex)
             {
-                API.Hecho = false;
+                API.Hecho = "Error interno";
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
@@ -401,37 +412,47 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ActivaInactivaOperacion")]
-        public ViewModel.RES_OPERACION_TERMINADO ActivaInactivaOperacion(int ID)
+        public MESSAGE ActivaInactivaOperacion(int ID)
         {
-            ViewModel.RES_OPERACION_TERMINADO API = new ViewModel.RES_OPERACION_TERMINADO();
+            MESSAGE API = new MESSAGE();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Operacion_Terminado op = db.C_Operacion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOperacion == ID).FirstOrDefault();
 
-                    op.Activo = (op.Activo == false ? true : false);
+                    if (AUD == null)
+                    {
+                        Models.C_Operacion_Terminado op = db.C_Operacion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
 
-                    db.Entry(op).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                        op.Activo = (op.Activo == false ? true : false);
 
-                    API.Hecho = true;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        db.Entry(op).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato Inválido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
             catch (Exception ex)
             {
                 Utilerias.EscribirLog(ex.ToString());
-                API.Hecho = false;
+                API.Hecho = "Error interno";
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
@@ -622,35 +643,44 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ActivaInactivaPosicionT")]
-        public ViewModel.RESPUESTA_MENSAJE ActivaInactivaPosicionT(int ID)
+        public MESSAGE ActivaInactivaPosicionT(int ID)
         {
-            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            MESSAGE API = new MESSAGE();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Posicion_Terminado posicion = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
-                    posicion.Activo = (posicion.Activo == false ? true : false);
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
 
-                    db.Entry(posicion).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                    if (AUD == null)
+                    {
+                        Models.C_Posicion_Terminado posicion = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        posicion.Activo = (posicion.Activo == false ? true : false);
 
-                    API.Hecho = true;
-                    API.Message2 = "Registro eliminado con éxito";
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        db.Entry(posicion).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                   
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato Inválido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
             catch (Exception ex)
             {
-                API.Hecho = false;
+                API.Hecho = "Error interno";
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
@@ -841,40 +871,55 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ActivaInactivaOrigenT")]
-        public ViewModel.RESPUESTA_MENSAJE ActivaInactivaOrigenT(int ID)
+        public MESSAGE ActivaInactivaOrigenT(int ID)
         {
-            ViewModel.RESPUESTA_MENSAJE API = new ViewModel.RESPUESTA_MENSAJE();
+            MESSAGE API = new MESSAGE();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Origen_Terminado origen = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
-                    origen.Activo = (origen.Activo == false ? true : false);
+                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOrigen == ID).FirstOrDefault();
 
-                    db.Entry(origen).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
+                    if (AUD == null)
+                    {
+                        Models.C_Origen_Terminado origen = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
+                        origen.Activo = (origen.Activo == false ? true : false);
 
-                    API.Hecho = true;
-                    API.Message2 = "Registro eliminado con éxito";
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        db.Entry(origen).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Hecho = "Registro modificado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato Inválido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
             catch (Exception ex)
             {
-                API.Hecho = false;
+                API.Hecho = "Error interno";
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
         }
 
         #endregion
+
+        public partial class MESSAGE
+        {
+            public string Hecho { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
     }
 }
