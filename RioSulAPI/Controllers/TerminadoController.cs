@@ -79,14 +79,27 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Terminado/ObtieneDefecto")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO ObtieneDefecto(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO ObtieneDefecto(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO API = new ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO();
+
+            var Terminado = db.VST_TERMINADO
+                .Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 21);
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Terminado = db.VST_TERMINADO.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 21).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            Terminado = Terminado.Where(x => x.Activo == true);
+                            break;
+                        case "False":
+                            Terminado = Terminado.Where(x => x.Activo == false);
+                            break;
+                    }
+
+                    API.Vst_Terminado = Terminado.OrderBy(x => x.Nombre).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -417,14 +430,26 @@ namespace RioSulAPI.Controllers
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ObtieneOperacionTerminados")]
-        public ViewModel.RES_BUS_OPERACION_TERMINADO ObtieneOperacionTerminados(string clave = "")
+        public ViewModel.RES_BUS_OPERACION_TERMINADO ObtieneOperacionTerminados(string clave = "", string activo = "")
         {
             ViewModel.RES_BUS_OPERACION_TERMINADO API = new ViewModel.RES_BUS_OPERACION_TERMINADO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.COperacionTerminados = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    var Operacion = db.C_Operacion_Terminado.Where(x => x.Tipo == "Terminado" && x.Clave.Contains(clave));
+
+                    switch (activo)
+                    {
+                        case "True":
+                            Operacion = Operacion.Where(x => x.Activo == true);
+                            break;
+                        case "False":
+                            Operacion = Operacion.Where(x => x.Activo == false);
+                            break;
+                    }
+
+                    API.COperacionTerminados = Operacion.OrderBy(x => x.Clave).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -643,14 +668,25 @@ namespace RioSulAPI.Controllers
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ObtienePosicionT")]
-        public ViewModel.RES_BUS_POSICION_TERMINADO ObtienePosicionT(string clave="")
+        public ViewModel.RES_BUS_POSICION_TERMINADO ObtienePosicionT(string clave="", string activo = "")
         {
             ViewModel.RES_BUS_POSICION_TERMINADO API = new ViewModel.RES_BUS_POSICION_TERMINADO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.c_posicion_t = db.C_Posicion_Terminado.Where(x => x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    var posicion = db.C_Posicion_Terminado.Where(x => x.Clave.Contains(clave));
+
+                    switch (activo)
+                    {
+                        case "True":
+                            posicion = posicion.Where(x => x.Activo == true);
+                            break;
+                        case "False":
+                            posicion = posicion.Where(x => x.Activo == false);
+                            break;
+                    }
+                    API.c_posicion_t = posicion.OrderBy(x => x.Clave).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -917,14 +953,26 @@ namespace RioSulAPI.Controllers
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/ObtieneOrigenT")]
-        public ViewModel.RES_BUS_ORIGEN_TERMINADO ObtieneOrigenT(string clave="")
+        public ViewModel.RES_BUS_ORIGEN_TERMINADO ObtieneOrigenT(string clave="", string activo = "")
         {
             ViewModel.RES_BUS_ORIGEN_TERMINADO API = new ViewModel.RES_BUS_ORIGEN_TERMINADO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.c_origen_t = db.C_Origen_Terminado.Where(x => x.Clave.Contains(clave)).OrderBy(x => x.Clave).ToList();
+                    var origen = db.C_Origen_Terminado.Where(x => x.Clave.Contains(clave));
+
+                    switch (activo)
+                    {
+                        case "True":
+                            origen = origen.Where(x => x.Activo == true);
+                            break;
+                        case "False":
+                            origen = origen.Where(x => x.Activo == false);
+                            break;
+                    }
+
+                    API.c_origen_t = origen.OrderBy(x => x.Clave).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else

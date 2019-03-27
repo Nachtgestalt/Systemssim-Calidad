@@ -1720,14 +1720,14 @@
             <param name="IdSubModulo"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoDefectoTerminado(RioSulAPI.Class.ViewModel.REQ_DEFECTO_TERMINADO)">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoDefectoTerminado">
             <summary>
             Crea un nuevo defecto de terminado
             </summary>
             <param name="OT"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneDefecto(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneDefecto(System.String,System.String,System.String)">
             <summary>
             Obtiene defecto de terminado por Clave y/o Nombre
             </summary>
@@ -1777,7 +1777,7 @@
             <param name="Operacion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOperacionTerminados(System.String)">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOperacionTerminados(System.String,System.String)">
             <summary>
             OBTENEMOS UNA LISTA DEL CATALOGO DE OPERACIONES DEPENDIENDO LA CLAVE
             </summary>
@@ -1812,7 +1812,7 @@
             <param name="Posicion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtienePosicionT(System.String)">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtienePosicionT(System.String,System.String)">
             <summary>
             Obtenemos todas las posiciones que existan dependiendo el parámetro
             </summary>
@@ -1854,7 +1854,7 @@
             <param name="origen"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOrigenT(System.String)">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.ObtieneOrigenT(System.String,System.String)">
             <summary>
             Obtenemos todos los registros de origen dependiendo la búsqueda
             </summary>
