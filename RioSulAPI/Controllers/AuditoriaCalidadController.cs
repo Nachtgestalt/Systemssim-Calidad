@@ -77,7 +77,7 @@ namespace RioSulAPI.Controllers
 
                             image_name = "Auditoria_Calidad_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
 
-                            using (var image_file = new FileStream(@"C:\Imagenes\" + image_name +".jpg", FileMode.Create))
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
                             {
                                 image_file.Write(data, 0, data.Length);
                                 image_file.Flush();
@@ -154,7 +154,7 @@ namespace RioSulAPI.Controllers
             RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
             List<VST_AUDITORIA_CALIDAD_DETALLE> calidad = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
             API.RES_DET = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
-            string file_path = @"C:\Imagenes\";
+            string file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
 
             try
             {
@@ -163,8 +163,16 @@ namespace RioSulAPI.Controllers
 
                 foreach (VST_AUDITORIA_CALIDAD_DETALLE item in calidad)
                 {
-                    file_path = file_path + item.Aud_Imagen + ".jpg" ;
-                    item.Aud_Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    file_path = file_path + item.Aud_Imagen + ".jpg";
+                    if (File.Exists(file_path))
+                    {
+                        item.Aud_Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        item.Aud_Imagen = "";
+                    }
+                                        
                     API.RES_DET.Add(item);
                 }
 

@@ -222,11 +222,6 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-
-                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
-
-                    if (AUD == null)
-                    {
                         Models.C_Terminado c_Cort = db.C_Terminado.Where(x => x.ID == ID).FirstOrDefault();
                         c_Cort.Activo = (c_Cort.Activo == false ? true : false);
 
@@ -234,13 +229,7 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
 
                         API.Hecho = "Registro modificado con éxito";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                    }                   
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);           
                 }
                 else
                 {
@@ -517,10 +506,7 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOperacion == ID).FirstOrDefault();
 
-                    if (AUD == null)
-                    {
                         Models.C_Operacion_Terminado op = db.C_Operacion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
 
                         op.Activo = (op.Activo == false ? true : false);
@@ -530,12 +516,6 @@ namespace RioSulAPI.Controllers
 
                         API.Hecho = "Registro modificado con éxito";
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                    }
                 }
                 else
                 {
@@ -806,10 +786,6 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
-
-                    if (AUD == null)
-                    {
                         Models.C_Posicion_Terminado posicion = db.C_Posicion_Terminado.Where(x => x.ID == ID).FirstOrDefault();
                         posicion.Activo = (posicion.Activo == false ? true : false);
 
@@ -817,13 +793,7 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
 
                         API.Hecho = "Registro modificado con éxito";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                    }                   
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);                  
                 }
                 else
                 {
@@ -1092,10 +1062,6 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Models.Auditoria_Terminado_Detalle AUD = db.Auditoria_Terminado_Detalle.Where(x => x.IdOrigen == ID).FirstOrDefault();
-
-                    if (AUD == null)
-                    {
                         Models.C_Origen_Terminado origen = db.C_Origen_Terminado.Where(x => x.ID == ID).FirstOrDefault();
                         origen.Activo = (origen.Activo == false ? true : false);
 
@@ -1104,12 +1070,6 @@ namespace RioSulAPI.Controllers
 
                         API.Hecho = "Registro modificado con éxito";
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                    }
-                    else
-                    {
-                        API.Hecho = "Registro relacionado con Auditoria, Validar Registro, Imposible eliminar";
-                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                    }
                 }
                 else
                 {
