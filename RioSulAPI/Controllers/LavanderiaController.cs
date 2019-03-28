@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
+using RioSulAPI.Models;
 
 namespace RioSulAPI.Controllers
 {
@@ -36,26 +40,54 @@ namespace RioSulAPI.Controllers
         [Route("api/Lavanderia/NuevoDefectoLavanderia")]
         public ViewModel.RES_DEFECTO_LAV NuevoDefectoLavanderia([FromBody]ViewModel.REQ_DEFECTO_LAV Lavanderia)
         {
+            string image_name = "";
             ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
             try
             {
-                Models.C_Lavanderia _Lavanderia = new Models.C_Lavanderia()
-                {
-                    Activo = true,
-                    FechaCreacion = DateTime.Now,
-                    Clave = Lavanderia.Clave,
-                    IdUsuario = Lavanderia.IdUsuario,
-                    IdSubModulo = 17,
-                    Descripcion = Lavanderia.Descripcion,
-                    Nombre = Lavanderia.Nombre,
-                    Observaciones = Lavanderia.Observaciones,
-                    Imagen = Lavanderia.Imagen
-                };
-                db.C_Lavanderia.Add(_Lavanderia);
-                db.SaveChanges();
 
-                API.Hecho = true;
-                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                Models.C_Lavanderia lavanderia =
+                    db.C_Lavanderia.Where(x => x.Clave == Lavanderia.Clave && x.IdSubModulo == 17).FirstOrDefault();
+
+                if (lavanderia != null)
+                {
+                    if (Lavanderia.Imagen != null && !Lavanderia.Imagen.IsEmpty())
+                    {
+                        string base64 = Lavanderia.Imagen.Substring(Lavanderia.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Lavanderia_Defecto" + "17_" + Lavanderia.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
+                    Models.C_Lavanderia _Lavanderia = new Models.C_Lavanderia()
+                    {
+                        Activo = true,
+                        FechaCreacion = DateTime.Now,
+                        Clave = Lavanderia.Clave,
+                        IdUsuario = Lavanderia.IdUsuario,
+                        IdSubModulo = 17,
+                        Descripcion = Lavanderia.Descripcion,
+                        Nombre = Lavanderia.Nombre,
+                        Observaciones = Lavanderia.Observaciones,
+                        Imagen = image_name
+                    };
+                    db.C_Lavanderia.Add(_Lavanderia);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -83,7 +115,7 @@ namespace RioSulAPI.Controllers
                 {
                     Models.C_Lavanderia c_Lavanderia = db.C_Lavanderia.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
                     if (c_Lavanderia != null)
-                        API.Hecho = false;
+                        API.Hecho = true;
                     else
                         API.Hecho = true;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -108,7 +140,7 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="IdLavanderia"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Lavanderia/ActivaInactivaLavanderia")]
         public ViewModel.RES_DEFECTO_LAV ActivaInactivaLavanderia(int IdLavanderia)
@@ -154,11 +186,32 @@ namespace RioSulAPI.Controllers
         public ViewModel.RES_BUS_DEFECTO_LAVANDERIA ObtieneDefectoLavanderia(string Clave = "", string Nombre = "")
         {
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
+            API.Vst_Lavanderia = new List<VST_LAVANDERIA>();
+            string image_name = "";
+            string file_path = "";
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Lavanderia = db.VST_LAVANDERIA.Where(x => x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre) && x.IdSubModulo == 17).OrderBy(x => x.Nombre).ToList();
+                    List<Models.VST_LAVANDERIA> lavanderias = db.VST_LAVANDERIA.Where(x => x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre) && x.IdSubModulo == 17).OrderBy(x => x.Nombre).ToList();
+
+                    foreach (Models.VST_LAVANDERIA item in lavanderias)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_Lavanderia.Add(item);
+                    }
+
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -181,32 +234,57 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Defecto"></param>
         /// <returns></returns>
-        [HttpPut]
+        [HttpGet]
         [Route("api/Lavanderia/ActualizaDefectoLavanderia")]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_LAV ActualizaDefectoLavanderia([FromBody]ViewModel.REQ_EDT_DEFECTO_LAVANDERIA Defecto)
         {
+            string image_name = "";
             ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Lavanderia Vst = db.C_Lavanderia.Where(x => x.ID == Defecto.ID).FirstOrDefault();
-                    if (Vst != null)
+                    Models.C_Lavanderia lavanderia = db.C_Lavanderia.Where(x => x.Clave == Defecto.Clave && x.ID != Defecto.ID && x.IdSubModulo == 17).FirstOrDefault();
+
+                    if (lavanderia != null)
                     {
-                        Vst.IdUsuario = Defecto.IdUsuario;
-                        Vst.Nombre = Defecto.Nombre;
-                        Vst.Observaciones = Defecto.Observaciones;
-                        Vst.Descripcion = Defecto.Descripcion;
-                        Vst.Clave = Defecto.Clave;
-                        Vst.Imagen = Defecto.Imagen;
+                        if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                        {
+                            string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
 
-                        db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
+                            image_name = "Lavanderia_Defecto"+ "17_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
 
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
+                        Models.C_Lavanderia Vst = db.C_Lavanderia.Where(x => x.ID == Defecto.ID).FirstOrDefault();
+                        if (Vst != null)
+                        {
+                            Vst.IdUsuario = Defecto.IdUsuario;
+                            Vst.Nombre = Defecto.Nombre;
+                            Vst.Observaciones = Defecto.Observaciones;
+                            Vst.Descripcion = Defecto.Descripcion;
+                            Vst.Clave = Defecto.Clave;
+                            Vst.Imagen = image_name;
+
+                            db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
                         API.Hecho = true;
                     }
+                    else
+                    {
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                        API.Hecho = false;
+                    }                 
                 }
                 else
                 {
@@ -240,10 +318,14 @@ namespace RioSulAPI.Controllers
         public ViewModel.RES_DEFECTO_LAV NuevaOperacionLavanderia([FromBody]ViewModel.REQ_DEFECTO_LAV Defecto)
         {
             ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
+            string image_name = "";
             try
             {
                 if (ModelState.IsValid)
                 {
+                    
+
+
                     Models.C_Lavanderia c_Lavanderia = new Models.C_Lavanderia()
                     {
                         Activo = true,
