@@ -108,7 +108,7 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="IdLavanderia"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Lavanderia/ActivaInactivaLavanderia")]
         public ViewModel.RES_DEFECTO_LAV ActivaInactivaLavanderia(int IdLavanderia)
@@ -181,7 +181,7 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Defecto"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpPut]
         [Route("api/Lavanderia/ActualizaDefectoLavanderia")]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_LAV ActualizaDefectoLavanderia([FromBody]ViewModel.REQ_EDT_DEFECTO_LAVANDERIA Defecto)
@@ -200,6 +200,12 @@ namespace RioSulAPI.Controllers
                         Vst.Descripcion = Defecto.Descripcion;
                         Vst.Clave = Defecto.Clave;
                         Vst.Imagen = Defecto.Imagen;
+
+                        db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Hecho = true;
                     }
                 }
                 else

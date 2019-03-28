@@ -172,17 +172,20 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     var consulta = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
-                    var file_path = HttpContext.Current.Server.MapPath("~/Imagenes/" + consulta.Imagen + ".jpg");
-
-                    if (File.Exists(file_path))
+                    if (consulta.Imagen.Length < 100)
                     {
-                        consulta.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
-                    }
-                    else
-                    {
-                        consulta.Imagen = "";
-                    }
+                        var file_path = HttpContext.Current.Server.MapPath("~/Imagenes/" + consulta.Imagen + ".jpg");
 
+                        if (File.Exists(file_path))
+                        {
+                            consulta.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            consulta.Imagen = "";
+                        }
+                    }
+                   
                     //API.Vst_Terminado = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
                     API.Vst_Terminado = consulta;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
