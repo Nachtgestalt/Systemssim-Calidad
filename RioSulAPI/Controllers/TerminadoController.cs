@@ -11,6 +11,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
 using RioSulAPI.Models;
 
@@ -31,37 +32,56 @@ namespace RioSulAPI.Controllers
         [HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Terminado/NuevoDefectoTerminado")]
-        public ViewModel.RES_DEFECTO_TERMINADO NuevoDefectoTerminado()
+        public ViewModel.RES_DEFECTO_TERMINADO NuevoDefectoTerminado(ViewModel.REQ_DEFECTO_TERMINADO DEF)
         {
-            string imageName = null;
-            var httpRequest = HttpContext.Current.Request;
-            // Imagen cargada
-            var postedFile = httpRequest.Files["Imagen"];
             ViewModel.RES_DEFECTO_TERMINADO API = new ViewModel.RES_DEFECTO_TERMINADO();
+            string image_name = "";
+
             try
             {
-                // Creando custom filename
-                imageName = new String(Path.GetFileNameWithoutExtension(postedFile.FileName).Take(10).ToArray()).Replace(" ", "-");
-                imageName = imageName + DateTime.Now.ToString("yymmssfff") + Path.GetExtension(postedFile.FileName);
-                var filePath = HttpContext.Current.Server.MapPath("~/Imagenes/" + imageName);
-                postedFile.SaveAs(filePath);
-                Models.C_Terminado _Terminado = new Models.C_Terminado()
-                {
-                    Activo = true,
-                    FechaCreacion = DateTime.Now,
-                    Clave = httpRequest["Clave"],
-                    IdUsuario = Int32.Parse(httpRequest["IdUsuario"]),
-                    IdSubModulo = 21,
-                    Descripcion = httpRequest["Descripcion"],
-                    Nombre = httpRequest["Nombre"],
-                    Observaciones = httpRequest["Observaciones"],
-                    Imagen = imageName
-                };
-                db.C_Terminado.Add(_Terminado);
-                db.SaveChanges();
 
-                API.Hecho = true;
-                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                Models.C_Terminado terminado = db.C_Terminado.Where(x => x.Clave == DEF.Clave).FirstOrDefault();
+
+                if (terminado == null)
+                {
+                    if (DEF.Imagen != null && !DEF.Imagen.IsEmpty())
+                    {
+                        string base64 = DEF.Imagen.Substring(DEF.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Defecto_Terminado_" + DEF.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
+                    Models.C_Terminado _Terminado = new Models.C_Terminado()
+                    {
+                        Activo = true,
+                        FechaCreacion = DateTime.Now,
+                        Clave = DEF.Clave,
+                        IdUsuario = DEF.IdUsuario,
+                        IdSubModulo = 21,
+                        Descripcion = DEF.Descripcion,
+                        Nombre = DEF.Nombre,
+                        Observaciones = DEF.Observaciones,
+                        Imagen = image_name
+                    };
+                    db.C_Terminado.Add(_Terminado);
+                    db.SaveChanges();
+
+                    API.Hecho = "Defecto guardado correctamente";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = "EL ID ya existe, favor de registrar otra";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -83,8 +103,12 @@ namespace RioSulAPI.Controllers
         {
             ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO API = new ViewModel.RES_BUS_DEFECTO_CORTE_TERMINADO();
 
+            string image_name = "";
+            string file_path = "";
+
             var Terminado = db.VST_TERMINADO
                 .Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 21);
+            API.Vst_Terminado = new List<VST_TERMINADO>();
             try
             {
                 if (ModelState.IsValid)
@@ -99,7 +123,22 @@ namespace RioSulAPI.Controllers
                             break;
                     }
 
-                    API.Vst_Terminado = Terminado.OrderBy(x => x.Nombre).ToList();
+                    foreach (Models.VST_TERMINADO item in Terminado.OrderBy(x => x.Nombre).ToList())
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_Terminado.Add(item);
+                    }
+
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -133,13 +172,15 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     var consulta = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
+                    var file_path = HttpContext.Current.Server.MapPath("~/Imagenes/" + consulta.Imagen + ".jpg");
 
-                    var filePath = HttpContext.Current.Server.MapPath("~/Imagenes/" + consulta.Imagen);
-                    if (File.Exists(filePath))
+                    if (File.Exists(file_path))
                     {
-                        var extension = Path.GetExtension(consulta.Imagen).Remove(0, 1);
-
-                        consulta.Imagen = "data:image/" + extension + ";base64," + Convert.ToBase64String(File.ReadAllBytes(filePath));
+                        consulta.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        consulta.Imagen = "";
                     }
 
                     //API.Vst_Terminado = db.VST_TERMINADO.Where(x => x.ID == ID).FirstOrDefault();
@@ -166,35 +207,62 @@ namespace RioSulAPI.Controllers
         /// <param name="Defecto"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Terminado/ActualizaDefecto")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_TERMINADO ActualizaDefecto([FromBody]ViewModel.REQ_EDT_DEFECTO_TERMINADO Defecto)
         {
             ViewModel.RES_DEFECTO_TERMINADO API = new ViewModel.RES_DEFECTO_TERMINADO();
+            string image_name = "";
+
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Terminado Vst = db.C_Terminado.Where(x => x.ID == Defecto.ID).FirstOrDefault();
-                    if (Vst != null)
+                    Models.C_Terminado terminado = db.C_Terminado.Where(x => x.ID != Defecto.ID && x.Clave == Defecto.Clave).FirstOrDefault();
+
+                    if (terminado == null)
                     {
-                        Vst.IdUsuario = Defecto.IdUsuario;
-                        Vst.Nombre = Defecto.Nombre;
-                        Vst.Observaciones = Defecto.Observaciones;
-                        Vst.Descripcion = Defecto.Descripcion;
-                        Vst.Clave = Defecto.Clave;
-                        Vst.Imagen = Defecto.Imagen;
+                        Models.C_Terminado Vst = db.C_Terminado.Where(x => x.ID == Defecto.ID).FirstOrDefault();
+                        if (Vst != null)
+                        {
+                            if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                            {
+                                string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                                byte[] data = Convert.FromBase64String(base64);
 
-                        db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
+                                image_name = "Defecto_Terminado_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
 
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                        API.Hecho = true;
+                                using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                                {
+                                    image_file.Write(data, 0, data.Length);
+                                    image_file.Flush();
+                                }
+                            }
+
+
+                            Vst.IdUsuario = Defecto.IdUsuario;
+                            Vst.Nombre = Defecto.Nombre;
+                            Vst.Observaciones = Defecto.Observaciones;
+                            Vst.Descripcion = Defecto.Descripcion;
+                            Vst.Clave = Defecto.Clave;
+                            Vst.Imagen = image_name;
+
+                            db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                            API.Hecho = "Defecto actualizado con éxito";
+                        }
                     }
+                    else
+                    {
+                        API.Hecho = "EL ID ya existe, favor de registrar otra";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                   
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato invalido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -202,7 +270,7 @@ namespace RioSulAPI.Controllers
             {
                 Utilerias.EscribirLog(ex.ToString());
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.Hecho = false;
+                API.Hecho = "Error interno";
             }
             return API;
         }

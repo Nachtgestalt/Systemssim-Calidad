@@ -207,7 +207,7 @@ namespace RioSulAPI.Controllers
 		/// </summary>
 		/// <param name="IdAuditoria"></param>
 		/// <returns></returns>
-		[HttpGet]
+		[HttpPut]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/CierreAuditoria")]
 		public HttpResponseMessage CierreAuditoria(int IdAuditoria)
@@ -220,54 +220,57 @@ namespace RioSulAPI.Controllers
 				db.Entry(API).State = System.Data.Entity.EntityState.Modified;
 				db.SaveChanges();
 
-				List<Models.VST_CORREOS_AUDITORIA> correos = db.VST_CORREOS_AUDITORIA.Where(x => x.Calidad == true).ToList();
+				List<Models.VST_CORREOS_AUDITORIA> correos = db.VST_CORREOS_AUDITORIA.Where(x => x.Terminado == true).ToList();
 				List<Models.Auditoria_Terminado_Detalle> auditoria_det = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == IdAuditoria).ToList();
 
-				MailMessage mensaje = new MailMessage();
-
-				mensaje.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["Mail"].ToString());
-				var password = System.Configuration.ConfigurationManager.AppSettings["Password"].ToString();
-
-				foreach (VST_CORREOS_AUDITORIA item in correos)
+				if (correos.Count > 0)
 				{
-					mensaje.To.Add(item.Email);
-				}
+					MailMessage mensaje = new MailMessage();
 
-				var sub = "AUDITORÍA OT: " + API.OrdenTrabajo.ToUpper();
-				var body = "Se ha cerrado la auditoría de la orden de trabajo con número de corte: " + API.NumCortada.ToUpper() + " en el área del terminado.";
+					mensaje.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["Mail"].ToString());
+					var password = System.Configuration.ConfigurationManager.AppSettings["Password"].ToString();
 
-				foreach (Auditoria_Terminado_Detalle item in auditoria_det)
-				{
-
-					if (item.Nota != "null" && !item.Nota.IsEmpty())
+					foreach (VST_CORREOS_AUDITORIA item in correos)
 					{
-						notas = true;
+						mensaje.To.Add(item.Email);
+					}
+
+					var sub = "AUDITORÍA OT: " + API.OrdenTrabajo.ToUpper();
+					var body = "Se ha cerrado la auditoría de la orden de trabajo con número de corte: " + API.NumCortada.ToUpper() + " en el área del terminado.";
+
+					foreach (Auditoria_Terminado_Detalle item in auditoria_det)
+					{
+
+						if (item.Nota != "null" && !item.Nota.IsEmpty())
+						{
+							notas = true;
+						}
+					}
+
+					if (notas)
+					{
+						body = body + " \n La Auditoría contiene NOTAS favor de revisar";
+					}
+
+					var smtp = new SmtpClient
+					{
+						Host = System.Configuration.ConfigurationManager.AppSettings["Host"].ToString(),
+						Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Port"].ToString()),
+						EnableSsl = false,
+						DeliveryMethod = SmtpDeliveryMethod.Network,
+						UseDefaultCredentials = false,
+						Credentials = new NetworkCredential(mensaje.From.Address, password)
+					};
+					using (var mess = new MailMessage(mensaje.From.Address, mensaje.To.ToString())
+					{
+						Subject = sub,
+						Body = body
+					})
+					{
+						smtp.Send(mess);
 					}
 				}
-
-				if (notas)
-				{
-					body = body + " \n La Auditoría contiene NOTAS favor de revisar";
-				}
-
-				var smtp = new SmtpClient
-				{
-					Host = System.Configuration.ConfigurationManager.AppSettings["Host"].ToString(),
-					Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Port"].ToString()),
-					EnableSsl = false,
-					DeliveryMethod = SmtpDeliveryMethod.Network,
-					UseDefaultCredentials = false,
-					Credentials = new NetworkCredential(mensaje.From.Address, password)
-				};
-				using (var mess = new MailMessage(mensaje.From.Address, mensaje.To.ToString())
-				{
-					Subject = sub,
-					Body = body
-				})
-				{
-					smtp.Send(mess);
-				}
-
+			
 				return new HttpResponseMessage(HttpStatusCode.OK);
 			}
 			catch (Exception ex)

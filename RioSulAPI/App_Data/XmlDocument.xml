@@ -1720,7 +1720,7 @@
             <param name="IdSubModulo"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoDefectoTerminado">
+        <member name="M:RioSulAPI.Controllers.TerminadoController.NuevoDefectoTerminado(RioSulAPI.Class.ViewModel.REQ_DEFECTO_TERMINADO)">
             <summary>
             Crea un nuevo defecto de terminado
             </summary>

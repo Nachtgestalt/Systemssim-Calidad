@@ -797,7 +797,7 @@ namespace RioSulAPI.Class
 
         public partial class RES_DEFECTO_TERMINADO
         {
-            public bool Hecho { get; set; }
+            public string Hecho { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
 
