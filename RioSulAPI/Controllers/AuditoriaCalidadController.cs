@@ -72,17 +72,21 @@ namespace RioSulAPI.Controllers
                         foreach (AuditoriaCalidadController.DET_AUDITORIA_CALIDAD item in OT.Det)
                         {
                             num_detalle = num_detalle + 1;
-                            string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
-                            byte[] data = Convert.FromBase64String(base64);
 
-                            image_name = "Auditoria_Calidad_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
-
-                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            if (item.Imagen != null)
                             {
-                                image_file.Write(data, 0, data.Length);
-                                image_file.Flush();
-                            }
+                                string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+                                byte[] data = Convert.FromBase64String(base64);
 
+                                image_name = "Auditoria_Calidad_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                                using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                                {
+                                    image_file.Write(data, 0, data.Length);
+                                    image_file.Flush();
+                                }
+                            }
+                          
                             Models.Auditoria_Calidad_Detalle auditoria_calidad = new Models.Auditoria_Calidad_Detalle()
                             {
                                 IdAuditoria = auditoria.IdAuditoria,
