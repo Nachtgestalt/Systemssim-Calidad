@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
 using RioSulAPI.Models;
 
@@ -71,7 +72,7 @@ namespace RioSulAPI.Controllers
                         {
                             num_detalle = num_detalle + 1;
                             image_name = "";
-                            if (item.Imagen != null)
+                            if (item.Imagen != null && !item.Imagen.IsEmpty())
                             {
                                 string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
                                 byte[] data = Convert.FromBase64String(base64);
@@ -298,7 +299,7 @@ namespace RioSulAPI.Controllers
                         num_detalle = num_detalle + 1;
                         image_name = "";
 
-                        if (item.Imagen != null)
+                        if (item.Imagen != null && !item.Imagen.IsEmpty())
                         {
                             string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
                             byte[] data = Convert.FromBase64String(base64);
