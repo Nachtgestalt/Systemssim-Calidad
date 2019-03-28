@@ -293,7 +293,7 @@ namespace RioSulAPI.Controllers
         /// <returns></returns>
         [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/AuditoriaCalidad/ActualizaAuditoriaDet")]
+        [Route("api/AuditoriaLavanderia/ActualizaAuditoriaDet")]
         public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]ACT_DET_AUDITORIA_L AC)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();

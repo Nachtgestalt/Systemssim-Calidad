@@ -67,12 +67,10 @@ namespace RioSulAPI.Controllers
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();
 
-                        int a = OT.Det.Count();
-
                         foreach (AuditoriaCalidadController.DET_AUDITORIA_CALIDAD item in OT.Det)
                         {
                             num_detalle = num_detalle + 1;
-
+                            image_name = "";
                             if (item.Imagen != null)
                             {
                                 string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
@@ -278,6 +276,8 @@ namespace RioSulAPI.Controllers
         public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]ACT_DET_AUDITORIA_C AC)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+            string image_name = "";
+            int num_detalle = 0;
 
             try
             {
@@ -294,6 +294,23 @@ namespace RioSulAPI.Controllers
 
                     foreach (DET_AUDITORIA_CALIDAD item in AC.Det)
                     {
+                        num_detalle = num_detalle + 1;
+                        image_name = "";
+
+                        if (item.Imagen != null)
+                        {
+                            string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "Auditoria_Calidad_" + AC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
                         Models.Auditoria_Calidad_Detalle auditoria_calidad = new Models.Auditoria_Calidad_Detalle()
                         {
                             IdAuditoria = AC.IdAuditoria,
@@ -304,7 +321,7 @@ namespace RioSulAPI.Controllers
                             Recup = item.Recup,
                             Criterio = item.Criterio,
                             Fin = item.Fin,
-                            Aud_Imagen = item.Imagen,
+                            Aud_Imagen = image_name,
                             Nota = item.Nota,
                             Archivo = item.Archivo 
                         };
@@ -337,7 +354,7 @@ namespace RioSulAPI.Controllers
         /// <returns></returns>
         [HttpDelete]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/AuditoriaCalidad/ActualizaAuditoriaDet")]
+        [Route("api/AuditoriaCalidad/ActualizaAuditoriaDet2")]
         public AuditoriaTerminadoController.MESSAGE EliminaAuditoriaD(int IdAuditoriaDet)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();

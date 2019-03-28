@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Security.Policy;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
@@ -31,6 +33,8 @@ namespace RioSulAPI.Controllers
 		[Route("api/AuditoriaTerminado/NuevaAuditoriaTerminado")]
 		public HttpResponseMessage NuevaAuditoriaTerminado([FromBody]AuditoriaTerminadoController.REQ_NEW_AT OT)
 		{
+			string image_name = "";
+			int num_detalle = 0;
 			try
 			{
 				if (ModelState.IsValid)
@@ -65,6 +69,22 @@ namespace RioSulAPI.Controllers
 
 						foreach (DET_AUDITORIA_TERMINADO item in OT.Det)
 						{
+							num_detalle = num_detalle + 1;
+
+							if (item.Imagen != null)
+							{
+								string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+								byte[] data = Convert.FromBase64String(base64);
+
+								image_name = "Auditoria_Terminado_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+								using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+								{
+									image_file.Write(data, 0, data.Length);
+									image_file.Flush();
+								}
+							}
+
 							Models.Auditoria_Terminado_Detalle auditoria_Terminado = new Models.Auditoria_Terminado_Detalle()
 							{
 								IdAuditoria = auditoria.IdAuditoria,
@@ -75,7 +95,7 @@ namespace RioSulAPI.Controllers
 								Revisado = item.Revisado,
 								Compostura = item.Compostura,
 								Cantidad = item.cantidad,
-								Aud_Imagen = item.Imagen,
+								Aud_Imagen = image_name,
 								Nota = item.Nota,
 								Archivo = item.Archivo
 			  };
@@ -133,6 +153,8 @@ namespace RioSulAPI.Controllers
 		public RES_AUDITORIA_T_DET ObtieneAuditoriaDet(int id, string tipo = "")
 		{
 			RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
+			API.RES_DET = new List<VST_AUDITORIA_TERMINADO_DETALLE>();
+			string file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
 
 			try
 			{
@@ -150,8 +172,22 @@ namespace RioSulAPI.Controllers
 					default:
 						break;
 				}
+
+				foreach (VST_AUDITORIA_TERMINADO_DETALLE item in aux.ToList())
+				{
+					file_path = file_path + item.Aud_Imagen + ".jpg";
+					if (File.Exists(file_path))
+					{
+						item.Aud_Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+					}
+					else
+					{
+						item.Aud_Imagen = "";
+					}
+
+					API.RES_DET.Add(item);
+				}
 				
-				API.RES_DET = aux.ToList();
 				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
 			}
 			catch (Exception ex)
@@ -404,6 +440,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		public MESSAGE ActualizaAuditoria([FromBody]ACT_DET_AUDITORIA_T AT)
 		{
 			MESSAGE API = new MESSAGE();
+			string image_name = "";
+			int num_detalle = 0;
 
 			try
 			{
@@ -419,6 +457,22 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 					
 					foreach (DET_AUDITORIA_TERMINADO item in AT.Det)
 					{
+						num_detalle = num_detalle + 1;
+                        image_name = "";
+
+						if (item.Imagen != null)
+						{
+							string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+							byte[] data = Convert.FromBase64String(base64);
+
+							image_name = "Auditoria_Terminado_" + AT.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+							using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+							{
+								image_file.Write(data, 0, data.Length);
+								image_file.Flush();
+							}
+						}
 						Models.Auditoria_Terminado_Detalle auditoria_Terminado = new Models.Auditoria_Terminado_Detalle()
 						{
 							IdAuditoria = AT.IdAuditoria,
@@ -429,7 +483,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 							Revisado = item.Revisado,
 							Compostura = item.Compostura,
 							Cantidad = item.cantidad,
-							Aud_Imagen = item.Imagen,
+							Aud_Imagen = image_name,
 							Nota = item.Nota,
 							Archivo = item.Archivo
 						};
