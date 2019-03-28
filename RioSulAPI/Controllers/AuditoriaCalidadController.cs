@@ -156,7 +156,7 @@ namespace RioSulAPI.Controllers
             RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
             List<VST_AUDITORIA_CALIDAD_DETALLE> calidad = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
             API.RES_DET = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
-            string file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+            string file_path = "";
 
             try
             {
@@ -165,6 +165,7 @@ namespace RioSulAPI.Controllers
 
                 foreach (VST_AUDITORIA_CALIDAD_DETALLE item in calidad)
                 {
+                    file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
                     file_path = file_path + item.Aud_Imagen + ".jpg";
                     if (File.Exists(file_path))
                     {

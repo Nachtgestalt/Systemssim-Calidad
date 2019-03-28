@@ -175,6 +175,7 @@ namespace RioSulAPI.Controllers
 
 				foreach (VST_AUDITORIA_TERMINADO_DETALLE item in aux.ToList())
 				{
+					file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
 					file_path = file_path + item.Aud_Imagen + ".jpg";
 					if (File.Exists(file_path))
 					{
@@ -458,7 +459,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 					foreach (DET_AUDITORIA_TERMINADO item in AT.Det)
 					{
 						num_detalle = num_detalle + 1;
-                        image_name = "";
+						image_name = "";
 
 						if (item.Imagen != null)
 						{
