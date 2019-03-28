@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using Microsoft.Ajax.Utilities;
 using RioSulAPI.Class;
 using RioSulAPI.Models;
@@ -71,7 +72,7 @@ namespace RioSulAPI.Controllers
 						{
 							num_detalle = num_detalle + 1;
 
-							if (item.Imagen != null)
+							if (item.Imagen != null && !item.Imagen.IsEmpty())
 							{
 								string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
 								byte[] data = Convert.FromBase64String(base64);
@@ -238,7 +239,7 @@ namespace RioSulAPI.Controllers
 				foreach (Auditoria_Terminado_Detalle item in auditoria_det)
 				{
 
-					if (item.Nota != "null" || item.Nota != "")
+					if (item.Nota != "null" && !item.Nota.IsEmpty())
 					{
 						notas = true;
 					}
@@ -461,7 +462,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 						num_detalle = num_detalle + 1;
 						image_name = "";
 
-						if (item.Imagen != null)
+						if (item.Imagen != null && !item.Imagen.IsEmpty())
 						{
 							string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
 							byte[] data = Convert.FromBase64String(base64);

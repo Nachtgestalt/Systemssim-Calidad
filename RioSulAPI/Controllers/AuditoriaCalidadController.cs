@@ -228,7 +228,7 @@ namespace RioSulAPI.Controllers
 
                 foreach (Auditoria_Calidad_Detalle item in auditoria_det)
                 {
-                    if (item.Nota != "null" || item.Nota != "")
+                    if (item.Nota != "null" && !item.Nota.IsEmpty())
                     {
                         notas = true;
                     }
