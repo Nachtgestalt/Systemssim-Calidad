@@ -1153,30 +1153,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_C_Operacion_Lavanderia_C_Lavanderia">
-          <End Role="C_Lavanderia" Type="Self.C_Lavanderia" Multiplicity="1" />
-          <End Role="C_Operacion_Lavanderia" Type="Self.C_Operacion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Operacion_Lavanderia">
-              <PropertyRef Name="IdDefecto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Operacion_Lavanderia_C_Lavanderia1">
-          <End Role="C_Lavanderia" Type="Self.C_Lavanderia" Multiplicity="1" />
-          <End Role="C_Operacion_Lavanderia" Type="Self.C_Operacion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Operacion_Lavanderia">
-              <PropertyRef Name="IdOperacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales">
           <End Role="C_Procesos_Especiales" Type="Self.C_Procesos_Especiales" Multiplicity="1" />
           <End Role="C_Operacion_ProcesosEspeciales" Type="Self.C_Operacion_ProcesosEspeciales" Multiplicity="*" />
@@ -1246,30 +1222,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Principal>
             <Dependent Role="C_Posicion_Cortador">
               <PropertyRef Name="IdPosicion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia">
-          <End Role="C_Posicion_Lavanderia" Type="Self.C_Posicion_Lavanderia" Multiplicity="1" />
-          <End Role="C_Posicion_Lavanderia1" Type="Self.C_Posicion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Posicion_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Posicion_Lavanderia1">
-              <PropertyRef Name="IdPosicion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1">
-          <End Role="C_Posicion_Lavanderia" Type="Self.C_Posicion_Lavanderia" Multiplicity="1" />
-          <End Role="C_Posicion_Lavanderia1" Type="Self.C_Posicion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Posicion_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Posicion_Lavanderia1">
-              <PropertyRef Name="IdCortador" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1844,14 +1796,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             <End Role="C_Conf_Confeccion" EntitySet="C_Conf_Confeccion" />
             <End Role="C_Operacion_Confeccion" EntitySet="C_Operacion_Confeccion" />
           </AssociationSet>
-          <AssociationSet Name="FK_C_Operacion_Lavanderia_C_Lavanderia" Association="Self.FK_C_Operacion_Lavanderia_C_Lavanderia">
-            <End Role="C_Lavanderia" EntitySet="C_Lavanderia" />
-            <End Role="C_Operacion_Lavanderia" EntitySet="C_Operacion_Lavanderia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Operacion_Lavanderia_C_Lavanderia1" Association="Self.FK_C_Operacion_Lavanderia_C_Lavanderia1">
-            <End Role="C_Lavanderia" EntitySet="C_Lavanderia" />
-            <End Role="C_Operacion_Lavanderia" EntitySet="C_Operacion_Lavanderia" />
-          </AssociationSet>
           <AssociationSet Name="FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales" Association="Self.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales">
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
             <End Role="C_Operacion_ProcesosEspeciales" EntitySet="C_Operacion_ProcesosEspeciales" />
@@ -1875,14 +1819,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <AssociationSet Name="FK_C_Posicion_Cortador_C_Cort_Cortadores1" Association="Self.FK_C_Posicion_Cortador_C_Cort_Cortadores1">
             <End Role="C_Cort_Cortadores" EntitySet="C_Cort_Cortadores" />
             <End Role="C_Posicion_Cortador" EntitySet="C_Posicion_Cortador" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" Association="Self.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia">
-            <End Role="C_Posicion_Lavanderia" EntitySet="C_Posicion_Lavanderia" />
-            <End Role="C_Posicion_Lavanderia1" EntitySet="C_Posicion_Lavanderia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" Association="Self.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1">
-            <End Role="C_Posicion_Lavanderia" EntitySet="C_Posicion_Lavanderia" />
-            <End Role="C_Posicion_Lavanderia1" EntitySet="C_Posicion_Lavanderia" />
           </AssociationSet>
           <AssociationSet Name="FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales" Association="Self.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales">
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
@@ -2106,14 +2042,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             <End Role="C_SubModulos" EntitySet="C_SubModulos" />
             <End Role="C_Lavanderia" EntitySet="C_Lavanderia" />
           </AssociationSet>
-          <AssociationSet Name="FK_C_Operacion_Lavanderia_C_Lavanderia" Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia">
-            <End Role="C_Lavanderia" EntitySet="C_Lavanderia" />
-            <End Role="C_Operacion_Lavanderia" EntitySet="C_Operacion_Lavanderia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Operacion_Lavanderia_C_Lavanderia1" Association="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia1">
-            <End Role="C_Lavanderia" EntitySet="C_Lavanderia" />
-            <End Role="C_Operacion_Lavanderia" EntitySet="C_Operacion_Lavanderia" />
-          </AssociationSet>
           <AssociationSet Name="FK_C_SubModulos_C_Modulos" Association="bd_calidadIIModel.FK_C_SubModulos_C_Modulos">
             <End Role="C_Modulos" EntitySet="C_Modulos" />
             <End Role="C_SubModulos" EntitySet="C_SubModulos" />
@@ -2129,14 +2057,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <AssociationSet Name="FK_C_Plantas_Areas_C_Plantas_Dynamic" Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic">
             <End Role="C_Plantas_Dynamic" EntitySet="C_Plantas_Dynamic" />
             <End Role="C_Plantas_Areas" EntitySet="C_Plantas_Areas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia">
-            <End Role="C_Posicion_Lavanderia" EntitySet="C_Posicion_Lavanderia" />
-            <End Role="C_Posicion_Lavanderia1" EntitySet="C_Posicion_Lavanderia" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" Association="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1">
-            <End Role="C_Posicion_Lavanderia" EntitySet="C_Posicion_Lavanderia" />
-            <End Role="C_Posicion_Lavanderia1" EntitySet="C_Posicion_Lavanderia" />
           </AssociationSet>
           <AssociationSet Name="FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales" Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales">
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
@@ -2442,8 +2362,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_C_Lavanderia_C_Sg_Usuarios" FromRole="C_Lavanderia" ToRole="C_Sg_Usuarios" />
           <NavigationProperty Name="C_SubModulos" Relationship="bd_calidadIIModel.FK_C_Lavanderia_C_SubModulos" FromRole="C_Lavanderia" ToRole="C_SubModulos" />
-          <NavigationProperty Name="C_Operacion_Lavanderia" Relationship="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia" FromRole="C_Lavanderia" ToRole="C_Operacion_Lavanderia" />
-          <NavigationProperty Name="C_Operacion_Lavanderia1" Relationship="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia1" FromRole="C_Lavanderia" ToRole="C_Operacion_Lavanderia" />
         </EntityType>
         <EntityType Name="C_Modulos">
           <Key>
@@ -2470,8 +2388,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdOperacion" Type="Int32" Nullable="false" />
           <Property Name="IdDefecto" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="C_Lavanderia" Relationship="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia" FromRole="C_Operacion_Lavanderia" ToRole="C_Lavanderia" />
-          <NavigationProperty Name="C_Lavanderia1" Relationship="bd_calidadIIModel.FK_C_Operacion_Lavanderia_C_Lavanderia1" FromRole="C_Operacion_Lavanderia" ToRole="C_Lavanderia" />
         </EntityType>
         <EntityType Name="C_Operacion_ProcesosEspeciales">
           <Key>
@@ -2538,10 +2454,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPosicion" Type="Int32" Nullable="false" />
           <Property Name="IdCortador" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="C_Posicion_Lavanderia1" Relationship="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" FromRole="C_Posicion_Lavanderia" ToRole="C_Posicion_Lavanderia1" />
-          <NavigationProperty Name="C_Posicion_Lavanderia2" Relationship="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia" FromRole="C_Posicion_Lavanderia1" ToRole="C_Posicion_Lavanderia" />
-          <NavigationProperty Name="C_Posicion_Lavanderia11" Relationship="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" FromRole="C_Posicion_Lavanderia" ToRole="C_Posicion_Lavanderia1" />
-          <NavigationProperty Name="C_Posicion_Lavanderia3" Relationship="bd_calidadIIModel.FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1" FromRole="C_Posicion_Lavanderia1" ToRole="C_Posicion_Lavanderia" />
         </EntityType>
         <EntityType Name="C_Posicion_ProcesosEsp">
           <Key>
@@ -3407,30 +3319,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_C_Operacion_Lavanderia_C_Lavanderia">
-          <End Type="bd_calidadIIModel.C_Lavanderia" Role="C_Lavanderia" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Operacion_Lavanderia" Role="C_Operacion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Operacion_Lavanderia">
-              <PropertyRef Name="IdDefecto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Operacion_Lavanderia_C_Lavanderia1">
-          <End Type="bd_calidadIIModel.C_Lavanderia" Role="C_Lavanderia" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Operacion_Lavanderia" Role="C_Operacion_Lavanderia" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Operacion_Lavanderia">
-              <PropertyRef Name="IdOperacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_C_SubModulos_C_Modulos">
           <End Type="bd_calidadIIModel.C_Modulos" Role="C_Modulos" Multiplicity="1" />
           <End Type="bd_calidadIIModel.C_SubModulos" Role="C_SubModulos" Multiplicity="*" />
@@ -3476,30 +3364,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Principal>
             <Dependent Role="C_Plantas_Areas">
               <PropertyRef Name="IdPlanta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia">
-          <End Type="bd_calidadIIModel.C_Posicion_Lavanderia" Role="C_Posicion_Lavanderia" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Posicion_Lavanderia" Role="C_Posicion_Lavanderia1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Posicion_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Posicion_Lavanderia1">
-              <PropertyRef Name="IdPosicion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Posicion_Lavanderia_C_Posicion_Lavanderia1">
-          <End Type="bd_calidadIIModel.C_Posicion_Lavanderia" Role="C_Posicion_Lavanderia" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Posicion_Lavanderia" Role="C_Posicion_Lavanderia1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Posicion_Lavanderia">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Posicion_Lavanderia1">
-              <PropertyRef Name="IdCortador" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -1446,7 +1446,7 @@
             <param name="IdLavanderia"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneDefectoLavanderia(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneDefectoLavanderia(System.String,System.String,System.String)">
             <summary>
             Obtiene defecto por Clave y/o Nombre
             </summary>
@@ -1459,6 +1459,13 @@
             Actualiza los datos del defecto de lavandría
             </summary>
             <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.DeleteDefectoLav(System.Int32,System.String)">
+            <summary>
+            Elimina el defecto de la lavandería
+            </summary>
+            <param name="IdLavanderia"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevaOperacionLavanderia(RioSulAPI.Class.ViewModel.REQ_DEFECTO_LAV)">
@@ -1484,7 +1491,7 @@
             <param name="IdLavanderia"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneOperacionLavanderia(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtieneOperacionLavanderia(System.String,System.String,System.String)">
             <summary>
             Obtiene lavanderia por clave y/o nombre
             </summary>
@@ -1513,7 +1520,7 @@
             <param name="IdLavanderia"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtienePosicionLavanderia(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.ObtienePosicionLavanderia(System.String,System.String,System.String)">
             <summary>
             Obtiene Posicion por Clave y/o Nombre
             </summary>

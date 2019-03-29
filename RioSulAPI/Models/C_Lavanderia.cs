@@ -14,13 +14,6 @@ namespace RioSulAPI.Models
     
     public partial class C_Lavanderia
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public C_Lavanderia()
-        {
-            this.C_Operacion_Lavanderia = new HashSet<C_Operacion_Lavanderia>();
-            this.C_Operacion_Lavanderia1 = new HashSet<C_Operacion_Lavanderia>();
-        }
-    
         public int ID { get; set; }
         public int IdSubModulo { get; set; }
         public int IdUsuario { get; set; }
@@ -34,9 +27,5 @@ namespace RioSulAPI.Models
     
         public virtual C_Sg_Usuarios C_Sg_Usuarios { get; set; }
         public virtual C_SubModulos C_SubModulos { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Operacion_Lavanderia> C_Operacion_Lavanderia { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Operacion_Lavanderia> C_Operacion_Lavanderia1 { get; set; }
     }
 }

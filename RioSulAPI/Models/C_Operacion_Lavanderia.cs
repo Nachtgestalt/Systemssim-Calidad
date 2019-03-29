@@ -17,8 +17,5 @@ namespace RioSulAPI.Models
         public int ID { get; set; }
         public int IdOperacion { get; set; }
         public int IdDefecto { get; set; }
-    
-        public virtual C_Lavanderia C_Lavanderia { get; set; }
-        public virtual C_Lavanderia C_Lavanderia1 { get; set; }
     }
 }

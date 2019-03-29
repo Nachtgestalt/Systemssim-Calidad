@@ -776,16 +776,16 @@ namespace RioSulAPI.Class
             [Required] public int ID { get; set; }
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
-            [Required] public string Nombre { get; set; }
-            [Required] public string Descripcion { get; set; }
-            [Required] public string Observaciones { get; set; }
+            public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 
         public partial class LAVANDERIA_P
         {
             public Models.VST_LAVANDERIA Vst_Lavanderia { get; set; }
-            public List<DEFECTO_OPEREACION> Opereacion { get; set; }
+            public List<DEFECTO_OPEREACION> Operacion { get; set; }
             public HttpResponseMessage Message { get; set; }
         }
 

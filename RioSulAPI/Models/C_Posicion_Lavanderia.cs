@@ -14,22 +14,8 @@ namespace RioSulAPI.Models
     
     public partial class C_Posicion_Lavanderia
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public C_Posicion_Lavanderia()
-        {
-            this.C_Posicion_Lavanderia1 = new HashSet<C_Posicion_Lavanderia>();
-            this.C_Posicion_Lavanderia11 = new HashSet<C_Posicion_Lavanderia>();
-        }
-    
         public int ID { get; set; }
         public int IdPosicion { get; set; }
         public int IdCortador { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Posicion_Lavanderia> C_Posicion_Lavanderia1 { get; set; }
-        public virtual C_Posicion_Lavanderia C_Posicion_Lavanderia2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<C_Posicion_Lavanderia> C_Posicion_Lavanderia11 { get; set; }
-        public virtual C_Posicion_Lavanderia C_Posicion_Lavanderia3 { get; set; }
     }
 }
