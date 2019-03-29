@@ -241,6 +241,9 @@
     <Compile Include="Models\C_Areas.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\C_ClienteMarca.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\C_Clientes.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>

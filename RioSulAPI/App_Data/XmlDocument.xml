@@ -891,6 +891,34 @@
             <param name="Filtro"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.Marcas(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.ClienteMarca(RioSulAPI.Controllers.ClienteController.REQ_CLIENTE_MARCA)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.updateClienteMarca(RioSulAPI.Controllers.ClienteController.REQ_CLIENTE_MARCA)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ClienteController.getClienteMarca(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="Filtro"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoDefectoConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
             <summary>
             Registra un nuevo defecto confeccion

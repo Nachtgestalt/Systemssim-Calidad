@@ -719,7 +719,7 @@ namespace RioSulAPI.Class
 
         public partial class DEFECTO_REF
         {
-            public int IdDefecto { get; set; }
+            public int ID { get; set; }
         }
 
         public partial class OPERACION_REF

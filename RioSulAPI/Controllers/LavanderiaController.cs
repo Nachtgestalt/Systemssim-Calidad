@@ -196,21 +196,29 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     List<Models.VST_LAVANDERIA> lavanderias = new List<VST_LAVANDERIA>();
-                    var Consulta = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17);
+                    
 
                     switch (Activo)
                     {
                         case "True":
-                            Consulta.Where(x => x.Activo == true);
+                            lavanderias = db.VST_LAVANDERIA.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
 
                         case "False":
-                            Consulta.Where(x => x.Activo == false);
+                            lavanderias = db.VST_LAVANDERIA.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            lavanderias = db.VST_LAVANDERIA.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                     }
 
-                    lavanderias = Consulta.OrderBy(x => x.Nombre).ToList();
-
+                   
                     foreach (Models.VST_LAVANDERIA item in lavanderias)
                     {
                         file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
@@ -439,7 +447,7 @@ namespace RioSulAPI.Controllers
                             Models.C_Operacion_Lavanderia c_Operacion_Lavanderia = new Models.C_Operacion_Lavanderia()
                             {
                                 IdOperacion = c_Lavanderia.ID,
-                                IdDefecto = item.IdDefecto
+                                IdDefecto = item.ID
                             };
                             db.C_Operacion_Lavanderia.Add(c_Operacion_Lavanderia);
                         }
@@ -567,25 +575,30 @@ namespace RioSulAPI.Controllers
             string file_path = "";
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
             API.Vst_Lavanderia = new List<VST_LAVANDERIA>();
+            List<Models.VST_LAVANDERIA> lavanderia = new List<VST_LAVANDERIA>();
             try
             {
                 if (ModelState.IsValid)
                 {
 
-                    var Consulta = db.VST_LAVANDERIA.Where(x =>
-                        (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19);
-
                     switch (Activo)
                     {
                         case "True":
-                            Consulta = Consulta.Where(x => x.Activo == true);
+                            lavanderia = db.VST_LAVANDERIA.Where(x =>
+                                (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19 && x.Activo == true)
+                                .OrderBy(x => x.Nombre).ToList();
                             break;
                         case "False":
-                            Consulta = Consulta.Where(x => x.Activo == false);
+                            lavanderia = db.VST_LAVANDERIA.Where(x =>
+                                    (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19 && x.Activo == false)
+                                .OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            lavanderia = db.VST_LAVANDERIA.Where(x =>
+                                    (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19)
+                                .OrderBy(x => x.Nombre).ToList();
                             break;
                     }
-
-                    List<Models.VST_LAVANDERIA> lavanderia = Consulta.OrderBy(x => x.Nombre).ToList();
 
                     foreach (Models.VST_LAVANDERIA item in lavanderia)
                     {
@@ -837,6 +850,9 @@ namespace RioSulAPI.Controllers
                             break;
                         case "False":
                             lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20).OrderBy(x => x.Nombre).ToList();
                             break;
                     }
 

@@ -143,6 +143,15 @@
           <Property Name="Area" Type="varchar" MaxLength="50" />
           <Property Name="Activa" Type="bit" />
         </EntityType>
+        <EntityType Name="C_ClienteMarca">
+          <Key>
+            <PropertyRef Name="id_ClienteMarca" />
+          </Key>
+          <Property Name="id_ClienteMarca" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_Cliente" Type="int" />
+          <Property Name="Clave" Type="varchar" MaxLength="250" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="C_Clientes">
           <Key>
             <PropertyRef Name="IdClienteRef" />
@@ -1410,6 +1419,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySet Name="Auditoria_Tendido_Detalle" EntityType="Self.Auditoria_Tendido_Detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Auditoria_Terminado_Detalle" EntityType="Self.Auditoria_Terminado_Detalle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Areas" EntityType="Self.C_Areas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="C_ClienteMarca" EntityType="Self.C_ClienteMarca" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Clientes" EntityType="Self.C_Clientes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_ClientesReferencia" EntityType="Self.C_ClientesReferencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="C_Conf_Confeccion" EntityType="Self.C_Conf_Confeccion" Schema="dbo" store:Type="Tables" />
@@ -1913,6 +1923,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySet Name="Auditoria_Tendido_Detalle" EntityType="bd_calidadIIModel.Auditoria_Tendido_Detalle" />
           <EntitySet Name="Auditoria_Terminado_Detalle" EntityType="bd_calidadIIModel.Auditoria_Terminado_Detalle" />
           <EntitySet Name="C_Areas" EntityType="bd_calidadIIModel.C_Areas" />
+          <EntitySet Name="C_ClienteMarca" EntityType="bd_calidadIIModel.C_ClienteMarca" />
           <EntitySet Name="C_Clientes" EntityType="bd_calidadIIModel.C_Clientes" />
           <EntitySet Name="C_ClientesReferencia" EntityType="bd_calidadIIModel.C_ClientesReferencia" />
           <EntitySet Name="C_Conf_Confeccion" EntityType="bd_calidadIIModel.C_Conf_Confeccion" />
@@ -2252,6 +2263,15 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Area" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Activa" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="C_ClienteMarca">
+          <Key>
+            <PropertyRef Name="id_ClienteMarca" />
+          </Key>
+          <Property Name="id_ClienteMarca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_Cliente" Type="Int32" />
+          <Property Name="Clave" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="C_Clientes">
           <Key>
@@ -3656,6 +3676,16 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="Activa" ColumnName="Activa" />
                 <ScalarProperty Name="Area" ColumnName="Area" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C_ClienteMarca">
+            <EntityTypeMapping TypeName="bd_calidadIIModel.C_ClienteMarca">
+              <MappingFragment StoreEntitySet="C_ClienteMarca">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="id_Cliente" ColumnName="id_Cliente" />
+                <ScalarProperty Name="id_ClienteMarca" ColumnName="id_ClienteMarca" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -36,6 +36,7 @@ namespace RioSulAPI.Models
         public virtual DbSet<Auditoria_Tendido_Detalle> Auditoria_Tendido_Detalle { get; set; }
         public virtual DbSet<Auditoria_Terminado_Detalle> Auditoria_Terminado_Detalle { get; set; }
         public virtual DbSet<C_Areas> C_Areas { get; set; }
+        public virtual DbSet<C_ClienteMarca> C_ClienteMarca { get; set; }
         public virtual DbSet<C_Clientes> C_Clientes { get; set; }
         public virtual DbSet<C_ClientesReferencia> C_ClientesReferencia { get; set; }
         public virtual DbSet<C_Conf_Confeccion> C_Conf_Confeccion { get; set; }
