@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
 using RioSulAPI.Models;
 
@@ -30,6 +33,9 @@ namespace RioSulAPI.Controllers
         [Route("api/AuditoriaLavanderia/AuditoriaLavanderia")]
         public HttpResponseMessage NuevaAuditoriaLavanderia([FromBody]REQ_NEW_OT OT)
         {
+            string image_name = "";
+            int num_detalle = 0;
+
             try
             {
                 if (ModelState.IsValid)
@@ -64,6 +70,22 @@ namespace RioSulAPI.Controllers
 
                         foreach (DET_AUDITORIA_LAVANDERIA item in OT.Det)
                         {
+                            num_detalle = num_detalle + 1;
+                            image_name = "";
+                            if (item.Aud_Imagen != null && !item.Aud_Imagen.IsEmpty())
+                            {
+                                string base64 = item.Aud_Imagen.Substring(item.Aud_Imagen.IndexOf(',') + 1);
+                                byte[] data = Convert.FromBase64String(base64);
+
+                                image_name = "Auditoria_Lavanderia_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                                using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                                {
+                                    image_file.Write(data, 0, data.Length);
+                                    image_file.Flush();
+                                }
+                            }
+
                             Models.Auditoria_Lavanderia_Detalle auditoria_Lavanderia = new Models.Auditoria_Lavanderia_Detalle()
                             {
                                 IdAuditoria = auditoria.IdAuditoria,
@@ -71,7 +93,7 @@ namespace RioSulAPI.Controllers
                                 IdPosicion = item.IdPosicion,
                                 IdOperacion = item.IdOperacion,
                                 Cantidad = item.Cantidad,
-                                Aud_Imagen = item.Aud_Imagen,
+                                Aud_Imagen = image_name,
                                 Archivo = item.Archivo,
                                 Nota = item.Nota
                             };
@@ -126,11 +148,30 @@ namespace RioSulAPI.Controllers
         public RES_AUDITORIA_T_DET ObtieneAuditoriaDet(int ID)
         {
             RES_AUDITORIA_T_DET API = new RES_AUDITORIA_T_DET();
-
+            List<VST_AUDITORIA_LAVANDERIA_DETALLE> lavanderia = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
+            API.RES_DET = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
+            string file_path = "";
             try
             {
                 API.RES = db.VST_AUDITORIA.Where(x => x.IdAuditoria == ID && x.Lavanderia == true).FirstOrDefault();
-                API.RES_DET = db.VST_AUDITORIA_LAVANDERIA_DETALLE.Where(x => x.IdAuditoria == ID).ToList();
+                lavanderia = db.VST_AUDITORIA_LAVANDERIA_DETALLE.Where(x => x.IdAuditoria == ID).ToList();
+
+                foreach (VST_AUDITORIA_LAVANDERIA_DETALLE item in lavanderia)
+                {
+                    file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                    file_path = file_path + item.Aud_Imagen + ".jpg";
+                    if (File.Exists(file_path))
+                    {
+                        item.Aud_Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        item.Aud_Imagen = "";
+                    }
+
+                    API.RES_DET.Add(item);
+                }
+
                 API.Message = new HttpResponseMessage(HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -302,6 +343,8 @@ namespace RioSulAPI.Controllers
         public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]ACT_DET_AUDITORIA_L AC)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+            string image_name = "";
+            int num_detalle = 0;
 
             try
             {
@@ -315,9 +358,25 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
                     }
 
-
                     foreach (DET_AUDITORIA_LAVANDERIA item in AC.Det)
                     {
+                        num_detalle = num_detalle + 1;
+                        image_name = "";
+
+                        if (item.Aud_Imagen != null && !item.Aud_Imagen.IsEmpty())
+                        {
+                            string base64 = item.Aud_Imagen.Substring(item.Aud_Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "Auditoria_Calidad_" + AC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
                         Models.Auditoria_Lavanderia_Detalle auditoria_calidad = new Models.Auditoria_Lavanderia_Detalle()
                         {
                             IdAuditoria = AC.IdAuditoria,
@@ -325,7 +384,7 @@ namespace RioSulAPI.Controllers
                             IdOperacion = item.IdOperacion,
                             IdDefecto = item.IdDefecto,
                             Cantidad = item.Cantidad,
-                            Aud_Imagen = item.Aud_Imagen,
+                            Aud_Imagen = image_name,
                             Nota = item.Nota,
                             Archivo = item.Archivo
                         };
