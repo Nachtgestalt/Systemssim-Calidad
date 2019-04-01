@@ -127,6 +127,8 @@ namespace RioSulAPI.Controllers
                     c_.Porcentaje_ProcesosEspeciales = RES.Porcentaje_ProcesosEspeciales;
                     c_.Porcentaje_Tela = RES.Porcentaje_Tela;
                     c_.Porcentaje_Terminado = RES.Porcentaje_Terminado;
+                    c_.Costo_Estilo = RES.Costo_Estilo;
+                    c_.Costo_Segunda = RES.Costo_Segunda;
 
                     db.Entry(c_).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
