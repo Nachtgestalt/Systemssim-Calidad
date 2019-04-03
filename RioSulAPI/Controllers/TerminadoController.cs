@@ -66,7 +66,7 @@ namespace RioSulAPI.Controllers
                         IdUsuario = DEF.IdUsuario,
                         IdSubModulo = 21,
                         Descripcion = DEF.Descripcion,
-                        Nombre = DEF.Nombre,
+                        Nombre = DEF.Descripcion,
                         Observaciones = DEF.Observaciones,
                         Imagen = image_name
                     };

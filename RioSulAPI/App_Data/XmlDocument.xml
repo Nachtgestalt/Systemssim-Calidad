@@ -1607,7 +1607,7 @@
             <param name="IdProcesoEspecial"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneDefectoProseso(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneDefectoProseso(System.String,System.String,System.String)">
             <summary>
             Obtiene defecto por Clave y/o Nombre
             </summary>
@@ -1623,6 +1623,13 @@
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaDefectoProcesosEspeciales(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_PROCESO_ESP)">
+            <summary>
+            Actualiza los datos del tendido
+            </summary>
+            <param name="Defecto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.EliminaProcesoEsp(System.Int32,System.String)">
             <summary>
             Actualiza los datos del tendido
             </summary>

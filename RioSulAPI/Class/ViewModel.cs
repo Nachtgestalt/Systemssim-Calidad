@@ -639,7 +639,6 @@ namespace RioSulAPI.Class
 
         public class REQ_DEFECTO_PROCESO_ESP
         {
-            [Required] public int IdSubModulo { get; set; }
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
             [Required] public string Nombre { get; set; }
@@ -685,8 +684,8 @@ namespace RioSulAPI.Class
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
             [Required] public string Nombre { get; set; }
-            [Required] public string Descripcion { get; set; }
-            [Required] public string Observaciones { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
             public string Imagen { get; set; }
         }
 

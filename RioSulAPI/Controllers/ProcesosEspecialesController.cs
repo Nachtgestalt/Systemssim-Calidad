@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
+using RioSulAPI.Models;
 
 namespace RioSulAPI.Controllers
 {
@@ -22,20 +26,43 @@ namespace RioSulAPI.Controllers
         }
 
         //----------------------------------------DEFECTOS------------------------------------------------
+        #region DEFECTOS
 
         /// <summary>
         /// Registra un nuevo tendido
         /// </summary>
         /// <param name="Proceso"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/ProcesosEspeciales/NuevoDefectoProceso")]
+        [System.Web.Http.Route("api/ProcesosEspeciales/Defecto")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_PROCESO_ESP NuevoDefecto([FromBody]ViewModel.REQ_DEFECTO_PROCESO_ESP Proceso)
         {
             ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
+            string image_name = "";
             try
             {
+                Models.C_Procesos_Especiales procesos_especiales =
+                    db.C_Procesos_Especiales.Where(x => x.Clave == Proceso.Clave).FirstOrDefault();
+
+                if (procesos_especiales == null)
+                {
+                    //VERFICAMOS SI EL CAMPO DE LA IMAGEN ES VACIO
+                    if (Proceso.Imagen != null && !Proceso.Imagen.IsEmpty())
+                    {
+                        string base64 = Proceso.Imagen.Substring(Proceso.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "ProcesosEsp_Defecto" + "27_" + Proceso.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
+                    //GUARDAMOS LOS DATOS EN BASE
                     Models.C_Procesos_Especiales _Procesos_Especialess = new Models.C_Procesos_Especiales()
                     {
                         Activo = true,
@@ -46,13 +73,20 @@ namespace RioSulAPI.Controllers
                         IdUsuario = Proceso.IdUsuario,
                         Nombre = Proceso.Nombre,
                         Observaciones = Proceso.Observaciones,
-                        Imagen = Proceso.Imagen
+                        Imagen = image_name
                     };
                     db.C_Procesos_Especiales.Add(_Procesos_Especialess);
                     db.SaveChanges();
 
                     API.Hecho = true;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                }
+                                      
             }
             catch (Exception ex)
             {
@@ -112,16 +146,16 @@ namespace RioSulAPI.Controllers
         /// <param name="IdProcesoEspecial"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/ProcesosEspeciales/ActivaInactivaDefectoProcesoEsp")]
-        [System.Web.Http.HttpGet]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_PROCESO_ESP ActivaInactivaDefectoProcessoEsp(int IdProcesoEspecial)
+        public ViewModel.RES_DEFECTO_PROCESO_ESP ActivaInactivaDefectoProcessoEsp(int ID)
         {
             ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Procesos_Especiales c_Cort = db.C_Procesos_Especiales.Where(x => x.ID == IdProcesoEspecial).FirstOrDefault();
+                    Models.C_Procesos_Especiales c_Cort = db.C_Procesos_Especiales.Where(x => x.ID == ID).FirstOrDefault();
                     c_Cort.Activo = (c_Cort.Activo == false ? true : false);
 
                     db.Entry(c_Cort).State = System.Data.Entity.EntityState.Modified;
@@ -150,17 +184,52 @@ namespace RioSulAPI.Controllers
         /// <param name="Clave"></param>
         /// <param name="Nombre"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/ProcesosEspeciales/ObtieneDefectoProseso")]
+        [System.Web.Http.Route("api/ProcesosEspeciales/Defecto")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_PROCESO_ESP ObtieneDefectoProseso(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_PROCESO_ESP ObtieneDefectoProseso(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_PROCESO_ESP API = new ViewModel.RES_BUS_DEFECTO_PROCESO_ESP();
+            API.Vst_ProcesosEspeciales = new List<VST_PROCESOS_ESPECIALES>();
+            string image_name = "";
+            string file_path = "";
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_ProcesosEspeciales = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27).OrderBy(x => x.Nombre).ToList();
+                    List<Models.VST_PROCESOS_ESPECIALES> procesos = new List<VST_PROCESOS_ESPECIALES>();
+
+                    switch (Activo)
+                    {
+                        case "True":
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+
+                    foreach (Models.VST_PROCESOS_ESPECIALES item in procesos)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_ProcesosEspeciales.Add(item);
+                    }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -183,18 +252,35 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="ID"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/ProcesosEspeciales/ObtieneInfoDefectoProcesoEspeciales")]
+        [System.Web.Http.Route("api/ProcesosEspeciales/Defecto")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_EDT_PROCESOS_ESPECIALES ObtieneInfoDefectoProcesoEspeciales(int ID)
         {
             ViewModel.RES_EDT_PROCESOS_ESPECIALES API = new ViewModel.RES_EDT_PROCESOS_ESPECIALES();
+            string image_name = "";
+            string file_path = "";
             try
             {
                 if (ModelState.IsValid)
                 {
                     API.Vst_ProcesosEsp = db.VST_PROCESOS_ESPECIALES.Where(x => x.ID == ID).FirstOrDefault();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+
+                    if (API.Vst_ProcesosEsp != null)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + API.Vst_ProcesosEsp.Imagen + ".jpg";
+
+                        if (File.Exists(file_path))
+                        {
+                            API.Vst_ProcesosEsp.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            API.Vst_ProcesosEsp.Imagen = "";
+                        }
+                    }                   
                 }
                 else
                 {
@@ -215,31 +301,121 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Defecto"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/Cortadores/ActualizaDefectoProcesosEspeciales")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/ProcesosEspeciales/Defecto")]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_PROCESO_ESP ActualizaDefectoProcesosEspeciales([FromBody]ViewModel.REQ_EDT_DEFECTO_PROCESO_ESP Defecto)
         {
             ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
+            string image_name = "";
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Procesos_Especiales Vst = db.C_Procesos_Especiales.Where(x => x.ID == Defecto.ID).FirstOrDefault();
-                    if (Vst != null)
-                    {
-                        Vst.IdUsuario = Defecto.IdUsuario;
-                        Vst.Nombre = Defecto.Nombre;
-                        Vst.Observaciones = Defecto.Observaciones;
-                        Vst.Descripcion = Defecto.Descripcion;
-                        Vst.Clave = Defecto.Clave;
-                        Vst.Imagen = Defecto.Imagen;
+                    Models.C_Procesos_Especiales procesos = db.C_Procesos_Especiales
+                        .Where(x => x.Clave == Defecto.Clave && x.IdSubModulo == 27 && x.ID != Defecto.ID)
+                        .FirstOrDefault();
 
-                        db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                    if (procesos == null)
+                    {
+                        //VERFICAMOS SI EL CAMPO DE LA IMAGEN ES VACIO
+                        if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                        {
+                            string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "ProcesosEsp_Defecto" + "27_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
+                        Models.C_Procesos_Especiales Vst = db.C_Procesos_Especiales.Where(x => x.ID == Defecto.ID).FirstOrDefault();
+                        if (Vst != null)
+                        {
+                            Vst.IdUsuario = Defecto.IdUsuario;
+                            Vst.Nombre = Defecto.Nombre;
+                            Vst.Observaciones = Defecto.Observaciones;
+                            Vst.Descripcion = Defecto.Descripcion;
+                            Vst.Clave = Defecto.Clave;
+                            Vst.Imagen = image_name;
+
+                            db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                            API.Hecho = true;
+                        }
+                    }
+                    else
+                    {
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                    
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = false;
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Actualiza los datos del tendido
+        /// </summary>
+        /// <param name="Defecto"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/ProcesosEspeciales/EliminaProcesosEspeciales")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_DEFECTO_PROCESO_ESP EliminaProcesoEsp(int ID, string tipo = "")
+        {
+            ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.Auditoria_Proc_Esp_Detalle auditoria = new Auditoria_Proc_Esp_Detalle();
+
+                    switch (tipo)
+                    {
+                        case "Defecto":
+                            auditoria = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
+                            break;
+                        case "Operacion":
+                            auditoria = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdOperacion == ID).FirstOrDefault();
+                            break;
+                        case "Posicion":
+                            auditoria = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
+                            break;
+                    }
+
+                    if (auditoria == null)
+                    {
+                        Models.C_Procesos_Especiales procesos =
+                            db.C_Procesos_Especiales.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Procesos_Especiales.Remove(procesos);
                         db.SaveChanges();
 
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         API.Hecho = true;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = true;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                     }
                 }
                 else
@@ -257,6 +433,8 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        #endregion
+
         //----------------------------------------OPERACIONES------------------------------------------------
 
         /// <summary>
@@ -264,42 +442,51 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Defecto"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/ProcesosEspeciales/NuevoOperacionProcesosEspeciales")]
+        [System.Web.Http.Route("api/ProcesosEspeciales/Operacion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_PROCESO_ESP NuevoOperacionProcesosEspeciales([FromBody]ViewModel.REQ_DEFECTO_PROCESO_ESP Defecto)
+        public ViewModel.RES_DEFECTO_PROCESO_ESP NuevoOperacionProcesosEspeciales([FromBody]ViewModel.REQ_DEFECTO_PROCESO_ESP Operacion)
         {
             ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
+            string image_name = "";
             try
             {
                 if (ModelState.IsValid)
                 {
+                    Models.C_Procesos_Especiales procesos = db.C_Procesos_Especiales
+                        .Where(x => x.Clave == Operacion.Clave).FirstOrDefault();
+
+                    //VERFICAMOS SI EL CAMPO DE LA IMAGEN ES VACIO
+                    if (Operacion.Imagen != null && !Operacion.Imagen.IsEmpty())
+                    {
+                        string base64 = Operacion.Imagen.Substring(Operacion.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "ProcesosEsp_Operacion" + "13_" + Operacion.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
                     Models.C_Procesos_Especiales c_ProcEsp = new Models.C_Procesos_Especiales()
                     {
                         Activo = true,
                         FechaCreacion = DateTime.Now,
-                        Clave = Defecto.Clave,
-                        Descripcion = Defecto.Descripcion,
+                        Clave = Operacion.Clave,
+                        Descripcion = Operacion.Descripcion,
                         IdSubModulo = 13,
-                        IdUsuario = Defecto.IdUsuario,
-                        Nombre = Defecto.Nombre,
-                        Observaciones = Defecto.Observaciones,
-                        Imagen = Defecto.Imagen
+                        IdUsuario = Operacion.IdUsuario,
+                        Nombre = Operacion.Nombre,
+                        Observaciones = Operacion.Observaciones,
+                        Imagen = image_name
                     };
                     db.C_Procesos_Especiales.Add(c_ProcEsp);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(Defecto.Imagen);
-                    foreach (JSON_POS_DEF item in POS)
-                    {
-                        Models.C_Operacion_ProcesosEspeciales c_Procesos_Especiales = new Models.C_Operacion_ProcesosEspeciales()
-                        {
-                            IdOperacion = c_ProcEsp.ID,
-                            IdDefecto = item.IdDefecto
-                        };
-                        db.C_Operacion_ProcesosEspeciales.Add(c_Procesos_Especiales);
-                    }
-                    db.SaveChanges();
+                    
 
                     API.Hecho = true;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
