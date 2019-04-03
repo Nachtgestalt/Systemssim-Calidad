@@ -692,6 +692,98 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Actualiza el Id Lavanderia
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Lavanderia/OperacionLavanderia")]
+        public ViewModel.RES_DEFECTO_LAV UpdateLavanderia([FromBody]ViewModel.REQ_DEFECTO_LAV Defecto,int ID)
+        {
+            ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
+            string image_name = "";
+
+            try
+            {
+                Models.C_Lavanderia vst = db.C_Lavanderia.Where(x => x.ID == ID && x.IdSubModulo == 19).FirstOrDefault();
+
+                if (vst != null)
+                {
+                    if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                    {
+                        string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Lavanderia_Posicion" + "19_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+                    vst.IdUsuario = Defecto.IdUsuario;
+                    vst.Nombre = Defecto.Nombre;
+                    vst.Observaciones = Defecto.Observaciones;
+                    vst.Descripcion = Defecto.Descripcion;
+                    vst.Clave = Defecto.Clave;
+                    vst.Imagen = image_name;
+
+                    //VERIFICAMOS SI LA CLAVE O NOMBRE YA EXISTEN EN BASE
+                    Models.C_Lavanderia Verifica = db.C_Lavanderia.Where(x => x.IdSubModulo == 20 && x.ID != ID && (x.Clave == Defecto.Clave || x.Nombre == Defecto.Nombre)).FirstOrDefault();
+
+                    if (Verifica == null)
+                    {
+                        db.Entry(vst).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        //ELIMNAMOS LAS OPERACIONES RELACIONADAS
+                        List<Models.C_Operacion_Lavanderia> PT = db.C_Operacion_Lavanderia.Where(x => x.IdOperacion == ID).ToList();
+
+                        foreach (Models.C_Operacion_Lavanderia item in PT)
+                        {
+                            db.C_Operacion_Lavanderia.Remove(item);
+                            db.SaveChanges();
+                        }
+
+                        //GUARDAMOS LAS OPERACIONES
+                        foreach (ViewModel.DEFECTO_REF item in Defecto.Defecto)
+                        {
+                            Models.C_Operacion_Lavanderia C_Operacion_Lavanderia = new Models.C_Operacion_Lavanderia()
+                            {
+                                IdOperacion = vst.ID,
+                                IdDefecto = item.ID
+                            };
+                            db.C_Operacion_Lavanderia.Add(C_Operacion_Lavanderia);
+                        }
+                        db.SaveChanges();
+
+                        API.Hecho = true;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                }
+                else
+                {
+                    API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    API.Hecho = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
+            }
+            return API;
+        }
+
         #endregion
 
         //----------------------------------------POSICIONES------------------------------------------------

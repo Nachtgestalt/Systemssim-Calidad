@@ -1534,6 +1534,13 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.LavanderiaController.UpdateLavanderia(RioSulAPI.Class.ViewModel.REQ_DEFECTO_LAV,System.Int32)">
+            <summary>
+            Actualiza el Id Lavanderia
+            </summary>
+            <param name="ID"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevaPosicionLavanderia(RioSulAPI.Class.ViewModel.N_POSICION_LAV)">
             <summary>
             Registra una nueva posición de lavandería
