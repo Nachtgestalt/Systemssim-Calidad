@@ -1015,7 +1015,7 @@ namespace RioSulAPI.Controllers
                 List<Models.C_Posicion_Lavanderia> Defectos = db.C_Posicion_Lavanderia.Where(x => x.IdPosicion == ID).ToList();
                 foreach (Models.C_Posicion_Lavanderia item in Defectos)
                 {
-                    Models.VST_LAVANDERIA Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == item.IdCortador).FirstOrDefault();
+                    Models.VST_LAVANDERIA Lavanderia = db.VST_LAVANDERIA.Where(x => x.ID == item.IdPosicion).FirstOrDefault();
 
                     if (Lavanderia != null)
                     {
