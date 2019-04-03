@@ -724,7 +724,7 @@ namespace RioSulAPI.Class
 
         public partial class OPERACION_REF
         {
-            public int IdOperacion { get; set; }
+            public int ID { get; set; }
         }
 
         public partial class N_POSICION_LAV

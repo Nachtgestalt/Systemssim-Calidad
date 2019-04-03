@@ -846,7 +846,7 @@ namespace RioSulAPI.Controllers
                             Models.C_Posicion_Lavanderia c_Posicion_Lavanderia = new Models.C_Posicion_Lavanderia()
                             {
                                 IdPosicion = c_Lavanderia.ID,
-                                IdCortador = item.IdOperacion
+                                IdCortador = item.ID
                             };
                             db.C_Posicion_Lavanderia.Add(c_Posicion_Lavanderia);
                         }
@@ -1104,7 +1104,7 @@ namespace RioSulAPI.Controllers
                                 Models.C_Posicion_Lavanderia c_Posicion_Lavanderia = new Models.C_Posicion_Lavanderia()
                                 {
                                     IdPosicion = Vst.ID,
-                                    IdCortador = item.IdOperacion
+                                    IdCortador = item.ID
                                 };
                                 db.C_Posicion_Lavanderia.Add(c_Posicion_Lavanderia);
                             }
