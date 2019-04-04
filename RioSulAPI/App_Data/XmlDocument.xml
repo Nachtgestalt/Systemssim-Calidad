@@ -1636,7 +1636,7 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.NuevoOperacionProcesosEspeciales(RioSulAPI.Class.ViewModel.REQ_DEFECTO_PROCESO_ESP)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.NuevoOperacionProcesosEspeciales(RioSulAPI.Class.ViewModel.N_OPERACION)">
             <summary>
             Registra un nuevo operación procesos especiales 
             </summary>

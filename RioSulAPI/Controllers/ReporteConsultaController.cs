@@ -387,7 +387,7 @@ namespace RioSulAPI.Controllers
                 ds.dtGeneral.AdddtGeneralRow(auditoria_gen.OrdenTrabajo, clientes.Descripcion, auditoria_gen.Marca,
                     auditoria_gen.Estilo, auditoria_gen.PO,
                     "", auditoria_gen.NumCortada, auditoria_gen.Planta, auditoria_gen.Tela, auditoria_gen.Lavado,
-                    auditoria_gen.Ruta, tipo.ToUpper() + " " + auditoria.ToUpper());                
+                    auditoria_gen.Ruta, "REPORTE DE " + tipo.ToUpper() + " " + auditoria.ToUpper());                
             }
 
             cr.SetDataSource(ds);

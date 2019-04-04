@@ -689,6 +689,22 @@ namespace RioSulAPI.Class
             public string Imagen { get; set; }
         }
 
+        public partial class N_OPERACION
+        {
+            [Required] public int IdUsuario { get; set; }
+            [Required] public string Clave { get; set; }
+            [Required] public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+            public List<R_DEFECTOS> Defectos { get; set; }
+        }
+
+        public partial class R_DEFECTOS
+        {
+            [Required] public int ID { get; set; }
+        }
+
         #endregion
 
         #region Lavanderia

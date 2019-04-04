@@ -445,7 +445,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/ProcesosEspeciales/Operacion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_PROCESO_ESP NuevoOperacionProcesosEspeciales([FromBody]ViewModel.REQ_DEFECTO_PROCESO_ESP Operacion)
+        public ViewModel.RES_DEFECTO_PROCESO_ESP NuevoOperacionProcesosEspeciales([FromBody]ViewModel.N_OPERACION Operacion)
         {
             ViewModel.RES_DEFECTO_PROCESO_ESP API = new ViewModel.RES_DEFECTO_PROCESO_ESP();
             string image_name = "";
@@ -454,42 +454,59 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     Models.C_Procesos_Especiales procesos = db.C_Procesos_Especiales
-                        .Where(x => x.Clave == Operacion.Clave).FirstOrDefault();
+                        .Where(x => x.Clave == Operacion.Clave && x.IdSubModulo == 13).FirstOrDefault();
 
-                    //VERFICAMOS SI EL CAMPO DE LA IMAGEN ES VACIO
-                    if (Operacion.Imagen != null && !Operacion.Imagen.IsEmpty())
+                    if (procesos == null)
                     {
-                        string base64 = Operacion.Imagen.Substring(Operacion.Imagen.IndexOf(',') + 1);
-                        byte[] data = Convert.FromBase64String(base64);
-
-                        image_name = "ProcesosEsp_Operacion" + "13_" + Operacion.Clave + DateTime.Now.ToString("yymmssfff");
-
-                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        //VERFICAMOS SI EL CAMPO DE LA IMAGEN ES VACIO
+                        if (Operacion.Imagen != null && !Operacion.Imagen.IsEmpty())
                         {
-                            image_file.Write(data, 0, data.Length);
-                            image_file.Flush();
+                            string base64 = Operacion.Imagen.Substring(Operacion.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "ProcesosEsp_Operacion" + "13_" + Operacion.Clave + DateTime.Now.ToString("yymmssfff");
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
                         }
+
+                        Models.C_Procesos_Especiales c_ProcEsp = new Models.C_Procesos_Especiales()
+                        {
+                            Activo = true,
+                            FechaCreacion = DateTime.Now,
+                            Clave = Operacion.Clave,
+                            Descripcion = Operacion.Descripcion,
+                            IdSubModulo = 13,
+                            IdUsuario = Operacion.IdUsuario,
+                            Nombre = Operacion.Nombre,
+                            Observaciones = Operacion.Observaciones,
+                            Imagen = image_name
+                        };
+                        db.C_Procesos_Especiales.Add(c_ProcEsp);
+                        db.SaveChanges();
+
+                        foreach (ViewModel.R_DEFECTOS item in Operacion.Defectos)
+                        {
+                            Models.C_Operacion_ProcesosEspeciales OPE = new Models.C_Operacion_ProcesosEspeciales()
+                            {
+                                IdOperacion = c_ProcEsp.ID,
+                                IdDefecto = item.ID
+                            };
+                            db.C_Operacion_ProcesosEspeciales.Add(OPE);
+                            db.SaveChanges();
+                        }
+
+                        API.Hecho = true;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                     }
-
-                    Models.C_Procesos_Especiales c_ProcEsp = new Models.C_Procesos_Especiales()
+                    else
                     {
-                        Activo = true,
-                        FechaCreacion = DateTime.Now,
-                        Clave = Operacion.Clave,
-                        Descripcion = Operacion.Descripcion,
-                        IdSubModulo = 13,
-                        IdUsuario = Operacion.IdUsuario,
-                        Nombre = Operacion.Nombre,
-                        Observaciones = Operacion.Observaciones,
-                        Imagen = image_name
-                    };
-                    db.C_Procesos_Especiales.Add(c_ProcEsp);
-                    db.SaveChanges();
-
-                    
-
-                    API.Hecho = true;
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                   
                 }
                 else
                 {
