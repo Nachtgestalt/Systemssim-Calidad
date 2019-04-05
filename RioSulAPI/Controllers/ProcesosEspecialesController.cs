@@ -415,8 +415,8 @@ namespace RioSulAPI.Controllers
                     }
                     else
                     {
-                        API.Hecho = true;
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
                     }
                 }
                 else

@@ -368,7 +368,7 @@ namespace RioSulAPI.Controllers
                             string base64 = item.Aud_Imagen.Substring(item.Aud_Imagen.IndexOf(',') + 1);
                             byte[] data = Convert.FromBase64String(base64);
 
-                            image_name = "Auditoria_Calidad_" + AC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+                            image_name = "Auditoria_Lavanderia_" + AC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
 
                             using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
                             {
