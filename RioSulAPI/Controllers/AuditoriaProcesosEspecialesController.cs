@@ -27,7 +27,7 @@ namespace RioSulAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/AuditoriaProcesosEspeciales/NuevaAuditoriaProcEsp")]
+        [Route("api/AuditoriaProcesosEspeciales/AuditoriaProcEsp")]
         public HttpResponseMessage NuevaAuditoriaProcEsp([FromBody]REQ_NEW_OT OT)
         {
             string image_name = "";
@@ -90,7 +90,8 @@ namespace RioSulAPI.Controllers
                                 IdOperacion = item.IdOperacion,
                                 IdPosicion = item.IdPosicion,
                                 Cantidad = item.Cantidad,
-                                Aud_Imagen = image_name
+                                Aud_Imagen = image_name,
+                                Notas = item.Notas
                             };
                             db.Auditoria_Proc_Esp_Detalle.Add(auditoria_Proc_Esp);
                         }
@@ -116,8 +117,33 @@ namespace RioSulAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        [Route("api/AuditoriaProcesosEspeciales/ObtieneAuditoriaProcEsp")]
+        [Route("api/AuditoriaProcesosEspeciales/AuditoriaProcEsp")]
         public AuditoriaCorteController.RES_AUDITORIA ObtieneAuditoriaProcEsp()
+        {
+            AuditoriaCorteController.RES_AUDITORIA API = new AuditoriaCorteController.RES_AUDITORIA();
+            try
+            {
+                API.RES = db.VST_AUDITORIA.Where(x => x.ProcesosEspeciales == true).ToList();
+                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.RES = null;
+            }
+            return API;
+        }
+
+
+        /// <summary>
+        /// Obtiene auditoría de Procesos Especiales
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/AuditoriaProcesosEspeciales/AuditoriaProcEsp")]
+        public AuditoriaCorteController.RES_AUDITORIA ObtieneAuditoriaProcEspDet(int ID)
         {
             AuditoriaCorteController.RES_AUDITORIA API = new AuditoriaCorteController.RES_AUDITORIA();
             try
@@ -191,6 +217,7 @@ namespace RioSulAPI.Controllers
             [Required] public int IdOperacion { get; set; }
             [Required] public int IdDefecto { get; set; }
             [Required] public int Cantidad { get; set; }
+            public string Notas { get; set; }
             public string Imagen { get; set; }
         }
     }

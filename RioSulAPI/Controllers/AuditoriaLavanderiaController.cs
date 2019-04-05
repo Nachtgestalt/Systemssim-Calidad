@@ -309,15 +309,16 @@ namespace RioSulAPI.Controllers
 
             try
             {
+
+                List<Models.Auditoria_Lavanderia_Detalle> AD = db.Auditoria_Lavanderia_Detalle
+                    .Where(x => x.IdAuditoria == IdAuditoria).ToList();
+
+                db.Auditoria_Lavanderia_Detalle.RemoveRange(AD);
+                db.SaveChanges();
+
                 Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
 
                 db.Auditorias.Remove(AUD);
-                db.SaveChanges();
-
-                List<Models.Auditoria_Calidad_Detalle> AD = db.Auditoria_Calidad_Detalle
-                    .Where(x => x.IdAuditoria == IdAuditoria).ToList();
-
-                db.Auditoria_Calidad_Detalle.RemoveRange(AD);
                 db.SaveChanges();
 
                 API.Message = "Auditoria eliminada con éxito";

@@ -691,6 +691,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ObtieneAuditoriaProcEspDet(System.Int32)">
+            <summary>
+            Obtiene auditoría de Procesos Especiales
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.CierreAuditoria(System.Int32)">
             <summary>
             Genera el cierre de auditoria de corte

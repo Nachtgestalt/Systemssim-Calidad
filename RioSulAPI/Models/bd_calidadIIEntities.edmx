@@ -101,6 +101,7 @@
           <Property Name="IdDefecto" Type="int" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
           <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Notas" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Auditoria_Tendido_Detalle">
           <Key>
@@ -2220,6 +2221,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="IdDefecto" Type="Int32" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Notas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" FromRole="Auditoria_Proc_Esp_Detalle" ToRole="Auditoria" />
         </EntityType>
         <EntityType Name="Auditoria_Tendido_Detalle">
@@ -3625,6 +3627,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Proc_Esp_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Proc_Esp_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Proc_Esp_Detalle">
+                <ScalarProperty Name="Notas" ColumnName="Notas" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
