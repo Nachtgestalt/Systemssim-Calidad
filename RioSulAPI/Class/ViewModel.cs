@@ -650,13 +650,13 @@ namespace RioSulAPI.Class
 
         public partial class REQ_POSICION_PROC_ESP
         {
-            [Required] public int IdSubModulo { get; set; }
             [Required] public int IdUsuario { get; set; }
             [Required] public string Clave { get; set; }
             [Required] public string Nombre { get; set; }
-            [Required] public string Descripcion { get; set; }
-            [Required] public string Observaciones { get; set; }
-            public string Posicion { get; set; }
+            public string Descripcion { get; set; }
+            public string Observaciones { get; set; }
+            public string Imagen { get; set; }
+            public List<R_OPERACIONES> Operacion { get; set; }
         }
 
         public partial class RES_DEFECTO_PROCESO_ESP
@@ -703,6 +703,31 @@ namespace RioSulAPI.Class
         public partial class R_DEFECTOS
         {
             [Required] public int ID { get; set; }
+            public string Clave { get; set; }
+            public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+        }
+
+        public partial class R_OPERACIONES
+        {
+            [Required] public int ID { get; set; }
+            public string Clave { get; set; }
+            public string Nombre { get; set; }
+            public string Descripcion { get; set; }
+        }
+
+        public partial class R_PROCESO_ESP_OP
+        {
+            public Models.VST_PROCESOS_ESPECIALES Vst_ProcesosEsp { get; set; }
+            public List<R_DEFECTOS> Defectos { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
+
+        public partial class R_PROCESO_ESP_PO
+        {
+            public Models.VST_PROCESOS_ESPECIALES Vst_ProcesosEsp { get; set; }
+            public List<R_OPERACIONES> Operaciones { get; set; }
+            public HttpResponseMessage Message { get; set; }
         }
 
         #endregion

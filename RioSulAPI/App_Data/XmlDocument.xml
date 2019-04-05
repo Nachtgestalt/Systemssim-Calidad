@@ -1659,7 +1659,7 @@
             <param name="IdOperacion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneOperacionProcesosEspeciales(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtieneOperacionProcesosEspeciales(System.String,System.String,System.String)">
             <summary>
             Obtiene procesos especiales por Clave y/o Nombre
             </summary>
@@ -1674,7 +1674,7 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_PROCESO_ESP)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaOperacionConfeccion(RioSulAPI.Class.ViewModel.N_OPERACION,System.Int32)">
             <summary>
             Actualiza los datos del tendido
             </summary>
@@ -1712,7 +1712,7 @@
             <param name="IdPosicion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtienePosicion(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ObtienePosicion(System.String,System.String,System.String)">
             <summary>
             Obtiene posicion por Clave y/o Nombre
             </summary>
@@ -1727,7 +1727,7 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaPosicion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CORTE)">
+        <member name="M:RioSulAPI.Controllers.ProcesosEspecialesController.ActualizaPosicion(RioSulAPI.Class.ViewModel.REQ_POSICION_PROC_ESP,System.Int32)">
             <summary>
             Actualiza los datos de la posición
             </summary>
