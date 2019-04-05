@@ -337,6 +337,7 @@ namespace RioSulAPI.Controllers
             Models.Auditoria auditoria_gen = new Auditoria();
             List<Models.VST_AUDITORIA_TERMINADO_DETALLE> auditoria_t = new List<VST_AUDITORIA_TERMINADO_DETALLE>();
             List<Models.VST_AUDITORIA_CALIDAD_DETALLE> auditoria_c = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
+            List<Models.VST_AUDITORIA_LAVANDERIA_DETALLE> auditoria_l = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
             Models.C_Clientes clientes = new C_Clientes();
 
             switch (auditoria)
@@ -379,6 +380,21 @@ namespace RioSulAPI.Controllers
                     }
 
                     cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaCalidad.rpt"));
+                    break;
+                case "Lavanderia":
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    auditoria_l = db.VST_AUDITORIA_LAVANDERIA_DETALLE.Where(x => x.IdAuditoria == idAuditoria).ToList();
+
+                    foreach (VST_AUDITORIA_LAVANDERIA_DETALLE item in auditoria_l)
+                    {
+                        ds.dtDetalle.AdddtDetalleRow(item.NombreDefecto, item.NombreOperacion, item.NombrePosicion, "",
+                            item.Cantidad, item.Nota);
+                    }
+
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaL.rpt"));
+
                     break;
             }
 
