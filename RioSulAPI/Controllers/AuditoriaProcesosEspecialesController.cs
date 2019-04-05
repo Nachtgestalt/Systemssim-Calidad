@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
 
 namespace RioSulAPI.Controllers
@@ -25,8 +28,10 @@ namespace RioSulAPI.Controllers
         [HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/AuditoriaProcesosEspeciales/NuevaAuditoriaProcEsp")]
-        public HttpResponseMessage NuevaAuditoriaProcEsp([FromBody]AuditoriaCorteController.REQ_NEW_OT OT)
+        public HttpResponseMessage NuevaAuditoriaProcEsp([FromBody]REQ_NEW_OT OT)
         {
+            string image_name = "";
+            int num_detalle = 0;
             try
             {
                 if (ModelState.IsValid)
@@ -59,16 +64,33 @@ namespace RioSulAPI.Controllers
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();
 
-                        List<DET_AUDITORIA_PROC_ESP> Detalles = _objSerializer.Deserialize<List<DET_AUDITORIA_PROC_ESP>>(OT.Det);
-                        foreach (DET_AUDITORIA_PROC_ESP item in Detalles)
+                        foreach (OT_DET item in OT.Det)
                         {
+
+                            num_detalle = num_detalle + 1;
+                            image_name = "";
+                            if (item.Imagen != null && !item.Imagen.IsEmpty())
+                            {
+                                string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+                                byte[] data = Convert.FromBase64String(base64);
+
+                                image_name = "Auditoria_ProcEsp_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                                using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                                {
+                                    image_file.Write(data, 0, data.Length);
+                                    image_file.Flush();
+                                }
+                            }
+
                             Models.Auditoria_Proc_Esp_Detalle auditoria_Proc_Esp = new Models.Auditoria_Proc_Esp_Detalle()
                             {
                                 IdDefecto = item.IdDefecto,
                                 IdAuditoria = auditoria.IdAuditoria,
                                 IdOperacion = item.IdOperacion,
                                 IdPosicion = item.IdPosicion,
-                                Cantidad = item.Cantidad
+                                Cantidad = item.Cantidad,
+                                Aud_Imagen = image_name
                             };
                             db.Auditoria_Proc_Esp_Detalle.Add(auditoria_Proc_Esp);
                         }
@@ -145,6 +167,31 @@ namespace RioSulAPI.Controllers
             public int IdDefecto { get; set; }
             [Required]
             public int Cantidad { get; set; }
+        }
+
+        public partial class REQ_NEW_OT
+        {
+            [Required] public int IdClienteRef { get; set; }
+            [Required] public string OrdenTrabajo { get; set; }
+            public string PO { get; set; }
+            public string Tela { get; set; }
+            public string Marca { get; set; }
+            public string NumCortada { get; set; }
+            public string Lavado { get; set; }
+            public string Estilo { get; set; }
+            public string Planta { get; set; }
+            public string Ruta { get; set; }
+            [Required] public int IdUsuario { get; set; }
+            [Required] public List<OT_DET> Det { get; set; }
+        }
+
+        public partial class OT_DET
+        {
+            [Required] public int IdPosicion { get; set; }
+            [Required] public int IdOperacion { get; set; }
+            [Required] public int IdDefecto { get; set; }
+            [Required] public int Cantidad { get; set; }
+            public string Imagen { get; set; }
         }
     }
 }

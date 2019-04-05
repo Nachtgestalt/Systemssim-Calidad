@@ -678,7 +678,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.NuevaAuditoriaProcEsp(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.NuevaAuditoriaProcEsp(RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.REQ_NEW_OT)">
             <summary>
             Registra una nueva auditoría de procesos especiales
             </summary>
