@@ -72,6 +72,7 @@ namespace RioSulAPI.Models
         public virtual DbSet<VST_AUDITORIA_CALIDAD_DETALLE> VST_AUDITORIA_CALIDAD_DETALLE { get; set; }
         public virtual DbSet<VST_AUDITORIA_CORTE_DETALLE> VST_AUDITORIA_CORTE_DETALLE { get; set; }
         public virtual DbSet<VST_AUDITORIA_LAVANDERIA_DETALLE> VST_AUDITORIA_LAVANDERIA_DETALLE { get; set; }
+        public virtual DbSet<VST_AUDITORIA_PROC_ESP_DETALLE> VST_AUDITORIA_PROC_ESP_DETALLE { get; set; }
         public virtual DbSet<VST_AUDITORIA_TERMINADO_DETALLE> VST_AUDITORIA_TERMINADO_DETALLE { get; set; }
         public virtual DbSet<VST_CONFECCION> VST_CONFECCION { get; set; }
         public virtual DbSet<VST_CORREOS_AUDITORIA> VST_CORREOS_AUDITORIA { get; set; }

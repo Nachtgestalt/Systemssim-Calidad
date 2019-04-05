@@ -349,6 +349,9 @@
     <Compile Include="Models\VST_AUDITORIA_LAVANDERIA_DETALLE.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VST_AUDITORIA_PROC_ESP_DETALLE.cs">
+      <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\VST_AUDITORIA_TERMINADO_DETALLE.cs">
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
