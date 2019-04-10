@@ -308,6 +308,93 @@ namespace RioSulAPI.Controllers
                         }
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         break;
+                    case "ProcesosEspeciales":
+                        var aux4 = db.VST_AUDITORIA.
+                            Where(x => x.ProcesosEspeciales == true && x.Activo == true);
+
+                        if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
+                        {
+                            aux4 = aux4.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
+                                                 && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                        }
+
+                        if (Filtro.IdCliente != null)
+                        {
+                            int id = Convert.ToInt16(Filtro.IdCliente);
+                            aux4 = aux4.Where(x => x.IdClienteRef == id);
+                        }
+
+                        if (Filtro.Marca != null)
+                        {
+                            aux4 = aux4.Where(x => x.Marca == Filtro.Marca);
+                        }
+
+                        if (Filtro.PO != null)
+                        {
+                            aux4 = aux4.Where(x => x.PO == Filtro.PO);
+                        }
+
+                        if (Filtro.Corte != null)
+                        {
+                            aux4 = aux4.Where(x => x.NumCortada == Filtro.Corte);
+                        }
+
+                        if (Filtro.Planta != null)
+                        {
+                            aux4 = aux4.Where(x => x.Planta == Filtro.Planta);
+                        }
+
+                        if (Filtro.Estilo != null)
+                        {
+                            aux4 = aux4.Where(x => x.Estilo == Filtro.Estilo);
+                        }
+
+                        consulta = aux4.OrderByDescending(x => x.FechaRegistro).ToList();
+                        foreach (var itemAuditoria in consulta)
+                        {
+                            RES_AUDITORIA A = new RES_AUDITORIA();
+                            Models.Auditoria_Proc_Esp_Detalle ACD = db.Auditoria_Proc_Esp_Detalle
+                                .Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).FirstOrDefault();
+
+                            if (ACD != null)
+                            {
+                                A.pzas_r = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                                A.total = A.pzas_r;
+                            }
+                            else
+                            {
+                                A.pzas_r = 0;
+                                A.total = 0;
+                            }
+
+
+                            Models.C_Clientes Cliente;
+                            Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
+                            A.Cliente = Cliente.Descripcion;
+
+                            A.Marca = itemAuditoria.Marca;
+                            A.IdAuditoria = itemAuditoria.IdAuditoria;
+                            A.PO = itemAuditoria.PO;
+                            A.Corte = itemAuditoria.NumCortada;
+                            A.Planta = itemAuditoria.Planta;
+                            A.Estilo = itemAuditoria.Estilo;
+                            A.Fecha_i = itemAuditoria.FechaRegistro;
+                            A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+
+                            if (itemAuditoria.FechaRegistroFin == null)
+                            {
+                                A.status = "ACTIVA";
+                            }
+                            else
+                            {
+                                A.status = "CERRADA";
+                            }
+
+                            API.Auditoria.Add(A);
+                        }
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+
+                        break;
                 }
             }
             catch (Exception e)
@@ -338,6 +425,8 @@ namespace RioSulAPI.Controllers
             List<Models.VST_AUDITORIA_TERMINADO_DETALLE> auditoria_t = new List<VST_AUDITORIA_TERMINADO_DETALLE>();
             List<Models.VST_AUDITORIA_CALIDAD_DETALLE> auditoria_c = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
             List<Models.VST_AUDITORIA_LAVANDERIA_DETALLE> auditoria_l = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
+            List<Models.VST_AUDITORIA_PROC_ESP_DETALLE> auditoria_pe = new List<VST_AUDITORIA_PROC_ESP_DETALLE>();
+
             Models.C_Clientes clientes = new C_Clientes();
 
             switch (auditoria)
@@ -395,6 +484,20 @@ namespace RioSulAPI.Controllers
 
                     cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaL.rpt"));
 
+                    break;
+                case "ProcesosEspeciales":
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    auditoria_pe = db.VST_AUDITORIA_PROC_ESP_DETALLE.Where(x => x.IdAuditoria == idAuditoria).ToList();
+
+                    foreach (VST_AUDITORIA_PROC_ESP_DETALLE item in auditoria_pe)
+                    {
+                        ds.dtDetalle.AdddtDetalleRow(item.NombreDefecto, item.NombreOperacion, item.NombrePosicion, "",
+                            item.Cantidad, item.Notas);
+                    }
+
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaL.rpt"));
                     break;
             }
 
