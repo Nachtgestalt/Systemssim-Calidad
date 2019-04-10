@@ -738,7 +738,7 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT">
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT(System.String)">
             <summary>
             Obtenemos todas las OT activas
             </summary>

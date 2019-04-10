@@ -287,15 +287,33 @@ namespace RioSulAPI.Controllers
 		[HttpGet]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/ObtenemosOT")]
-		public RES_OT_GEN ObtenemosOT()
+		public RES_OT_GEN ObtenemosOT(string Tipo = "")
 		{
 			RES_OT_GEN API = new RES_OT_GEN();
 			try
 			{
-				using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
-				{
-					_Conn.Open();
-					string Consulta = @"SELECT        distinct(WH.WONbr)
+                API.OrdenTrabajo = new List<OT_GEN>();
+                switch (Tipo)
+                {
+                    case "Calidad":
+                        List<string> aux = new List<string>();
+                        aux = db.Auditorias.Where(x => x.FechaRegistroFin != null).Select(x => x.OrdenTrabajo).Distinct().ToList();
+                        foreach(string item in aux)
+                        {
+                            OT_GEN OT = new OT_GEN()
+                            {
+                                OT = item
+                            };
+                            API.OrdenTrabajo.Add(OT);
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+
+                        break;
+                    default:
+                        using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
+                        {
+                            _Conn.Open();
+                            string Consulta = @"SELECT        distinct(WH.WONbr)
 									FROM ItemXRef AS IXR RIGHT OUTER JOIN
 									WOHeader AS WH INNER JOIN
 									SOHeader INNER JOIN
@@ -305,21 +323,24 @@ namespace RioSulAPI.Controllers
 									InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
 									WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
 									RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
-									WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";
-					API.OrdenTrabajo = new List<OT_GEN>();
-					SqlCommand Command = new SqlCommand(Consulta, _Conn);
-					SqlDataReader sqlData = Command.ExecuteReader();
-					while (sqlData.Read())
-					{
-						OT_GEN OT = new OT_GEN()
-						{
-							OT = sqlData[0].ToString().Trim()
-						};
-						API.OrdenTrabajo.Add(OT);
-					}
-					sqlData.Close();
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-				}
+									WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";                            
+                            SqlCommand Command = new SqlCommand(Consulta, _Conn);
+                            SqlDataReader sqlData = Command.ExecuteReader();
+                            while (sqlData.Read())
+                            {
+                                OT_GEN OT = new OT_GEN()
+                                {
+                                    OT = sqlData[0].ToString().Trim()
+                                };
+                                API.OrdenTrabajo.Add(OT);
+                            }
+                            sqlData.Close();
+                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        }
+                        break;
+                }
+
+				
 			}
 			catch (Exception ex)
 			{
