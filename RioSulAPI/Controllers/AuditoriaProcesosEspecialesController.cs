@@ -320,6 +320,84 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/AuditoriaProcesosEspeciales/AuditoriaProcEsp")]
+        public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]REQ_NEW_OT OC, int ID)
+        {
+            AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+            string image_name = "";
+            int num_detalle = 0;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    List<Models.Auditoria_Proc_Esp_Detalle> ATD = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == ID).ToList();
+
+                    foreach (Models.Auditoria_Proc_Esp_Detalle item in ATD)
+                    {
+                        db.Auditoria_Proc_Esp_Detalle.Remove(item);
+                        db.SaveChanges();
+                    }
+
+
+                    foreach (OT_DET item in OC.Det)
+                    {
+                        num_detalle = num_detalle + 1;
+                        image_name = "";
+
+                        if (item.Imagen != null && !item.Imagen.IsEmpty())
+                        {
+                            string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            image_name = "Auditoria_ProcEsp_" + ID + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
+                        Models.Auditoria_Proc_Esp_Detalle auditoria_calidad = new Models.Auditoria_Proc_Esp_Detalle()
+                        {
+                            IdAuditoria = ID,
+                            IdPosicion = item.IdPosicion,
+                            IdOperacion = item.IdOperacion,
+                            IdDefecto = item.IdDefecto,
+                            Cantidad = item.Cantidad,
+                            Aud_Imagen = image_name,
+                            Notas = item.Notas
+                        };
+                        db.Auditoria_Proc_Esp_Detalle.Add(auditoria_calidad);
+                    }
+                    db.SaveChanges();
+
+                    API.Message = "Auditoria modificada correctamente";
+                    API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Message = "Formato inválido";
+                    API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception e)
+            {
+                API.Message = e.Message;
+                API.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            return API;
+        }
+
 
 
         public partial class DET_AUDITORIA_PROC_ESP
@@ -333,7 +411,6 @@ namespace RioSulAPI.Controllers
             [Required]
             public int Cantidad { get; set; }
         }
-
         public partial class REQ_NEW_OT
         {
             [Required] public int IdClienteRef { get; set; }
@@ -349,7 +426,6 @@ namespace RioSulAPI.Controllers
             [Required] public int IdUsuario { get; set; }
             [Required] public List<OT_DET> Det { get; set; }
         }
-
         public partial class OT_DET
         {
             [Required] public int IdPosicion { get; set; }
@@ -359,7 +435,6 @@ namespace RioSulAPI.Controllers
             public string Notas { get; set; }
             public string Imagen { get; set; }
         }
-
         public partial class R_AUDITORIA_PROC
         {
             public Models.VST_AUDITORIA RES { get; set; }

@@ -704,6 +704,13 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.REQ_NEW_OT,System.Int32)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.NuevaAuditoriaTerminado(RioSulAPI.Controllers.AuditoriaTerminadoController.REQ_NEW_AT)">
             <summary>
             Registra una nueva auditoría de lavandería

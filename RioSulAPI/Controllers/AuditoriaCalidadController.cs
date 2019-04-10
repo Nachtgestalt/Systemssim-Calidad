@@ -513,7 +513,5 @@ namespace RioSulAPI.Controllers
             [Required]
             public List<DET_AUDITORIA_CALIDAD> Det { get; set; }
         }
-
-
     }
 }
