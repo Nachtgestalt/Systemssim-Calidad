@@ -30,5 +30,7 @@ namespace RioSulAPI.Models
         public int Cantidad { get; set; }
         public string Imagen { get; set; }
         public string Notas { get; set; }
+
+        public string Archivo { get; set; }
     }
 }

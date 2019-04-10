@@ -244,3 +244,5 @@ paket-files/
 .idea/
 *.sln.iml
 RioSulAPI/Imagenes/
+
+RioSulAPI/Archivos/

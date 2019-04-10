@@ -34,6 +34,7 @@ namespace RioSulAPI.Controllers
         public HttpResponseMessage NuevaAuditoriaProcEsp([FromBody]REQ_NEW_OT OT)
         {
             string image_name = "";
+            string pdf = "";
             int num_detalle = 0;
             try
             {
@@ -72,6 +73,7 @@ namespace RioSulAPI.Controllers
 
                             num_detalle = num_detalle + 1;
                             image_name = "";
+                            pdf = "";
                             if (item.Imagen != null && !item.Imagen.IsEmpty())
                             {
                                 string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
@@ -85,7 +87,19 @@ namespace RioSulAPI.Controllers
                                     image_file.Flush();
                                 }
                             }
+                            if (item.Archivo != null && !item.Archivo.IsEmpty())
+                            {
+                                string base64 = item.Archivo.Substring(item.Archivo.IndexOf(',') + 1);
+                                byte[] data = Convert.FromBase64String(base64);
 
+                                pdf = "Auditoria_ProcEsp_" + auditoria.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                                using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Archivos/") + pdf + ".pdf", FileMode.Create))
+                                {
+                                    image_file.Write(data, 0, data.Length);
+                                    image_file.Flush();
+                                }
+                            }
                             Models.Auditoria_Proc_Esp_Detalle auditoria_Proc_Esp = new Models.Auditoria_Proc_Esp_Detalle()
                             {
                                 IdDefecto = item.IdDefecto,
@@ -94,7 +108,8 @@ namespace RioSulAPI.Controllers
                                 IdPosicion = item.IdPosicion,
                                 Cantidad = item.Cantidad,
                                 Aud_Imagen = image_name,
-                                Notas = item.Notas
+                                Notas = item.Notas,
+                                Archivo = pdf
                             };
                             db.Auditoria_Proc_Esp_Detalle.Add(auditoria_Proc_Esp);
                         }
@@ -170,6 +185,16 @@ namespace RioSulAPI.Controllers
                         item.Imagen = "";
                     }
 
+                    file_path = HttpContext.Current.Server.MapPath("~/Archivos/");
+                    file_path = file_path + item.Archivo + ".pdf";
+                    if (File.Exists(file_path))
+                    {
+                        item.Archivo = "data:application/" + "pdf" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        item.Archivo = "";
+                    }
                     API.RES_DET.Add(item);
                 }
 
@@ -332,6 +357,7 @@ namespace RioSulAPI.Controllers
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
             string image_name = "";
+            string pdf = "";
             int num_detalle = 0;
 
             try
@@ -346,11 +372,11 @@ namespace RioSulAPI.Controllers
                         db.SaveChanges();
                     }
 
-
                     foreach (OT_DET item in OC.Det)
                     {
                         num_detalle = num_detalle + 1;
                         image_name = "";
+                        pdf = "";
 
                         if (item.Imagen != null && !item.Imagen.IsEmpty())
                         {
@@ -366,6 +392,20 @@ namespace RioSulAPI.Controllers
                             }
                         }
 
+                        if (item.Archivo != null && !item.Archivo.IsEmpty())
+                        {
+                            string base64 = item.Archivo.Substring(item.Archivo.IndexOf(',') + 1);
+                            byte[] data = Convert.FromBase64String(base64);
+
+                            pdf = "Auditoria_ProcEsp_" + ID + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+                            using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Archivos/") + pdf + ".pdf", FileMode.Create))
+                            {
+                                image_file.Write(data, 0, data.Length);
+                                image_file.Flush();
+                            }
+                        }
+
                         Models.Auditoria_Proc_Esp_Detalle auditoria_calidad = new Models.Auditoria_Proc_Esp_Detalle()
                         {
                             IdAuditoria = ID,
@@ -374,7 +414,8 @@ namespace RioSulAPI.Controllers
                             IdDefecto = item.IdDefecto,
                             Cantidad = item.Cantidad,
                             Aud_Imagen = image_name,
-                            Notas = item.Notas
+                            Notas = item.Notas,
+                            Archivo = pdf
                         };
                         db.Auditoria_Proc_Esp_Detalle.Add(auditoria_calidad);
                     }
@@ -434,6 +475,8 @@ namespace RioSulAPI.Controllers
             [Required] public int Cantidad { get; set; }
             public string Notas { get; set; }
             public string Imagen { get; set; }
+
+            public string Archivo { get; set; }
         }
         public partial class R_AUDITORIA_PROC
         {
