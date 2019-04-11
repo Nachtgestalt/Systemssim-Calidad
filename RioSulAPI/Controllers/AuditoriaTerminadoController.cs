@@ -360,11 +360,11 @@ namespace RioSulAPI.Controllers
 		[HttpGet]
 		[ApiExplorerSettings(IgnoreApi = false)]
 		[Route("api/AuditoriaTerminado/ObtenemosOT_D")]
-		public RES_OT_DET ObtenemosOT_D(string OT)
+		public RES_OT_DET ObtenemosOT_D(string OT, string Tipo = "")
 		{
 			RES_OT_DET API = new RES_OT_DET();
 			API.OT = new OT_DET();
-			
+            Models.Auditoria aux = new Models.Auditoria();
 			try
 			{
 				//DETALLE DE LA OT
@@ -426,7 +426,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 					Models.C_ClientesReferencia CliRef;
 					Models.C_Clientes Cliente;
 					CliRef = db.C_ClientesReferencia.Where(x => x.Cve_Cliente == API.OT.ID_Cliente).FirstOrDefault();
-
+                    
 					if (CliRef == null)
 					{
 						API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
@@ -441,10 +441,23 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 						API.Message = new HttpResponseMessage(HttpStatusCode.Accepted);
 					}
 
-					
-				}
+                    //VERIFICAMOS EL TIPO
+                    switch (Tipo)
+                    {
+                        case "Calidad":
+                            aux = db.Auditorias.Where(x => x.FechaRegistroFin != null && x.Terminado == true && x.OrdenTrabajo == OT).FirstOrDefault();
+                            if (aux == null)
+                            {
+                                API.Message2 = "Orden de trabajo inválida";
+                                API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                                API.OT = null;
+                            }
 
-			}
+                            break;
+                    }
+
+                }
+            }
 			catch (Exception ex)
 			{
 				Utilerias.EscribirLog(ex.ToString());

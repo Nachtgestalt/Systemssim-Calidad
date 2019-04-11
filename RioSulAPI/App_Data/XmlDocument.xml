@@ -744,7 +744,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT_D(System.String)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaTerminadoController.ObtenemosOT_D(System.String,System.String)">
             <summary>
             Obtenemos el detalle de la OT
             </summary>
