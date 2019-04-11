@@ -448,7 +448,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
                             aux = db.Auditorias.Where(x => x.FechaRegistroFin != null && x.Terminado == true && x.OrdenTrabajo == OT).FirstOrDefault();
                             if (aux == null)
                             {
-                                API.Message2 = "Orden de trabajo inválida";
+                                API.Message2 = "La OT aun no tiene una auditoria de terminado";
                                 API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
                                 API.OT = null;
                             }
