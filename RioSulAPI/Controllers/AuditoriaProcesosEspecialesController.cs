@@ -353,7 +353,7 @@ namespace RioSulAPI.Controllers
         [HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/AuditoriaProcesosEspeciales/AuditoriaProcEsp")]
-        public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]REQ_NEW_OT OC, int ID)
+        public AuditoriaTerminadoController.MESSAGE ActualizaAuditoria([FromBody]ACT_AUD_PE OC)
         {
             AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
             string image_name = "";
@@ -364,7 +364,7 @@ namespace RioSulAPI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    List<Models.Auditoria_Proc_Esp_Detalle> ATD = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == ID).ToList();
+                    List<Models.Auditoria_Proc_Esp_Detalle> ATD = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == OC.IdAuditoria).ToList();
 
                     foreach (Models.Auditoria_Proc_Esp_Detalle item in ATD)
                     {
@@ -383,7 +383,7 @@ namespace RioSulAPI.Controllers
                             string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
                             byte[] data = Convert.FromBase64String(base64);
 
-                            image_name = "Auditoria_ProcEsp_" + ID + DateTime.Now.ToString("yymmssfff") + num_detalle;
+                            image_name = "Auditoria_ProcEsp_" + OC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
 
                             using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
                             {
@@ -397,7 +397,7 @@ namespace RioSulAPI.Controllers
                             string base64 = item.Archivo.Substring(item.Archivo.IndexOf(',') + 1);
                             byte[] data = Convert.FromBase64String(base64);
 
-                            pdf = "Auditoria_ProcEsp_" + ID + DateTime.Now.ToString("yymmssfff") + num_detalle;
+                            pdf = "Auditoria_ProcEsp_" + OC.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
 
                             using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Archivos/") + pdf + ".pdf", FileMode.Create))
                             {
@@ -408,7 +408,7 @@ namespace RioSulAPI.Controllers
 
                         Models.Auditoria_Proc_Esp_Detalle auditoria_calidad = new Models.Auditoria_Proc_Esp_Detalle()
                         {
-                            IdAuditoria = ID,
+                            IdAuditoria = OC.IdAuditoria,
                             IdPosicion = item.IdPosicion,
                             IdOperacion = item.IdOperacion,
                             IdDefecto = item.IdDefecto,
@@ -475,7 +475,6 @@ namespace RioSulAPI.Controllers
             [Required] public int Cantidad { get; set; }
             public string Notas { get; set; }
             public string Imagen { get; set; }
-
             public string Archivo { get; set; }
         }
         public partial class R_AUDITORIA_PROC
@@ -483,6 +482,15 @@ namespace RioSulAPI.Controllers
             public Models.VST_AUDITORIA RES { get; set; }
             public List<Models.VST_AUDITORIA_PROC_ESP_DETALLE> RES_DET { get; set; }
             public HttpResponseMessage Message { get; set; }
+        }
+
+        public partial class ACT_AUD_PE
+        {
+            [Required]
+            public int IdAuditoria { get; set; }
+
+            [Required]
+            public List<OT_DET> Det { get; set; }
         }
     }
 }

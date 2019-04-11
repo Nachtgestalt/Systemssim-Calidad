@@ -704,7 +704,7 @@
             <param name="IdAuditoria"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.REQ_NEW_OT,System.Int32)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaProcesosEspecialesController.ACT_AUD_PE)">
             <summary>
             ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
             </summary>
