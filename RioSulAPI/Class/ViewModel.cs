@@ -793,6 +793,7 @@ namespace RioSulAPI.Class
         public partial class RES_BUS_DEFECTO_LAVANDERIA
         {
             public List<Models.VST_LAVANDERIA> Vst_Lavanderia { get; set; }
+            public List<Models.VST_PROCESOS_ESPECIALES> Vst_ProcesosEspeciales{ get; set; }
             public HttpResponseMessage Message { get; set; }
         }
 

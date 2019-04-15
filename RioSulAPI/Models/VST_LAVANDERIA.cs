@@ -11,21 +11,22 @@ namespace RioSulAPI.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Runtime.Serialization;
+
     public partial class VST_LAVANDERIA
     {
         public int ID { get; set; }
         public int IdSubModulo { get; set; }
         public string NombreSubModulo { get; set; }
-        public string NombreModulo { get; set; }
+        [IgnoreDataMember] public string NombreModulo { get; set; }
         public int IdUsuario { get; set; }
-        public string NombreUsuario { get; set; }
+        [IgnoreDataMember] public string NombreUsuario { get; set; }
         public string Clave { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public string Observaciones { get; set; }
         public bool Activo { get; set; }
         public string Imagen { get; set; }
-        public int IdModulo { get; set; }
+        [IgnoreDataMember] public int IdModulo { get; set; }
     }
 }

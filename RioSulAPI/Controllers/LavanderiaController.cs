@@ -188,6 +188,7 @@ namespace RioSulAPI.Controllers
         {
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
             API.Vst_Lavanderia = new List<VST_LAVANDERIA>();
+            API.Vst_ProcesosEspeciales = new List<VST_PROCESOS_ESPECIALES>();
             string image_name = "";
             string file_path = "";
 
@@ -196,7 +197,8 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     List<Models.VST_LAVANDERIA> lavanderias = new List<VST_LAVANDERIA>();
-                    
+                    List<Models.VST_PROCESOS_ESPECIALES> procesos = new List<VST_PROCESOS_ESPECIALES>();
+
 
                     switch (Activo)
                     {
@@ -204,16 +206,22 @@ namespace RioSulAPI.Controllers
                             lavanderias = db.VST_LAVANDERIA.
                                 Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17 && x.Activo == true).
                                 OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
 
                         case "False":
                             lavanderias = db.VST_LAVANDERIA.
                                 Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17 && x.Activo == false).
                                 OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                         default:
                             lavanderias = db.VST_LAVANDERIA.
                                 Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 17).
+                                OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 27).
                                 OrderBy(x => x.Nombre).ToList();
                             break;
                     }
@@ -233,6 +241,22 @@ namespace RioSulAPI.Controllers
                         }
 
                         API.Vst_Lavanderia.Add(item);
+                    }
+
+                    foreach (Models.VST_PROCESOS_ESPECIALES item in procesos)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_ProcesosEspeciales.Add(item);
                     }
 
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -575,6 +599,9 @@ namespace RioSulAPI.Controllers
             string file_path = "";
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
             API.Vst_Lavanderia = new List<VST_LAVANDERIA>();
+            API.Vst_ProcesosEspeciales = new List<VST_PROCESOS_ESPECIALES>();
+
+            List<Models.VST_PROCESOS_ESPECIALES> procesos = new List<VST_PROCESOS_ESPECIALES>();
             List<Models.VST_LAVANDERIA> lavanderia = new List<VST_LAVANDERIA>();
             try
             {
@@ -587,16 +614,25 @@ namespace RioSulAPI.Controllers
                             lavanderia = db.VST_LAVANDERIA.Where(x =>
                                 (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19 && x.Activo == true)
                                 .OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 13 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                         case "False":
                             lavanderia = db.VST_LAVANDERIA.Where(x =>
                                     (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19 && x.Activo == false)
                                 .OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 13 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                         default:
                             lavanderia = db.VST_LAVANDERIA.Where(x =>
                                     (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 19)
                                 .OrderBy(x => x.Nombre).ToList();
+                            procesos = db.VST_PROCESOS_ESPECIALES.
+                               Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 13).
+                               OrderBy(x => x.Nombre).ToList();
                             break;
                     }
 
@@ -614,6 +650,22 @@ namespace RioSulAPI.Controllers
                         }
 
                         API.Vst_Lavanderia.Add(item);
+                    }
+
+                    foreach (Models.VST_PROCESOS_ESPECIALES item in procesos)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_ProcesosEspeciales.Add(item);
                     }
 
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -930,6 +982,9 @@ namespace RioSulAPI.Controllers
             string file_path = "";
             ViewModel.RES_BUS_DEFECTO_LAVANDERIA API = new ViewModel.RES_BUS_DEFECTO_LAVANDERIA();
             API.Vst_Lavanderia = new List<VST_LAVANDERIA>();
+            API.Vst_ProcesosEspeciales = new List<VST_PROCESOS_ESPECIALES>();
+
+            List<Models.VST_PROCESOS_ESPECIALES> posicion = new List<VST_PROCESOS_ESPECIALES>();
             List<VST_LAVANDERIA> lavanderia = new List<VST_LAVANDERIA>();
             try
             {
@@ -939,16 +994,24 @@ namespace RioSulAPI.Controllers
                     {
                         case "True":
                             lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                            posicion = db.VST_PROCESOS_ESPECIALES.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 14 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                         case "False":
                             lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            posicion = db.VST_PROCESOS_ESPECIALES.
+                                Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 14 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
                             break;
                         default:
                             lavanderia = db.VST_LAVANDERIA.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 20).OrderBy(x => x.Nombre).ToList();
+                            posicion = db.VST_PROCESOS_ESPECIALES.
+                               Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 14).
+                               OrderBy(x => x.Nombre).ToList();
                             break;
                     }
-
-                   
+                  
                     foreach (Models.VST_LAVANDERIA item in lavanderia)
                     {
                         file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
@@ -965,6 +1028,21 @@ namespace RioSulAPI.Controllers
                         API.Vst_Lavanderia.Add(item);
                     }
 
+                    foreach (Models.VST_PROCESOS_ESPECIALES item in posicion)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_ProcesosEspeciales.Add(item);
+                    }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
