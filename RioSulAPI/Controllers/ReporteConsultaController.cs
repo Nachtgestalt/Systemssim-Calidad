@@ -118,6 +118,7 @@ namespace RioSulAPI.Controllers
                             A.Estilo = itemAuditoria.Estilo;
                             A.Fecha_i = itemAuditoria.FechaRegistro;
                             A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+                            A.OT = itemAuditoria.OrdenTrabajo;
 
                             if (itemAuditoria.FechaRegistroFin == null)
                             {
@@ -207,6 +208,7 @@ namespace RioSulAPI.Controllers
                             A.Estilo = itemAuditoria.Estilo;
                             A.Fecha_i = itemAuditoria.FechaRegistro;
                             A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+                            A.OT = itemAuditoria.OrdenTrabajo;
 
                             if (itemAuditoria.FechaRegistroFin == null)
                             {
@@ -294,6 +296,7 @@ namespace RioSulAPI.Controllers
                             A.Estilo = itemAuditoria.Estilo;
                             A.Fecha_i = itemAuditoria.FechaRegistro;
                             A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+                            A.OT = itemAuditoria.OrdenTrabajo;
 
                             if (itemAuditoria.FechaRegistroFin == null)
                             {
@@ -380,6 +383,7 @@ namespace RioSulAPI.Controllers
                             A.Estilo = itemAuditoria.Estilo;
                             A.Fecha_i = itemAuditoria.FechaRegistro;
                             A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+                            A.OT = itemAuditoria.OrdenTrabajo;
 
                             if (itemAuditoria.FechaRegistroFin == null)
                             {
@@ -558,6 +562,7 @@ namespace RioSulAPI.Controllers
             public int total { get; set; }
             public string status { get; set; }
             public int IdAuditoria { get; set; }
+            public string OT { get; set; }
         }
 
         public partial class A_RES_AUDIOTRIA
