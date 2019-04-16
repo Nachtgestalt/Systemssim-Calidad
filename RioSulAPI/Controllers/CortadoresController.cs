@@ -17,7 +17,8 @@ namespace RioSulAPI.Controllers
         private JavaScriptSerializer _objSerializer = new JavaScriptSerializer();
 
         //----------------------------------------CORTADRORES------------------------------------------------
-
+        #region CORTADORES
+        
         /// <summary>
         /// Registra un nuevo cortador
         /// </summary>
@@ -75,21 +76,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaCortadorSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_CORTADOR ValidaCortadorSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_CORTADOR ValidaCortadorSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 1 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -155,14 +156,28 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ObtieneCortadores")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_CORTADOR ObtieneCortadores(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_CORTADOR ObtieneCortadores(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_CORTADOR API = new ViewModel.RES_BUS_CORTADOR();
+            List<Models.VST_CORTADORES> cortadores = new List<Models.VST_CORTADORES>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 1).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 1 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 1 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 1).OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+
+                    API.Vst_Cortadores = cortadores;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -258,7 +273,46 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Activa o inactiva cortador por IdCortador
+        /// </summary>
+        /// <param name="IdCortador"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/Cortador")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_CORTADOR EliminaCortador(int IdCortador)
+        {
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == IdCortador).FirstOrDefault();
+                    db.C_Cort_Cortadores.Remove(c_Cort);
+                    db.SaveChanges();
+                    
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        #endregion
         //----------------------------------------TENDIDO------------------------------------------------
+
+        #region TENDIDO
 
         /// <summary>
         /// Registra un nuevo tendido
@@ -317,14 +371,14 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaTendidoSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_TENDIDO ValidaTendidoSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_TENDIDO ValidaTendidoSubModulo(int SubModulo, string Clave, string Nombre, int ID = 0)
         {
             ViewModel.RES_TENDIDO API = new ViewModel.RES_TENDIDO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
                         API.Hecho = false;
@@ -397,14 +451,27 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ObtieneTendido")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_TENDIDO ObtieneTendido(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_TENDIDO ObtieneTendido(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_TENDIDO API = new ViewModel.RES_BUS_TENDIDO();
+            List<Models.VST_CORTADORES> tendido = new List<Models.VST_CORTADORES>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 2).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            tendido = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 2 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            tendido = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 2 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            tendido = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 2).OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+                    API.Vst_Cortadores = tendido;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -500,6 +567,7 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        #endregion
         //----------------------------------------TIPO TENDIDO------------------------------------------------
 
         /// <summary>

@@ -1164,7 +1164,7 @@
             <param name="cORTADOR"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaCortadorSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaCortadorSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo cortador por SubModulo
             </summary>
@@ -1180,7 +1180,7 @@
             <param name="IdCortador"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneCortadores(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneCortadores(System.String,System.String,System.String)">
             <summary>
             Obtiene cortadores por Clave y/o Nombre
             </summary>
@@ -1202,6 +1202,13 @@
             <param name="cORTADOR"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaCortador(System.Int32)">
+            <summary>
+            Activa o inactiva cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoTendido(RioSulAPI.Class.ViewModel.REQ_TENDIDO)">
             <summary>
             Registra un nuevo tendido
@@ -1209,7 +1216,7 @@
             <param name="Tendido"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTendidoSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTendidoSubModulo(System.Int32,System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo tendido por SubModulo
             </summary>
@@ -1225,7 +1232,7 @@
             <param name="IdTendido"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTendido(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTendido(System.String,System.String,System.String)">
             <summary>
             Obtiene tendido por Clave y/o Nombre
             </summary>
