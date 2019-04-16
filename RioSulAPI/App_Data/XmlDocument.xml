@@ -1313,7 +1313,7 @@
             <param name="TipoTendido"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaMesaSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaMesaSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo tendido por SubModulo
             </summary>
@@ -1329,7 +1329,7 @@
             <param name="IdMesa"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneMesa(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneMesa(System.String,System.String,System.String)">
             <summary>
             Obtiene tendido por Clave y/o Nombre
             </summary>
@@ -1351,6 +1351,13 @@
             <param name="TipoTendido"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaMesa(System.Int32)">
+            <summary>
+            Elimina cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoDefecto(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CORTE)">
             <summary>
             Registra un nuevo tendido
@@ -1358,7 +1365,7 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaDefectoSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaDefectoSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo tendido por SubModulo
             </summary>
@@ -1374,7 +1381,7 @@
             <param name="IdDefecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneDefecto(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneDefecto(System.String,System.String,System.String)">
             <summary>
             Obtiene defecto por Clave y/o Nombre
             </summary>
@@ -1396,6 +1403,13 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaDefecto(System.Int32)">
+            <summary>
+            Elimina cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoPosicion(RioSulAPI.Class.ViewModel.REQ_POSICION_CORTE)">
             <summary>
             Registra un nuevo posición
@@ -1403,7 +1417,7 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaPosicionSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaPosicionSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nueva posisión por SubModulo
             </summary>
@@ -1419,7 +1433,7 @@
             <param name="IdPosicion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtienePosicion(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtienePosicion(System.String,System.String,System.String)">
             <summary>
             Obtiene posicion por Clave y/o Nombre
             </summary>
@@ -1434,17 +1448,18 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaPosicion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CORTE)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ActualizaPosicion(RioSulAPI.Class.ViewModel.EDT_POSICION_CORTE)">
             <summary>
             Actualiza los datos de la posición
             </summary>
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneDefectosActivos">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaPosicion(System.Int32)">
             <summary>
-            Obtiene los defectos activos para relacionar a la posición
+            Elimina cortador por IdCortador
             </summary>
+            <param name="IdCortador"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.ObtieneTolerancias">

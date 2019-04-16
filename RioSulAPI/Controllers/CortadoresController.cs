@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using RioSulAPI.Class;
 
 namespace RioSulAPI.Controllers
@@ -311,7 +314,6 @@ namespace RioSulAPI.Controllers
 
         #endregion
         //----------------------------------------TENDIDO------------------------------------------------
-
         #region TENDIDO
 
         /// <summary>
@@ -849,9 +851,9 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
-        #endregion  
+        #endregion
         //----------------------------------------MESA------------------------------------------------
-
+        #region MESA
         /// <summary>
         /// Registra un nuevo tendido
         /// </summary>
@@ -909,21 +911,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaMesaSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_TIPO_TENDIDO ValidaMesaSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_TIPO_TENDIDO ValidaMesaSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_TIPO_TENDIDO API = new ViewModel.RES_TIPO_TENDIDO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 4 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -989,13 +991,27 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ObtieneMesa")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_TENDIDO ObtieneMesa(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_TENDIDO ObtieneMesa(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_TENDIDO API = new ViewModel.RES_BUS_TENDIDO();
+            List<Models.VST_CORTADORES> mesa = new List<Models.VST_CORTADORES>();
             try
             {
                 if (ModelState.IsValid)
                 {
+                    switch (Activo)
+                    {
+                        case "True":
+                            mesa = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 4 && x.Activo ==true).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            mesa = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 4 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            mesa = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 4).OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+
                     API.Vst_Cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 4).OrderBy(x => x.Nombre).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -1092,8 +1108,44 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
-        //----------------------------------------DEFECTOS------------------------------------------------
+        /// <summary>
+        /// Elimina cortador por IdCortador
+        /// </summary>
+        /// <param name="IdCortador"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/Mesa")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_CORTADOR EliminaMesa(int ID)
+        {
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                    db.C_Cort_Cortadores.Remove(c_Cort);
+                    db.SaveChanges();
 
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+        #endregion
+        //----------------------------------------DEFECTOS------------------------------------------------
+        #region DEFECTOS
         /// <summary>
         /// Registra un nuevo tendido
         /// </summary>
@@ -1104,11 +1156,26 @@ namespace RioSulAPI.Controllers
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CORTE NuevoDefecto([FromBody]ViewModel.REQ_DEFECTO_CORTE Defecto)
         {
+            string image_name = "";
             ViewModel.RES_DEFECTO_CORTE API = new ViewModel.RES_DEFECTO_CORTE();
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                    {
+                        string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Corte_Defecto" + "6_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new System.IO.FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
                     Models.C_Cort_Cortadores c_Cort = new Models.C_Cort_Cortadores()
                     {
                         Activo = true,
@@ -1119,7 +1186,7 @@ namespace RioSulAPI.Controllers
                         IdUsuario = Defecto.IdUsuario,
                         Nombre = Defecto.Nombre,
                         Observaciones = Defecto.Observaciones,
-                        Imagen = Defecto.Imagen
+                        Imagen = image_name
                     };
                     db.C_Cort_Cortadores.Add(c_Cort);
                     db.SaveChanges();
@@ -1152,21 +1219,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaDefectoSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CORTE ValidaDefectoSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_DEFECTO_CORTE ValidaDefectoSubModulo(string Clave = "", string Nombre = "",int ID = 0)
         {
             ViewModel.RES_DEFECTO_CORTE API = new ViewModel.RES_DEFECTO_CORTE();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 6 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -1232,14 +1299,45 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ObtieneDefecto")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CORTE ObtieneDefecto(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CORTE ObtieneDefecto(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CORTE API = new ViewModel.RES_BUS_DEFECTO_CORTE();
+            API.Vst_Cortadores = new List<Models.VST_CORTADORES>();
+            List<Models.VST_CORTADORES> defectos = new List<Models.VST_CORTADORES>();
+            string image_name = "";
+            string file_path = "";
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 6).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            defectos = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 6 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            defectos = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 6 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            defectos = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 6).OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+
+                    foreach(Models.VST_CORTADORES item in defectos)
+                    {
+                        file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                        file_path = file_path + item.Imagen + ".jpg";
+                        if (File.Exists(file_path))
+                        {
+                            item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                        }
+                        else
+                        {
+                            item.Imagen = "";
+                        }
+
+                        API.Vst_Cortadores.Add(item);
+                    }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -1268,11 +1366,29 @@ namespace RioSulAPI.Controllers
         public ViewModel.RES_EDT_DEFECTO_CORTE ObtieneInfoDefecto(int ID)
         {
             ViewModel.RES_EDT_DEFECTO_CORTE API = new ViewModel.RES_EDT_DEFECTO_CORTE();
+            API.Vst_Cortador = new Models.VST_CORTADORES();
+
+            Models.VST_CORTADORES defecto = new Models.VST_CORTADORES();
+
+            string image_name = "";
+            string file_path = "";
             try
             {
                 if (ModelState.IsValid)
                 {
                     API.Vst_Cortador = db.VST_CORTADORES.Where(x => x.ID == ID).FirstOrDefault();
+
+                    file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                    file_path = file_path + API.Vst_Cortador.Imagen + ".jpg";
+                    if (File.Exists(file_path))
+                    {
+                        API.Vst_Cortador.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        API.Vst_Cortador.Imagen = "";
+                    }
+
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -1300,10 +1416,25 @@ namespace RioSulAPI.Controllers
         public ViewModel.RES_DEFECTO_CORTE ActualizaDefecto([FromBody]ViewModel.REQ_EDT_DEFECTO_CORTE Defecto)
         {
             ViewModel.RES_DEFECTO_CORTE API = new ViewModel.RES_DEFECTO_CORTE();
+            string image_name = "";
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                    {
+                        string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Corte_Defecto" + "6_" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
                     Models.C_Cort_Cortadores Vst = db.C_Cort_Cortadores.Where(x => x.ID == Defecto.ID).FirstOrDefault();
                     if (Vst != null)
                     {
@@ -1312,7 +1443,7 @@ namespace RioSulAPI.Controllers
                         Vst.Observaciones = Defecto.Observaciones;
                         Vst.Descripcion = Defecto.Descripcion;
                         Vst.Clave = Defecto.Clave;
-                        Vst.Imagen = Defecto.Imagen;
+                        Vst.Imagen = image_name;
 
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -1336,8 +1467,44 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
-        //----------------------------------------POSICION------------------------------------------------
+        /// <summary>
+        /// Elimina cortador por IdCortador
+        /// </summary>
+        /// <param name="IdCortador"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/Defecto")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_CORTADOR EliminaDefecto(int ID)
+        {
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                    db.C_Cort_Cortadores.Remove(c_Cort);
+                    db.SaveChanges();
 
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+        #endregion
+        //----------------------------------------POSICION------------------------------------------------
+        #region POSICION
         /// <summary>
         /// Registra un nuevo posición
         /// </summary>
@@ -1368,13 +1535,12 @@ namespace RioSulAPI.Controllers
                     db.C_Cort_Cortadores.Add(c_Cort);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(Defecto.Posicion);
-                    foreach (JSON_POS_DEF item in POS)
+                    foreach (ViewModel.C_Posicion item in Defecto.Defecto)
                     {
                         Models.C_Posicion_Cortador c_Posicion_Cortador = new Models.C_Posicion_Cortador()
                         {
-                            IdCortador = c_Cort.ID,
-                            IdPosicion = item.IdDefecto
+                            IdCortador = item.IdCortador,
+                            IdPosicion = c_Cort.ID
                         };
                         db.C_Posicion_Cortador.Add(c_Posicion_Cortador);
                     }
@@ -1408,21 +1574,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaPosicionSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CORTE ValidaPosicionSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_DEFECTO_CORTE ValidaPosicionSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_DEFECTO_CORTE API = new ViewModel.RES_DEFECTO_CORTE();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 7 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -1488,14 +1654,28 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ObtienePosicion")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CORTE ObtienePosicion(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CORTE ObtienePosicion(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CORTE API = new ViewModel.RES_BUS_DEFECTO_CORTE();
+            List<Models.VST_CORTADORES> posicion = new List<Models.VST_CORTADORES>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Cortadores = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 7).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            posicion = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 7 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            posicion = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 7 && x.Activo == false).OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            posicion = db.VST_CORTADORES.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 7).OrderBy(x => x.Nombre).ToList();
+                            break;
+                    }
+
+                    API.Vst_Cortadores = posicion;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -1529,7 +1709,7 @@ namespace RioSulAPI.Controllers
                 if (ModelState.IsValid)
                 {
                     API.Vst_Cortador = db.VST_CORTADORES.Where(x => x.ID == ID).FirstOrDefault();
-                    API.Vst_Posicion = db.VST_POSICION_CORTADOR.Where(x => x.IdCortador == ID).ToList();
+                    API.Vst_Posicion = db.VST_POSICION_CORTADOR.Where(x => x.IdPosicion == ID).ToList();
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -1554,9 +1734,11 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ActualizaPosicion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CORTE ActualizaPosicion([FromBody]ViewModel.REQ_EDT_DEFECTO_CORTE Defecto)
+        public ViewModel.RES_DEFECTO_CORTE ActualizaPosicion([FromBody]ViewModel.EDT_POSICION_CORTE Defecto)
         {
             ViewModel.RES_DEFECTO_CORTE API = new ViewModel.RES_DEFECTO_CORTE();
+            List<Models.C_Posicion_Cortador> posicion = new List<Models.C_Posicion_Cortador>();
+
             try
             {
                 if (ModelState.IsValid)
@@ -1570,9 +1752,24 @@ namespace RioSulAPI.Controllers
                         Vst.Descripcion = Defecto.Descripcion;
                         Vst.Clave = Defecto.Clave;
 
-
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
+
+                        posicion = db.C_Posicion_Cortador.Where(x => x.IdPosicion == Defecto.ID).ToList();
+                        db.C_Posicion_Cortador.RemoveRange(posicion);
+                        db.SaveChanges();
+
+                        foreach (ViewModel.C_Posicion item in Defecto.Defecto)
+                        {
+                            Models.C_Posicion_Cortador c_Posicion_Cortador = new Models.C_Posicion_Cortador()
+                            {
+                                IdCortador = item.IdCortador,
+                                IdPosicion = Defecto.ID
+                            };
+                            db.C_Posicion_Cortador.Add(c_Posicion_Cortador);
+                        }
+                        db.SaveChanges();
+
 
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         API.Hecho = true;
@@ -1594,29 +1791,45 @@ namespace RioSulAPI.Controllers
         }
 
         /// <summary>
-        /// Obtiene los defectos activos para relacionar a la posición
+        /// Elimina cortador por IdCortador
         /// </summary>
+        /// <param name="IdCortador"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/Cortadores/ObtieneDefectosActivos")]
-        [System.Web.Http.HttpGet]
+        [System.Web.Http.Route("api/Cortadores/Posicion")]
+        [System.Web.Http.HttpDelete]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CORTE ObtieneDefectosActivos()
+        public ViewModel.RES_CORTADOR EliminaPosicion(int ID)
         {
-            ViewModel.RES_BUS_DEFECTO_CORTE API = new ViewModel.RES_BUS_DEFECTO_CORTE();
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
             try
             {
-                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                API.Vst_Cortadores = db.VST_CORTADORES.Where(x => x.IdSubModulo == 6 && x.Activo == true).ToList();
+                if (ModelState.IsValid)
+                {
+                    List<Models.C_Posicion_Cortador> posicion_Cortador = db.C_Posicion_Cortador.Where(x => x.IdPosicion == ID).ToList();
+                    db.C_Posicion_Cortador.RemoveRange(posicion_Cortador);
+                    db.SaveChanges();
+
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                    db.C_Cort_Cortadores.Remove(c_Cort);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
             }
             catch (Exception ex)
             {
-                Utilerias.EscribirLog(ex.ToString());
+                API.Hecho = false;
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.Vst_Cortadores = null;
             }
             return API;
         }
-
+        #endregion
         //------------------------TOLERANCIA---------------------------------------------
 
         /// <summary>
