@@ -1475,7 +1475,7 @@
             <param name="Tolerancia"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaNuevaTolerancia(System.Int32,System.Int32,System.Int32,System.Boolean,System.Boolean)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaNuevaTolerancia(System.Int32,System.Int32,System.Int32)">
             <summary>
             Valida que la tolerancia a registrar no se encuentre aun registrada
             </summary>
@@ -1491,6 +1491,20 @@
             Obtiene la tolerancia por Id
             </summary>
             <param name="IdTolerancia"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaTolerancia(System.Int32)">
+            <summary>
+            Elimina cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.updateTolerancia(RioSulAPI.Class.ViewModel.TOLERANCIA)">
+            <summary>
+            Registra nueva tolerancia de cortador
+            </summary>
+            <param name="Tolerancia"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.LavanderiaController.NuevoDefectoLavanderia(RioSulAPI.Class.ViewModel.REQ_DEFECTO_LAV)">

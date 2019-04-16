@@ -2000,23 +2000,25 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="Tolerancia"></param>
         /// <returns></returns>
-        [System.Web.Http.Route("api/Cortadores/RegistraNuevaTolerancia")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.Route("api/Cortadores/Tolerancia")]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public HttpResponseMessage RegistraNuevaTolerancia(ViewModel.TOLERANCIA Tolerancia)
+        public HttpResponseMessage updateTolerancia(ViewModel.TOLERANCIA Tolerancia)
         {
             HttpResponseMessage API;
             try
             {
-                Models.C_Tolerancia_Corte Tol = new Models.C_Tolerancia_Corte()
+                Models.C_Tolerancia_Corte tolerancia_Corte = db.C_Tolerancia_Corte.Where(x => x.IdTolerancia == Tolerancia.IdTolerancia).FirstOrDefault();
+                if(tolerancia_Corte != null)
                 {
-                    Denominador = Tolerancia.Denominador,
-                    Descripcion = Tolerancia.Descripcion,
-                    Numerador = Tolerancia.Numerador,
-                    ToleranciaNegativa = Tolerancia.ToleranciaNegativa,
-                    ToleranciaPositiva = Tolerancia.ToleranciaPositiva
-                };
-                db.C_Tolerancia_Corte.Add(Tol);
+                    tolerancia_Corte.Denominador = Tolerancia.Denominador;
+                    tolerancia_Corte.Descripcion = Tolerancia.Descripcion;
+                    tolerancia_Corte.Numerador = Tolerancia.Numerador;
+                    tolerancia_Corte.ToleranciaNegativa = Tolerancia.ToleranciaNegativa;
+                    tolerancia_Corte.ToleranciaPositiva = Tolerancia.ToleranciaPositiva;
+                }
+
+                db.Entry(tolerancia_Corte).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 API = new HttpResponseMessage(HttpStatusCode.OK);
             }
