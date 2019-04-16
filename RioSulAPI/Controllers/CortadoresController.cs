@@ -1958,6 +1958,76 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Elimina cortador por IdCortador
+        /// </summary>
+        /// <param name="IdCortador"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/Tolerancia")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_CORTADOR EliminaTolerancia(int ID)
+        {
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Tolerancia_Corte tolerancia_Corte = db.C_Tolerancia_Corte.Where(x => x.IdTolerancia == ID).FirstOrDefault();
+
+                    db.C_Tolerancia_Corte.Remove(tolerancia_Corte);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
+        /// <summary>
+        /// Registra nueva tolerancia de cortador
+        /// </summary>
+        /// <param name="Tolerancia"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/RegistraNuevaTolerancia")]
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public HttpResponseMessage RegistraNuevaTolerancia(ViewModel.TOLERANCIA Tolerancia)
+        {
+            HttpResponseMessage API;
+            try
+            {
+                Models.C_Tolerancia_Corte Tol = new Models.C_Tolerancia_Corte()
+                {
+                    Denominador = Tolerancia.Denominador,
+                    Descripcion = Tolerancia.Descripcion,
+                    Numerador = Tolerancia.Numerador,
+                    ToleranciaNegativa = Tolerancia.ToleranciaNegativa,
+                    ToleranciaPositiva = Tolerancia.ToleranciaPositiva
+                };
+                db.C_Tolerancia_Corte.Add(Tol);
+                db.SaveChanges();
+                API = new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
         public partial class JSON_POS_DEF
         {
             public int IdDefecto { get; set; }
