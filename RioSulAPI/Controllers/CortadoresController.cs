@@ -1696,12 +1696,12 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaNuevaTolerancia")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public bool ValidaNuevaTolerancia(int Descripcion, int Numerador, int Denominador, bool ToleranciaPositiva, bool ToleranciaNegativa)
+        public bool ValidaNuevaTolerancia(int Descripcion, int Numerador, int Denominador)
         {
             bool Result = false;
             try
             {
-                Models.C_Tolerancia_Corte Tolerancia = db.C_Tolerancia_Corte.Where(x => x.Descripcion == Descripcion && x.Numerador == Numerador && x.Denominador == Denominador && x.ToleranciaPositiva == ToleranciaPositiva && x.ToleranciaNegativa == ToleranciaNegativa).FirstOrDefault();
+                Models.C_Tolerancia_Corte Tolerancia = db.C_Tolerancia_Corte.Where(x => x.Descripcion == Descripcion && x.Numerador == Numerador && x.Denominador == Denominador).FirstOrDefault();
                 if (Tolerancia == null)
                 {
                     Result = true;
