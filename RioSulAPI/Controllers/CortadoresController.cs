@@ -274,7 +274,7 @@ namespace RioSulAPI.Controllers
         }
 
         /// <summary>
-        /// Activa o inactiva cortador por IdCortador
+        /// Elimina cortador por IdCortador
         /// </summary>
         /// <param name="IdCortador"></param>
         /// <returns></returns>
@@ -338,7 +338,8 @@ namespace RioSulAPI.Controllers
                         IdSubModulo = 2,
                         IdUsuario = Tendido.IdUsuario,
                         Nombre = Tendido.Nombre,
-                        Observaciones = Tendido.Observaciones
+                        Observaciones = Tendido.Observaciones,
+                        TipoTendido = Tendido.TipoTendido
                     };
                     db.C_Cort_Cortadores.Add(c_Cort);
                     db.SaveChanges();
@@ -371,21 +372,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Cortadores/ValidaTendidoSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_TENDIDO ValidaTendidoSubModulo(int SubModulo, string Clave, string Nombre, int ID = 0)
+        public ViewModel.RES_TENDIDO ValidaTendidoSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_TENDIDO API = new ViewModel.RES_TENDIDO();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo && x.ID != ID).FirstOrDefault();
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 2 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -544,6 +545,7 @@ namespace RioSulAPI.Controllers
                         Vst.Observaciones = Tendido.Observaciones;
                         Vst.Descripcion = Tendido.Descripcion;
                         Vst.Clave = Tendido.Clave;
+                        Vst.TipoTendido = Tendido.TipoTendido;
 
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -567,8 +569,45 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        /// <summary>
+        /// Elimina cortador por IdCortador
+        /// </summary>
+        /// <param name="IdCortador"></param>
+        /// <returns></returns>
+        [System.Web.Http.Route("api/Cortadores/Tendido")]
+        [System.Web.Http.HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        public ViewModel.RES_CORTADOR EliminaTendido(int ID)
+        {
+            ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                    db.C_Cort_Cortadores.Remove(c_Cort);
+                    db.SaveChanges();
+
+                    API.Hecho = true;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                API.Hecho = false;
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+            return API;
+        }
+
         #endregion
         //----------------------------------------TIPO TENDIDO------------------------------------------------
+        #region TIPO TENDIDO
 
         /// <summary>
         /// Registra un nuevo tendido
@@ -810,6 +849,7 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
+        #endregion  
         //----------------------------------------MESA------------------------------------------------
 
         /// <summary>

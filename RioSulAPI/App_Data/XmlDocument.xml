@@ -1204,7 +1204,7 @@
         </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaCortador(System.Int32)">
             <summary>
-            Activa o inactiva cortador por IdCortador
+            Elimina cortador por IdCortador
             </summary>
             <param name="IdCortador"></param>
             <returns></returns>
@@ -1216,7 +1216,7 @@
             <param name="Tendido"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTendidoSubModulo(System.Int32,System.String,System.String,System.Int32)">
+        <member name="M:RioSulAPI.Controllers.CortadoresController.ValidaTendidoSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo tendido por SubModulo
             </summary>
@@ -1252,6 +1252,13 @@
             Actualiza los datos del tendido
             </summary>
             <param name="Tendido"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.CortadoresController.EliminaTendido(System.Int32)">
+            <summary>
+            Elimina cortador por IdCortador
+            </summary>
+            <param name="IdCortador"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.CortadoresController.NuevoTipoTendido(RioSulAPI.Class.ViewModel.REQ_TIPO_TENDIDO)">

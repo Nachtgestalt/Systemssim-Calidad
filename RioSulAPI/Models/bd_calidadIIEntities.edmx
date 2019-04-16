@@ -224,6 +224,7 @@
           <Property Name="Activo" Type="bit" Nullable="false" />
           <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
           <Property Name="Imagen" Type="varchar(max)" />
+          <Property Name="TipoTendido" Type="int" />
         </EntityType>
         <EntityType Name="C_Cort_Tendido">
           <Key>
@@ -778,10 +779,11 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_CORTADORES' no tiene de
           <Property Name="Clave" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="250" Nullable="false" />
-          <Property Name="Observaciones" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Activo" Type="bit" Nullable="false" />
           <Property Name="Imagen" Type="varchar(max)" />
           <Property Name="IdModulo" Type="int" Nullable="false" />
+          <Property Name="TipoTendido" Type="int" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_LAVANDERIA' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1667,7 +1669,8 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_CORTADORES].[Observaciones] AS [Observaciones], 
     [VST_CORTADORES].[Activo] AS [Activo], 
     [VST_CORTADORES].[Imagen] AS [Imagen], 
-    [VST_CORTADORES].[IdModulo] AS [IdModulo]
+    [VST_CORTADORES].[IdModulo] AS [IdModulo], 
+    [VST_CORTADORES].[TipoTendido] AS [TipoTendido]
     FROM [dbo].[VST_CORTADORES] AS [VST_CORTADORES]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VST_LAVANDERIA" EntityType="Self.VST_LAVANDERIA" store:Type="Views" store:Schema="dbo">
@@ -2415,6 +2418,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TipoTendido" Type="Int32" />
           <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_C_Cort_Cortadores_C_Sg_Usuarios" FromRole="C_Cort_Cortadores" ToRole="C_Sg_Usuarios" />
           <NavigationProperty Name="C_SubModulos" Relationship="bd_calidadIIModel.FK_C_Cort_Cortadores_C_SubModulos" FromRole="C_Cort_Cortadores" ToRole="C_SubModulos" />
           <NavigationProperty Name="C_Posicion_Cortador" Relationship="bd_calidadIIModel.FK_C_Posicion_Cortador_C_Cort_Cortadores" FromRole="C_Cort_Cortadores" ToRole="C_Posicion_Cortador" />
@@ -2998,10 +3002,11 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="Observaciones" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Observaciones" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Activo" Type="Boolean" Nullable="false" />
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IdModulo" Type="Int32" Nullable="false" />
+          <Property Name="TipoTendido" Type="Int32" />
         </EntityType>
         <EntityType Name="VST_LAVANDERIA">
           <Key>
@@ -3852,6 +3857,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="C_Cort_Cortadores">
             <EntityTypeMapping TypeName="bd_calidadIIModel.C_Cort_Cortadores">
               <MappingFragment StoreEntitySet="C_Cort_Cortadores">
+                <ScalarProperty Name="TipoTendido" ColumnName="TipoTendido" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
                 <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
@@ -4323,6 +4329,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="VST_CORTADORES">
             <EntityTypeMapping TypeName="bd_calidadIIModel.VST_CORTADORES">
               <MappingFragment StoreEntitySet="VST_CORTADORES">
+                <ScalarProperty Name="TipoTendido" ColumnName="TipoTendido" />
                 <ScalarProperty Name="IdModulo" ColumnName="IdModulo" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
                 <ScalarProperty Name="Activo" ColumnName="Activo" />
