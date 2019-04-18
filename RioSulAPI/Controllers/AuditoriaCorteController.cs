@@ -6,13 +6,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
 using System.Web.WebPages;
 using RioSulAPI.Class;
-
+using RioSulAPI.Models;
 
 namespace RioSulAPI.Controllers
 {
@@ -368,9 +369,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 								IdPosicion = item.IdPosicion,
 								IdDefecto = item.IdDefecto,
 								Cantidad = item.Cantidad,
-								Aud_Imagen = item.Imagen,
+								Aud_Imagen = image_name,
 								Nota =  item.Nota,
-								Archivo = item.Archivo
+								Archivo = pdf
 							};
 							db.Auditoria_Corte_Detalle.Add(corte_Detalle);
 						}
@@ -389,11 +390,331 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
 			}
 		}
+
+		/// <summary>
+		/// Obtiene auditoría por IdAuditoriaCorte
+		/// </summary>
+		/// <param name="IdAuditoriaCorte"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/ObtieneAuditoriaCorte")]
+		public RES_AUDITORIA ObtieneAuditoriaCorte()
+		{
+			RES_AUDITORIA API = new RES_AUDITORIA();
+			try
+			{
+				API.RES = db.VST_AUDITORIA.Where(x => x.Corte == true).ToList();
+				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception ex)
+			{
+				Utilerias.EscribirLog(ex.ToString());
+				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// Obtiene auditoría por corte por Id
+		/// </summary>
+		/// <param name="IdAuditoria"></param>
+		/// <returns></returns>
+		[HttpGet]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/ObtieneAuditoriaCortePorId")]
+		public RES_AUDITORIA_DET ObtieneAuditoriaCortePorId(int IdAuditoria)
+		{
+			RES_AUDITORIA_DET API = new RES_AUDITORIA_DET();
+			API.RES_DET = new List<Models.VST_AUDITORIA_CORTE_DETALLE>();
+			List<Models.VST_AUDITORIA_CORTE_DETALLE> corte = new List<Models.VST_AUDITORIA_CORTE_DETALLE>();
+			string file_path = "";
+
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					API.RES = db.VST_AUDITORIA.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
+					corte = db.VST_AUDITORIA_CORTE_DETALLE.Where(x => x.IdAuditoriaCorte == IdAuditoria).ToList();
+
+					foreach (Models.VST_AUDITORIA_CORTE_DETALLE item in corte)
+					{
+						file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+						file_path = file_path + item.Imagen + ".jpg";
+						if (File.Exists(file_path))
+						{
+							item.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+						}
+						else
+						{
+							item.Imagen = "";
+						}
+
+						file_path = HttpContext.Current.Server.MapPath("~/Archivos/");
+						file_path = file_path + item.Archivo + ".pdf";
+						if (File.Exists(file_path))
+						{
+							item.Archivo = "data:application/" + "pdf" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+						}
+						else
+						{
+							item.Archivo = "";
+						}
+						API.RES_DET.Add(item);
+					}
+
+					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+				}
+				else
+				{
+					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+					API.RES = null;
+					API.RES_DET = null;
+				}
+			}
+			catch (Exception ex)
+			{
+				Utilerias.EscribirLog(ex.ToString());
+				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+				API.RES = null;
+				API.RES_DET = null;
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// Genera el cierre de auditoria de corte
+		/// </summary>
+		/// <param name="IdAuditoria"></param>
+		/// <returns></returns>
+		[HttpPut]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/CierreAuditoria")]
+		public HttpResponseMessage CierreAuditoria(int IdAuditoria)
+		{
+			try
+			{
+				Boolean notas = false;
+				Models.Auditoria API = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria && x.Corte == true)
+					.FirstOrDefault();
+				API.FechaRegistroFin = DateTime.Now;
+				db.Entry(API).State = System.Data.Entity.EntityState.Modified;
+				db.SaveChanges();
+
+				List<Models.VST_CORREOS_AUDITORIA> correos = db.VST_CORREOS_AUDITORIA.Where(x => x.Corte == true).ToList();
+				List<Models.Auditoria_Proc_Esp_Detalle> auditoria_det = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == IdAuditoria).ToList();
+
+				if (correos.Count > 0)
+				{
+					MailMessage mensaje = new MailMessage();
+
+					mensaje.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["Mail"].ToString());
+					var password = System.Configuration.ConfigurationManager.AppSettings["Password"].ToString();
+
+					foreach (VST_CORREOS_AUDITORIA item in correos)
+					{
+						mensaje.To.Add(item.Email);
+					}
+
+					var sub = "AUDITORÍA OT: " + API.OrdenTrabajo.ToUpper();
+					var body = "Se ha cerrado la auditoría de la orden de trabajo con número de corte: " + API.NumCortada.ToUpper() + " en el área de corte.";
+
+					foreach (Auditoria_Proc_Esp_Detalle item in auditoria_det)
+					{
+						if (item.Notas != "null" && !item.Notas.IsEmpty())
+						{
+							notas = true;
+						}
+					}
+
+					if (notas)
+					{
+						body = body + " \n La Auditoría contiene NOTAS favor de revisar";
+					}
+
+					var smtp = new SmtpClient
+					{
+						Host = System.Configuration.ConfigurationManager.AppSettings["Host"].ToString(),
+						Port = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["Port"].ToString()),
+						EnableSsl = false,
+						DeliveryMethod = SmtpDeliveryMethod.Network,
+						UseDefaultCredentials = false,
+						Credentials = new NetworkCredential(mensaje.From.Address, password)
+					};
+					using (var mess = new MailMessage(mensaje.From.Address, mensaje.To.ToString())
+					{
+						Subject = sub,
+						Body = body
+					})
+					{
+						smtp.Send(mess);
+					}
+				}
+
+				return new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception ex)
+			{
+				Utilerias.EscribirLog(ex.ToString());
+				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+		}
+
+		[HttpPut]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/EliminaAuditoria")]
+		public AuditoriaTerminadoController.MESSAGE ActivaAuditoria(int ID)
+		{
+			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+			try
+			{
+				Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == ID).FirstOrDefault();
+				AUD.Activo = (AUD.Activo == false ? true : false);
+
+				db.Entry(AUD).State = System.Data.Entity.EntityState.Modified;
+				db.SaveChanges();
+
+				API.Message = "Auditoria modificada con éxito";
+				API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+
+			return API;
+		}
+
+		[HttpDelete]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/EliminaAuditoria")]
+		public AuditoriaTerminadoController.MESSAGE EliminaAuditoria(int ID)
+		{
+			AuditoriaTerminadoController.MESSAGE API = new AuditoriaTerminadoController.MESSAGE();
+
+			try
+			{
+				List<Models.Auditoria_Corte_Detalle> AD = db.Auditoria_Corte_Detalle
+					.Where(x => x.IdAuditoriaCorte == ID).ToList();
+
+				db.Auditoria_Corte_Detalle.RemoveRange(AD);
+				db.SaveChanges();
+
+
+				Models.Auditoria AUD = db.Auditorias.Where(x => x.IdAuditoria == ID).FirstOrDefault();
+
+				db.Auditorias.Remove(AUD);
+				db.SaveChanges();
+
+				API.Message = "Auditoria eliminada con éxito";
+				API.Response = new HttpResponseMessage(HttpStatusCode.OK);
+			}
+			catch (Exception e)
+			{
+				API.Message = e.Message;
+				API.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+
+			return API;
+		}
+
+		/// <summary>
+		/// ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPut]
+		[ApiExplorerSettings(IgnoreApi = false)]
+		[Route("api/AuditoriaCorte/AuditoriaCorte")]
+		public HttpResponseMessage ActualizaAuditoria([FromBody]EDT_AUDITORIA OT)
+		{
+			string image_name = "";
+			string pdf = "";
+			int num_detalle = 0;
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					List<Models.Auditoria_Corte_Detalle> ATD = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == OT.IdAuditoria).ToList();
+
+					foreach (Models.Auditoria_Corte_Detalle item in ATD)
+					{
+						db.Auditoria_Corte_Detalle.Remove(item);
+						db.SaveChanges();
+					}
+
+					foreach (DET_AUDITORIA_TENDIDO item in OT.Det)
+					{
+						num_detalle = num_detalle + 1;
+						image_name = "";
+						pdf = "";
+
+						if (item.Imagen != null && !item.Imagen.IsEmpty())
+						{
+							string base64 = item.Imagen.Substring(item.Imagen.IndexOf(',') + 1);
+							byte[] data = Convert.FromBase64String(base64);
+
+							image_name = "Auditoria_Corte_" + OT.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+							using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+							{
+								image_file.Write(data, 0, data.Length);
+								image_file.Flush();
+							}
+						}
+
+						if (item.Archivo != null && !item.Archivo.IsEmpty())
+						{
+							string base64 = item.Archivo.Substring(item.Archivo.IndexOf(',') + 1);
+							byte[] data = Convert.FromBase64String(base64);
+
+							pdf = "Auditoria_Corte_" + OT.IdAuditoria + DateTime.Now.ToString("yymmssfff") + num_detalle;
+
+							using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Archivos/") + pdf + ".pdf", FileMode.Create))
+							{
+								image_file.Write(data, 0, data.Length);
+								image_file.Flush();
+							}
+						}
+
+						Models.Auditoria_Corte_Detalle auditoria_corte = new Models.Auditoria_Corte_Detalle()
+						{
+							IdAuditoriaCorte = OT.IdAuditoria,
+							Serie = item.Serie,
+							Bulto = item.Bulto,
+							IdTendido = item.IdTendido,
+							IdMesa = item.IdMesa,
+							IdPosicion = item.IdPosicion,
+							IdDefecto = item.IdDefecto,
+							Cantidad = item.Cantidad,
+							Aud_Imagen = image_name,
+							Nota = item.Nota,
+							Archivo = pdf
+						};
+						db.Auditoria_Corte_Detalle.Add(auditoria_corte);
+					}
+					db.SaveChanges();
+
+					return new HttpResponseMessage(HttpStatusCode.OK);
+				}
+				else
+				{
+					return new HttpResponseMessage(HttpStatusCode.BadRequest);
+				}
+			}
+			catch (Exception ex)
+			{
+				Utilerias.EscribirLog(ex.ToString());
+				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+			}
+		}
 		#endregion
 
-
-
-
+		#region AUDITORIA_TENDIDO
 		/// <summary>
 		/// Ingresa una nueva auditoria de corte tendido
 		/// </summary>
@@ -470,32 +791,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
 			}
 		}
-
-		/// <summary>
-		/// Obtiene auditoría por IdAuditoriaCorte
-		/// </summary>
-		/// <param name="IdAuditoriaCorte"></param>
-		/// <returns></returns>
-		[HttpGet]
-		[ApiExplorerSettings(IgnoreApi = false)]
-		[Route("api/AuditoriaCorte/ObtieneAuditoriaCorte")]
-		public RES_AUDITORIA ObtieneAuditoriaCorte()
-		{
-			RES_AUDITORIA API = new RES_AUDITORIA();
-			try
-			{
-				API.RES = db.VST_AUDITORIA.Where(x => x.Corte == true).ToList();
-				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-			}
-			catch (Exception ex)
-			{
-				Utilerias.EscribirLog(ex.ToString());
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
-
-			return API;
-		}
-
+	
 		/// <summary>
 		/// Obtiene auditoría de tendido
 		/// </summary>
@@ -519,71 +815,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 
 			return API;
 		}
-
-		/// <summary>
-		/// Obtiene auditoría por corte por Id
-		/// </summary>
-		/// <param name="IdAuditoria"></param>
-		/// <returns></returns>
-		[HttpGet]
-		[ApiExplorerSettings(IgnoreApi = false)]
-		[Route("api/AuditoriaCorte/ObtieneAuditoriaCortePorId")]
-		public RES_AUDITORIA_DET ObtieneAuditoriaCortePorId(int IdAuditoria)
-		{
-			RES_AUDITORIA_DET API = new RES_AUDITORIA_DET();
-			try
-			{
-				if (ModelState.IsValid)
-				{
-					API.RES = db.VST_AUDITORIA.Where(x => x.IdAuditoria == IdAuditoria).FirstOrDefault();
-					API.RES_DET = db.VST_AUDITORIA_CORTE_DETALLE.Where(x => x.IdAuditoriaCorte == IdAuditoria).ToList();
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-				}
-				else
-				{
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-					API.RES = null;
-					API.RES_DET = null;
-				}
-			}
-			catch (Exception ex)
-			{
-				Utilerias.EscribirLog(ex.ToString());
-				API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-				API.RES = null;
-				API.RES_DET = null;
-			}
-
-			return API;
-		}
-
-		/// <summary>
-		/// Genera el cierre de auditoria de corte
-		/// </summary>
-		/// <param name="IdAuditoria"></param>
-		/// <returns></returns>
-		[HttpGet]
-		[ApiExplorerSettings(IgnoreApi = false)]
-		[Route("api/AuditoriaCorte/CierreAuditoria")]
-		public HttpResponseMessage CierreAuditoria(int IdAuditoria)
-		{
-			try
-			{
-				Models.Auditoria API = db.Auditorias.Where(x => x.IdAuditoria == IdAuditoria && x.Corte == true)
-					.FirstOrDefault();
-				API.FechaRegistroFin = DateTime.Now;
-				db.Entry(API).State = System.Data.Entity.EntityState.Modified;
-				db.SaveChanges();
-
-				return new HttpResponseMessage(HttpStatusCode.OK);
-			}
-			catch (Exception ex)
-			{
-				Utilerias.EscribirLog(ex.ToString());
-				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
-		}
-
+	
 		/// <summary>
 		/// Genera el cierre de auditoria de corte tendido
 		/// </summary>
@@ -610,6 +842,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 				return new HttpResponseMessage(HttpStatusCode.InternalServerError);
 			}
 		}
+		#endregion
 
 		public partial class OT_DET
 		{
@@ -780,6 +1013,15 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 		public partial class BULTO
 		{
 			public int Bulto { get; set; }
+		}
+
+		public partial class EDT_AUDITORIA
+		{
+			[Required]
+			public int IdAuditoria { get; set; }
+
+			[Required]
+			public List<DET_AUDITORIA_TENDIDO> Det { get; set; }
 		}
 	}
 }

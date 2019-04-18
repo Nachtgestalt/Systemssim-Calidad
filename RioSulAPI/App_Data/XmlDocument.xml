@@ -589,24 +589,11 @@
             <param name="OT"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT_T)">
-            <summary>
-            Ingresa una nueva auditoria de corte tendido
-            </summary>
-            <param name="OT"></param>
-            <returns></returns>
-        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaCorte">
             <summary>
             Obtiene auditoría por IdAuditoriaCorte
             </summary>
             <param name="IdAuditoriaCorte"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaTendido">
-            <summary>
-            Obtiene auditoría de tendido
-            </summary>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaCortePorId(System.Int32)">
@@ -621,6 +608,26 @@
             Genera el cierre de auditoria de corte
             </summary>
             <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaCorteController.EDT_AUDITORIA)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT_T)">
+            <summary>
+            Ingresa una nueva auditoria de corte tendido
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaTendido">
+            <summary>
+            Obtiene auditoría de tendido
+            </summary>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.CierreAuditoriaTendido(System.Int32)">

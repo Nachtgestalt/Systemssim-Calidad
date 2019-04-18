@@ -566,33 +566,42 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CALIDAD_DETAL
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="VST_AUDITORIA_CORTE_DETALLE">
           <Key>
-            <PropertyRef Name="IdAuditoriaCorteDetalle" />
             <PropertyRef Name="IdAuditoriaCorte" />
-            <PropertyRef Name="IdCortador" />
-            <PropertyRef Name="Nombre" />
             <PropertyRef Name="Serie" />
             <PropertyRef Name="Bulto" />
+            <PropertyRef Name="IdTendido" />
+            <PropertyRef Name="ClaveTendido" />
+            <PropertyRef Name="NombreTendido" />
+            <PropertyRef Name="IdMesa" />
+            <PropertyRef Name="ClaveMesa" />
+            <PropertyRef Name="NombreMesa" />
             <PropertyRef Name="IdPosicion" />
-            <PropertyRef Name="Posicion" />
+            <PropertyRef Name="ClavePosicion" />
+            <PropertyRef Name="NombrePosicion" />
             <PropertyRef Name="IdDefecto" />
-            <PropertyRef Name="Defecto" />
-            <PropertyRef Name="IdCortado" />
-            <PropertyRef Name="Cortado" />
+            <PropertyRef Name="ClaveDefecto" />
+            <PropertyRef Name="NombreDefecto" />
             <PropertyRef Name="Cantidad" />
           </Key>
-          <Property Name="IdAuditoriaCorteDetalle" Type="int" Nullable="false" />
           <Property Name="IdAuditoriaCorte" Type="int" Nullable="false" />
-          <Property Name="IdCortador" Type="int" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Serie" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Bulto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IdTendido" Type="int" Nullable="false" />
+          <Property Name="ClaveTendido" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NombreTendido" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IdMesa" Type="int" Nullable="false" />
+          <Property Name="ClaveMesa" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NombreMesa" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="IdPosicion" Type="int" Nullable="false" />
-          <Property Name="Posicion" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ClavePosicion" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NombrePosicion" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="IdDefecto" Type="int" Nullable="false" />
-          <Property Name="Defecto" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="IdCortado" Type="int" Nullable="false" />
-          <Property Name="Cortado" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ClaveDefecto" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NombreDefecto" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Imagen" Type="varchar(max)" />
+          <Property Name="Nota" Type="varchar(max)" />
+          <Property Name="Archivo" Type="varchar(max)" />
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_LAVANDERIA_DETALLE' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
@@ -1550,19 +1559,25 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </EntitySet>
           <EntitySet Name="VST_AUDITORIA_CORTE_DETALLE" EntityType="Self.VST_AUDITORIA_CORTE_DETALLE" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [VST_AUDITORIA_CORTE_DETALLE].[IdAuditoriaCorteDetalle] AS [IdAuditoriaCorteDetalle], 
     [VST_AUDITORIA_CORTE_DETALLE].[IdAuditoriaCorte] AS [IdAuditoriaCorte], 
-    [VST_AUDITORIA_CORTE_DETALLE].[IdCortador] AS [IdCortador], 
-    [VST_AUDITORIA_CORTE_DETALLE].[Nombre] AS [Nombre], 
     [VST_AUDITORIA_CORTE_DETALLE].[Serie] AS [Serie], 
     [VST_AUDITORIA_CORTE_DETALLE].[Bulto] AS [Bulto], 
+    [VST_AUDITORIA_CORTE_DETALLE].[IdTendido] AS [IdTendido], 
+    [VST_AUDITORIA_CORTE_DETALLE].[ClaveTendido] AS [ClaveTendido], 
+    [VST_AUDITORIA_CORTE_DETALLE].[NombreTendido] AS [NombreTendido], 
+    [VST_AUDITORIA_CORTE_DETALLE].[IdMesa] AS [IdMesa], 
+    [VST_AUDITORIA_CORTE_DETALLE].[ClaveMesa] AS [ClaveMesa], 
+    [VST_AUDITORIA_CORTE_DETALLE].[NombreMesa] AS [NombreMesa], 
     [VST_AUDITORIA_CORTE_DETALLE].[IdPosicion] AS [IdPosicion], 
-    [VST_AUDITORIA_CORTE_DETALLE].[Posicion] AS [Posicion], 
+    [VST_AUDITORIA_CORTE_DETALLE].[ClavePosicion] AS [ClavePosicion], 
+    [VST_AUDITORIA_CORTE_DETALLE].[NombrePosicion] AS [NombrePosicion], 
     [VST_AUDITORIA_CORTE_DETALLE].[IdDefecto] AS [IdDefecto], 
-    [VST_AUDITORIA_CORTE_DETALLE].[Defecto] AS [Defecto], 
-    [VST_AUDITORIA_CORTE_DETALLE].[IdCortado] AS [IdCortado], 
-    [VST_AUDITORIA_CORTE_DETALLE].[Cortado] AS [Cortado], 
-    [VST_AUDITORIA_CORTE_DETALLE].[Cantidad] AS [Cantidad]
+    [VST_AUDITORIA_CORTE_DETALLE].[ClaveDefecto] AS [ClaveDefecto], 
+    [VST_AUDITORIA_CORTE_DETALLE].[NombreDefecto] AS [NombreDefecto], 
+    [VST_AUDITORIA_CORTE_DETALLE].[Cantidad] AS [Cantidad], 
+    [VST_AUDITORIA_CORTE_DETALLE].[Imagen] AS [Imagen], 
+    [VST_AUDITORIA_CORTE_DETALLE].[Nota] AS [Nota], 
+    [VST_AUDITORIA_CORTE_DETALLE].[Archivo] AS [Archivo]
     FROM [dbo].[VST_AUDITORIA_CORTE_DETALLE] AS [VST_AUDITORIA_CORTE_DETALLE]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VST_AUDITORIA_LAVANDERIA_DETALLE" EntityType="Self.VST_AUDITORIA_LAVANDERIA_DETALLE" store:Type="Views" store:Schema="dbo">
@@ -2804,33 +2819,42 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </EntityType>
         <EntityType Name="VST_AUDITORIA_CORTE_DETALLE">
           <Key>
-            <PropertyRef Name="IdAuditoriaCorteDetalle" />
             <PropertyRef Name="IdAuditoriaCorte" />
-            <PropertyRef Name="IdCortador" />
-            <PropertyRef Name="Nombre" />
             <PropertyRef Name="Serie" />
             <PropertyRef Name="Bulto" />
+            <PropertyRef Name="IdTendido" />
+            <PropertyRef Name="ClaveTendido" />
+            <PropertyRef Name="NombreTendido" />
+            <PropertyRef Name="IdMesa" />
+            <PropertyRef Name="ClaveMesa" />
+            <PropertyRef Name="NombreMesa" />
             <PropertyRef Name="IdPosicion" />
-            <PropertyRef Name="Posicion" />
+            <PropertyRef Name="ClavePosicion" />
+            <PropertyRef Name="NombrePosicion" />
             <PropertyRef Name="IdDefecto" />
-            <PropertyRef Name="Defecto" />
-            <PropertyRef Name="IdCortado" />
-            <PropertyRef Name="Cortado" />
+            <PropertyRef Name="ClaveDefecto" />
+            <PropertyRef Name="NombreDefecto" />
             <PropertyRef Name="Cantidad" />
           </Key>
-          <Property Name="IdAuditoriaCorteDetalle" Type="Int32" Nullable="false" />
           <Property Name="IdAuditoriaCorte" Type="Int32" Nullable="false" />
-          <Property Name="IdCortador" Type="Int32" Nullable="false" />
-          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Serie" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Bulto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IdTendido" Type="Int32" Nullable="false" />
+          <Property Name="ClaveTendido" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NombreTendido" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IdMesa" Type="Int32" Nullable="false" />
+          <Property Name="ClaveMesa" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NombreMesa" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IdPosicion" Type="Int32" Nullable="false" />
-          <Property Name="Posicion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ClavePosicion" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NombrePosicion" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="IdDefecto" Type="Int32" Nullable="false" />
-          <Property Name="Defecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="IdCortado" Type="Int32" Nullable="false" />
-          <Property Name="Cortado" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ClaveDefecto" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NombreDefecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="VST_AUDITORIA_LAVANDERIA_DETALLE">
           <Key>
@@ -4216,19 +4240,25 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="VST_AUDITORIA_CORTE_DETALLE">
             <EntityTypeMapping TypeName="bd_calidadIIModel.VST_AUDITORIA_CORTE_DETALLE">
               <MappingFragment StoreEntitySet="VST_AUDITORIA_CORTE_DETALLE">
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Imagen" ColumnName="Imagen" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="Cortado" ColumnName="Cortado" />
-                <ScalarProperty Name="IdCortado" ColumnName="IdCortado" />
-                <ScalarProperty Name="Defecto" ColumnName="Defecto" />
+                <ScalarProperty Name="NombreDefecto" ColumnName="NombreDefecto" />
+                <ScalarProperty Name="ClaveDefecto" ColumnName="ClaveDefecto" />
                 <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
-                <ScalarProperty Name="Posicion" ColumnName="Posicion" />
+                <ScalarProperty Name="NombrePosicion" ColumnName="NombrePosicion" />
+                <ScalarProperty Name="ClavePosicion" ColumnName="ClavePosicion" />
                 <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+                <ScalarProperty Name="NombreMesa" ColumnName="NombreMesa" />
+                <ScalarProperty Name="ClaveMesa" ColumnName="ClaveMesa" />
+                <ScalarProperty Name="IdMesa" ColumnName="IdMesa" />
+                <ScalarProperty Name="NombreTendido" ColumnName="NombreTendido" />
+                <ScalarProperty Name="ClaveTendido" ColumnName="ClaveTendido" />
+                <ScalarProperty Name="IdTendido" ColumnName="IdTendido" />
                 <ScalarProperty Name="Bulto" ColumnName="Bulto" />
                 <ScalarProperty Name="Serie" ColumnName="Serie" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdCortador" ColumnName="IdCortador" />
                 <ScalarProperty Name="IdAuditoriaCorte" ColumnName="IdAuditoriaCorte" />
-                <ScalarProperty Name="IdAuditoriaCorteDetalle" ColumnName="IdAuditoriaCorteDetalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -14,18 +14,24 @@ namespace RioSulAPI.Models
     
     public partial class VST_AUDITORIA_CORTE_DETALLE
     {
-        public int IdAuditoriaCorteDetalle { get; set; }
         public int IdAuditoriaCorte { get; set; }
-        public int IdCortador { get; set; }
-        public string Nombre { get; set; }
         public string Serie { get; set; }
         public string Bulto { get; set; }
+        public int IdTendido { get; set; }
+        public string ClaveTendido { get; set; }
+        public string NombreTendido { get; set; }
+        public int IdMesa { get; set; }
+        public string ClaveMesa { get; set; }
+        public string NombreMesa { get; set; }
         public int IdPosicion { get; set; }
-        public string Posicion { get; set; }
+        public string ClavePosicion { get; set; }
+        public string NombrePosicion { get; set; }
         public int IdDefecto { get; set; }
-        public string Defecto { get; set; }
-        public int IdCortado { get; set; }
-        public string Cortado { get; set; }
+        public string ClaveDefecto { get; set; }
+        public string NombreDefecto { get; set; }
         public int Cantidad { get; set; }
+        public string Imagen { get; set; }
+        public string Nota { get; set; }
+        public string Archivo { get; set; }
     }
 }
