@@ -63,18 +63,20 @@
         </EntityType>
         <EntityType Name="Auditoria_Corte_Detalle">
           <Key>
-            <PropertyRef Name="IdAuditoriaCorteDetalle" />
+            <PropertyRef Name="IdAuditoriaTendidoDetalle" />
           </Key>
-          <Property Name="IdAuditoriaCorteDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAuditoriaTendidoDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdAuditoriaCorte" Type="int" Nullable="false" />
-          <Property Name="IdCortador" Type="int" Nullable="false" />
           <Property Name="Serie" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Bulto" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IdTendido" Type="int" Nullable="false" />
+          <Property Name="IdMesa" Type="int" Nullable="false" />
           <Property Name="IdPosicion" Type="int" Nullable="false" />
           <Property Name="IdDefecto" Type="int" Nullable="false" />
-          <Property Name="IdCortado" Type="int" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
           <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Nota" Type="varchar(max)" />
+          <Property Name="Archivo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Auditoria_Lavanderia_Detalle">
           <Key>
@@ -106,19 +108,20 @@
         </EntityType>
         <EntityType Name="Auditoria_Tendido_Detalle">
           <Key>
-            <PropertyRef Name="IdAuditoriaTendidoDetalle" />
+            <PropertyRef Name="IdAuditoriaCorteDetalle" />
           </Key>
-          <Property Name="IdAuditoriaTendidoDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAuditoriaCorteDetalle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdAuditoriaCorte" Type="int" Nullable="false" />
+          <Property Name="IdCortador" Type="int" Nullable="false" />
           <Property Name="Serie" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Bulto" Type="varchar" MaxLength="150" Nullable="false" />
-          <Property Name="IdTendido" Type="int" Nullable="false" />
-          <Property Name="IdTipoTendido" Type="int" Nullable="false" />
-          <Property Name="IdMesa" Type="int" Nullable="false" />
           <Property Name="IdPosicion" Type="int" Nullable="false" />
           <Property Name="IdDefecto" Type="int" Nullable="false" />
+          <Property Name="IdCortado" Type="int" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
           <Property Name="Aud_Imagen" Type="varchar(max)" />
+          <Property Name="Nota" Type="varchar(max)" />
+          <Property Name="Archivo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Auditoria_Terminado_Detalle">
           <Key>
@@ -1037,12 +1040,12 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </Association>
         <Association Name="FK_Auditoria_Corte_Detalle_Auditoria_Corte">
           <End Role="Auditoria" Type="Self.Auditoria" Multiplicity="1" />
-          <End Role="Auditoria_Corte_Detalle" Type="Self.Auditoria_Corte_Detalle" Multiplicity="*" />
+          <End Role="Auditoria_Tendido_Detalle" Type="Self.Auditoria_Tendido_Detalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Auditoria">
               <PropertyRef Name="IdAuditoria" />
             </Principal>
-            <Dependent Role="Auditoria_Corte_Detalle">
+            <Dependent Role="Auditoria_Tendido_Detalle">
               <PropertyRef Name="IdAuditoriaCorte" />
             </Dependent>
           </ReferentialConstraint>
@@ -1073,12 +1076,12 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </Association>
         <Association Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
           <End Role="Auditoria" Type="Self.Auditoria" Multiplicity="1" />
-          <End Role="Auditoria_Tendido_Detalle" Type="Self.Auditoria_Tendido_Detalle" Multiplicity="*" />
+          <End Role="Auditoria_Corte_Detalle" Type="Self.Auditoria_Corte_Detalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Auditoria">
               <PropertyRef Name="IdAuditoria" />
             </Principal>
-            <Dependent Role="Auditoria_Tendido_Detalle">
+            <Dependent Role="Auditoria_Corte_Detalle">
               <PropertyRef Name="IdAuditoriaCorte" />
             </Dependent>
           </ReferentialConstraint>
@@ -1815,7 +1818,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Corte_Detalle_Auditoria_Corte" Association="Self.FK_Auditoria_Corte_Detalle_Auditoria_Corte">
             <End Role="Auditoria" EntitySet="Auditoria" />
-            <End Role="Auditoria_Corte_Detalle" EntitySet="Auditoria_Corte_Detalle" />
+            <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Lavanderia_Detalle_Auditoria" Association="Self.FK_Auditoria_Lavanderia_Detalle_Auditoria">
             <End Role="Auditoria" EntitySet="Auditoria" />
@@ -1827,7 +1830,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte" Association="Self.FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
             <End Role="Auditoria" EntitySet="Auditoria" />
-            <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
+            <End Role="Auditoria_Corte_Detalle" EntitySet="Auditoria_Corte_Detalle" />
           </AssociationSet>
           <AssociationSet Name="FK_C_ClientesReferencia_C_Clientes" Association="Self.FK_C_ClientesReferencia_C_Clientes">
             <End Role="C_Clientes" EntitySet="C_Clientes" />
@@ -2051,7 +2054,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Corte_Detalle_Auditoria_Corte" Association="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte">
             <End Role="Auditoria" EntitySet="Auditorias" />
-            <End Role="Auditoria_Corte_Detalle" EntitySet="Auditoria_Corte_Detalle" />
+            <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Lavanderia_Detalle_Auditoria" Association="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria">
             <End Role="Auditoria" EntitySet="Auditorias" />
@@ -2063,7 +2066,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           </AssociationSet>
           <AssociationSet Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte" Association="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
             <End Role="Auditoria" EntitySet="Auditorias" />
-            <End Role="Auditoria_Tendido_Detalle" EntitySet="Auditoria_Tendido_Detalle" />
+            <End Role="Auditoria_Corte_Detalle" EntitySet="Auditoria_Corte_Detalle" />
           </AssociationSet>
           <AssociationSet Name="FK_C_ClientesReferencia_C_Clientes" Association="bd_calidadIIModel.FK_C_ClientesReferencia_C_Clientes">
             <End Role="C_Clientes" EntitySet="C_Clientes" />
@@ -2207,10 +2210,10 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <NavigationProperty Name="Auditoria_Confeccion_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Confeccion_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Confeccion_Detalle" />
           <NavigationProperty Name="C_Clientes" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Clientes" FromRole="Auditoria" ToRole="C_Clientes" />
           <NavigationProperty Name="C_Sg_Usuarios" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_C_Sg_Usuarios" FromRole="Auditoria" ToRole="C_Sg_Usuarios" />
-          <NavigationProperty Name="Auditoria_Corte_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Corte_Detalle" />
+          <NavigationProperty Name="Auditoria_Tendido_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Tendido_Detalle" />
           <NavigationProperty Name="Auditoria_Lavanderia_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Lavanderia_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Lavanderia_Detalle" />
           <NavigationProperty Name="Auditoria_Proc_Esp_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Proc_Esp_Detalle_Auditoria" FromRole="Auditoria" ToRole="Auditoria_Proc_Esp_Detalle" />
-          <NavigationProperty Name="Auditoria_Tendido_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Tendido_Detalle" />
+          <NavigationProperty Name="Auditoria_Corte_Detalle" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria" ToRole="Auditoria_Corte_Detalle" />
         </EntityType>
         <EntityType Name="Auditoria_Calidad_Detalle">
           <Key>
@@ -2244,19 +2247,21 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </EntityType>
         <EntityType Name="Auditoria_Corte_Detalle">
           <Key>
-            <PropertyRef Name="IdAuditoriaCorteDetalle" />
+            <PropertyRef Name="IdAuditoriaTendidoDetalle" />
           </Key>
-          <Property Name="IdAuditoriaCorteDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAuditoriaTendidoDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdAuditoriaCorte" Type="Int32" Nullable="false" />
-          <Property Name="IdCortador" Type="Int32" Nullable="false" />
           <Property Name="Serie" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Bulto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IdTendido" Type="Int32" Nullable="false" />
+          <Property Name="IdMesa" Type="Int32" Nullable="false" />
           <Property Name="IdPosicion" Type="Int32" Nullable="false" />
           <Property Name="IdDefecto" Type="Int32" Nullable="false" />
-          <Property Name="IdCortado" Type="Int32" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" FromRole="Auditoria_Corte_Detalle" ToRole="Auditoria" />
+          <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria_Corte_Detalle" ToRole="Auditoria" />
         </EntityType>
         <EntityType Name="Auditoria_Lavanderia_Detalle">
           <Key>
@@ -2290,20 +2295,21 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </EntityType>
         <EntityType Name="Auditoria_Tendido_Detalle">
           <Key>
-            <PropertyRef Name="IdAuditoriaTendidoDetalle" />
+            <PropertyRef Name="IdAuditoriaCorteDetalle" />
           </Key>
-          <Property Name="IdAuditoriaTendidoDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAuditoriaCorteDetalle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdAuditoriaCorte" Type="Int32" Nullable="false" />
+          <Property Name="IdCortador" Type="Int32" Nullable="false" />
           <Property Name="Serie" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Bulto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="IdTendido" Type="Int32" Nullable="false" />
-          <Property Name="IdTipoTendido" Type="Int32" Nullable="false" />
-          <Property Name="IdMesa" Type="Int32" Nullable="false" />
           <Property Name="IdPosicion" Type="Int32" Nullable="false" />
           <Property Name="IdDefecto" Type="Int32" Nullable="false" />
+          <Property Name="IdCortado" Type="Int32" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria_Tendido_Detalle" ToRole="Auditoria" />
+          <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" FromRole="Auditoria_Tendido_Detalle" ToRole="Auditoria" />
         </EntityType>
         <EntityType Name="Auditoria_Terminado_Detalle">
           <Key>
@@ -3240,12 +3246,12 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </Association>
         <Association Name="FK_Auditoria_Corte_Detalle_Auditoria_Corte">
           <End Type="bd_calidadIIModel.Auditoria" Role="Auditoria" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.Auditoria_Corte_Detalle" Role="Auditoria_Corte_Detalle" Multiplicity="*" />
+          <End Type="bd_calidadIIModel.Auditoria_Tendido_Detalle" Role="Auditoria_Tendido_Detalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Auditoria">
               <PropertyRef Name="IdAuditoria" />
             </Principal>
-            <Dependent Role="Auditoria_Corte_Detalle">
+            <Dependent Role="Auditoria_Tendido_Detalle">
               <PropertyRef Name="IdAuditoriaCorte" />
             </Dependent>
           </ReferentialConstraint>
@@ -3276,12 +3282,12 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
         </Association>
         <Association Name="FK_Auditoria_Tendido_Detalle_Auditoria_Corte">
           <End Type="bd_calidadIIModel.Auditoria" Role="Auditoria" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.Auditoria_Tendido_Detalle" Role="Auditoria_Tendido_Detalle" Multiplicity="*" />
+          <End Type="bd_calidadIIModel.Auditoria_Corte_Detalle" Role="Auditoria_Corte_Detalle" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Auditoria">
               <PropertyRef Name="IdAuditoria" />
             </Principal>
-            <Dependent Role="Auditoria_Tendido_Detalle">
+            <Dependent Role="Auditoria_Corte_Detalle">
               <PropertyRef Name="IdAuditoriaCorte" />
             </Dependent>
           </ReferentialConstraint>
@@ -3697,16 +3703,18 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Corte_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Corte_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Corte_Detalle">
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
-                <ScalarProperty Name="IdCortado" ColumnName="IdCortado" />
                 <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
                 <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
+                <ScalarProperty Name="IdMesa" ColumnName="IdMesa" />
+                <ScalarProperty Name="IdTendido" ColumnName="IdTendido" />
                 <ScalarProperty Name="Bulto" ColumnName="Bulto" />
                 <ScalarProperty Name="Serie" ColumnName="Serie" />
-                <ScalarProperty Name="IdCortador" ColumnName="IdCortador" />
                 <ScalarProperty Name="IdAuditoriaCorte" ColumnName="IdAuditoriaCorte" />
-                <ScalarProperty Name="IdAuditoriaCorteDetalle" ColumnName="IdAuditoriaCorteDetalle" />
+                <ScalarProperty Name="IdAuditoriaTendidoDetalle" ColumnName="IdAuditoriaTendidoDetalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3743,17 +3751,18 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Tendido_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Tendido_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Tendido_Detalle">
+                <ScalarProperty Name="Archivo" ColumnName="Archivo" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="IdCortado" ColumnName="IdCortado" />
                 <ScalarProperty Name="IdDefecto" ColumnName="IdDefecto" />
                 <ScalarProperty Name="IdPosicion" ColumnName="IdPosicion" />
-                <ScalarProperty Name="IdMesa" ColumnName="IdMesa" />
-                <ScalarProperty Name="IdTipoTendido" ColumnName="IdTipoTendido" />
-                <ScalarProperty Name="IdTendido" ColumnName="IdTendido" />
                 <ScalarProperty Name="Bulto" ColumnName="Bulto" />
                 <ScalarProperty Name="Serie" ColumnName="Serie" />
+                <ScalarProperty Name="IdCortador" ColumnName="IdCortador" />
                 <ScalarProperty Name="IdAuditoriaCorte" ColumnName="IdAuditoriaCorte" />
-                <ScalarProperty Name="IdAuditoriaTendidoDetalle" ColumnName="IdAuditoriaTendidoDetalle" />
+                <ScalarProperty Name="IdAuditoriaCorteDetalle" ColumnName="IdAuditoriaCorteDetalle" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

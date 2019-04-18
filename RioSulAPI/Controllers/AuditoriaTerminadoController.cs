@@ -292,28 +292,28 @@ namespace RioSulAPI.Controllers
 			RES_OT_GEN API = new RES_OT_GEN();
 			try
 			{
-                API.OrdenTrabajo = new List<OT_GEN>();
-                switch (Tipo)
-                {
-                    case "Calidad":
-                        List<string> aux = new List<string>();
-                        aux = db.Auditorias.Where(x => x.FechaRegistroFin != null).Select(x => x.OrdenTrabajo).Distinct().ToList();
-                        foreach(string item in aux)
-                        {
-                            OT_GEN OT = new OT_GEN()
-                            {
-                                OT = item
-                            };
-                            API.OrdenTrabajo.Add(OT);
-                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                        }
+				API.OrdenTrabajo = new List<OT_GEN>();
+				switch (Tipo)
+				{
+					case "Calidad":
+						List<string> aux = new List<string>();
+						aux = db.Auditorias.Where(x => x.FechaRegistroFin != null).Select(x => x.OrdenTrabajo).Distinct().ToList();
+						foreach(string item in aux)
+						{
+							OT_GEN OT = new OT_GEN()
+							{
+								OT = item
+							};
+							API.OrdenTrabajo.Add(OT);
+							API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+						}
 
-                        break;
-                    default:
-                        using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
-                        {
-                            _Conn.Open();
-                            string Consulta = @"SELECT        distinct(WH.WONbr)
+						break;
+					default:
+						using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
+						{
+							_Conn.Open();
+							string Consulta = @"SELECT        distinct(WH.WONbr)
 									FROM ItemXRef AS IXR RIGHT OUTER JOIN
 									WOHeader AS WH INNER JOIN
 									SOHeader INNER JOIN
@@ -324,21 +324,21 @@ namespace RioSulAPI.Controllers
 									WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
 									RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
 									WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";                            
-                            SqlCommand Command = new SqlCommand(Consulta, _Conn);
-                            SqlDataReader sqlData = Command.ExecuteReader();
-                            while (sqlData.Read())
-                            {
-                                OT_GEN OT = new OT_GEN()
-                                {
-                                    OT = sqlData[0].ToString().Trim()
-                                };
-                                API.OrdenTrabajo.Add(OT);
-                            }
-                            sqlData.Close();
-                            API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                        }
-                        break;
-                }
+							SqlCommand Command = new SqlCommand(Consulta, _Conn);
+							SqlDataReader sqlData = Command.ExecuteReader();
+							while (sqlData.Read())
+							{
+								OT_GEN OT = new OT_GEN()
+								{
+									OT = sqlData[0].ToString().Trim()
+								};
+								API.OrdenTrabajo.Add(OT);
+							}
+							sqlData.Close();
+							API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+						}
+						break;
+				}
 
 				
 			}
@@ -364,7 +364,7 @@ namespace RioSulAPI.Controllers
 		{
 			RES_OT_DET API = new RES_OT_DET();
 			API.OT = new OT_DET();
-            Models.Auditoria aux = new Models.Auditoria();
+			Models.Auditoria aux = new Models.Auditoria();
 			try
 			{
 				//DETALLE DE LA OT
@@ -426,7 +426,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 					Models.C_ClientesReferencia CliRef;
 					Models.C_Clientes Cliente;
 					CliRef = db.C_ClientesReferencia.Where(x => x.Cve_Cliente == API.OT.ID_Cliente).FirstOrDefault();
-                    
+					
 					if (CliRef == null)
 					{
 						API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
@@ -441,22 +441,22 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 						API.Message = new HttpResponseMessage(HttpStatusCode.Accepted);
 					}
 
-                    //VERIFICAMOS EL TIPO
-                    switch (Tipo)
-                    {
-                        case "Calidad":
-                            aux = db.Auditorias.Where(x => x.FechaRegistroFin != null && x.Terminado == true && x.OrdenTrabajo == OT).FirstOrDefault();
-                            if (aux == null)
-                            {
-                                API.Message2 = "La OT aun no esta cerrada en Auditoria Terminado";
-                                API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
-                                API.OT = null;
-                            }
-                            break;
-                    }
+					//VERIFICAMOS EL TIPO
+					switch (Tipo)
+					{
+						case "Calidad":
+							aux = db.Auditorias.Where(x => x.FechaRegistroFin != null && x.Terminado == true && x.OrdenTrabajo == OT).FirstOrDefault();
+							if (aux == null)
+							{
+								API.Message2 = "La OT aun no esta cerrada en Auditoria Terminado";
+								API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+								API.OT = null;
+							}
+							break;
+					}
 
-                }
-            }
+				}
+			}
 			catch (Exception ex)
 			{
 				Utilerias.EscribirLog(ex.ToString());

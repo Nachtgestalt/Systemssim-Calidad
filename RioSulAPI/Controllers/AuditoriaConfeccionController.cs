@@ -59,20 +59,20 @@ namespace RioSulAPI.Controllers
                         db.Auditorias.Add(auditoria);
                         db.SaveChanges();
 
-                        List<DET_AUDITORIA_CONFECCION> Detalles = _objSerializer.Deserialize<List<DET_AUDITORIA_CONFECCION>>(OT.Det);
-                        foreach (DET_AUDITORIA_CONFECCION item in Detalles)
-                        {
-                            Models.Auditoria_Confeccion_Detalle auditoria_Confeccion = new Models.Auditoria_Confeccion_Detalle()
-                            {
-                                IdAuditoria = auditoria.IdAuditoria,
-                                IdArea = item.IdArea,
-                                IdOperacion = item.IdOperacion,
-                                IdDefecto = item.IdDefecto,
-                                Cantidad = item.Cantidad
-                            };
-                            db.Auditoria_Confeccion_Detalle.Add(auditoria_Confeccion);
-                        }
-                        db.SaveChanges();
+                        //List<DET_AUDITORIA_CONFECCION> Detalles = _objSerializer.Deserialize<List<DET_AUDITORIA_CONFECCION>>(OT.Det);
+                        //foreach (DET_AUDITORIA_CONFECCION item in Detalles)
+                        //{
+                        //    Models.Auditoria_Confeccion_Detalle auditoria_Confeccion = new Models.Auditoria_Confeccion_Detalle()
+                        //    {
+                        //        IdAuditoria = auditoria.IdAuditoria,
+                        //        IdArea = item.IdArea,
+                        //        IdOperacion = item.IdOperacion,
+                        //        IdDefecto = item.IdDefecto,
+                        //        Cantidad = item.Cantidad
+                        //    };
+                        //    db.Auditoria_Confeccion_Detalle.Add(auditoria_Confeccion);
+                        //}
+                        //db.SaveChanges();
                         return new HttpResponseMessage(HttpStatusCode.OK);
                     }
                 }

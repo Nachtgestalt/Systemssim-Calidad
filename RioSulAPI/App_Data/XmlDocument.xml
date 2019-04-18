@@ -564,21 +564,7 @@
             <param name="OrdenT"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorte(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
-            <summary>
-            Ingresa una nueva auditoria de corte
-            </summary>
-            <param name="OT"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
-            <summary>
-            Ingresa una nueva auditoria de corte tendido
-            </summary>
-            <param name="OT"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneDatosGeneralesOrdenTrabajo(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneDatosGeneralesOrdenTrabajo(System.String)">
             <summary>
             Obtiene los datos generales de la orden de trabajo
             </summary>
@@ -586,15 +572,29 @@
             <param name="CLI_ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneBultosAuditoria">
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneBultosAuditoria(System.String,System.String)">
             <summary>
             Obtiene los bultos de Dynamics para auditoría
             </summary>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneSerieAuditoria">
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneSerieAuditoria(System.String)">
             <summary>
             Obtiene las series de Dynamics para auditoría
             </summary>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorte(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT_T)">
+            <summary>
+            Ingresa una nueva auditoria de corte
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT_T)">
+            <summary>
+            Ingresa una nueva auditoria de corte tendido
+            </summary>
+            <param name="OT"></param>
+            <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaCorte">
             <summary>
