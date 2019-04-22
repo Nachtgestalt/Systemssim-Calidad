@@ -589,6 +589,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE
           <Property Name="IdTendido" Type="int" Nullable="false" />
           <Property Name="ClaveTendido" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="NombreTendido" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="TipoTendido" Type="int" />
           <Property Name="IdMesa" Type="int" Nullable="false" />
           <Property Name="ClaveMesa" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="NombreMesa" Type="varchar" MaxLength="150" Nullable="false" />
@@ -1565,6 +1566,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA_CORTE_DETALLE].[IdTendido] AS [IdTendido], 
     [VST_AUDITORIA_CORTE_DETALLE].[ClaveTendido] AS [ClaveTendido], 
     [VST_AUDITORIA_CORTE_DETALLE].[NombreTendido] AS [NombreTendido], 
+    [VST_AUDITORIA_CORTE_DETALLE].[TipoTendido] AS [TipoTendido], 
     [VST_AUDITORIA_CORTE_DETALLE].[IdMesa] AS [IdMesa], 
     [VST_AUDITORIA_CORTE_DETALLE].[ClaveMesa] AS [ClaveMesa], 
     [VST_AUDITORIA_CORTE_DETALLE].[NombreMesa] AS [NombreMesa], 
@@ -2842,6 +2844,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="IdTendido" Type="Int32" Nullable="false" />
           <Property Name="ClaveTendido" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="NombreTendido" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="TipoTendido" Type="Int32" />
           <Property Name="IdMesa" Type="Int32" Nullable="false" />
           <Property Name="ClaveMesa" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="NombreMesa" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -4253,6 +4256,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="NombreMesa" ColumnName="NombreMesa" />
                 <ScalarProperty Name="ClaveMesa" ColumnName="ClaveMesa" />
                 <ScalarProperty Name="IdMesa" ColumnName="IdMesa" />
+                <ScalarProperty Name="TipoTendido" ColumnName="TipoTendido" />
                 <ScalarProperty Name="NombreTendido" ColumnName="NombreTendido" />
                 <ScalarProperty Name="ClaveTendido" ColumnName="ClaveTendido" />
                 <ScalarProperty Name="IdTendido" ColumnName="IdTendido" />
