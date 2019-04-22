@@ -517,6 +517,7 @@ namespace RioSulAPI.Controllers
             List<Models.VST_AUDITORIA_CALIDAD_DETALLE> auditoria_c = new List<VST_AUDITORIA_CALIDAD_DETALLE>();
             List<Models.VST_AUDITORIA_LAVANDERIA_DETALLE> auditoria_l = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
             List<Models.VST_AUDITORIA_PROC_ESP_DETALLE> auditoria_pe = new List<VST_AUDITORIA_PROC_ESP_DETALLE>();
+            List<Models.VST_AUDITORIA_CORTE_DETALLE> auditoria_co = new List<VST_AUDITORIA_CORTE_DETALLE>();
 
             Models.C_Clientes clientes = new C_Clientes();
 
@@ -589,6 +590,36 @@ namespace RioSulAPI.Controllers
                     }
 
                     cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaL.rpt"));
+                    break;
+
+                case "Corte":
+                    string tipo_tendido = "";
+
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    auditoria_co = db.VST_AUDITORIA_CORTE_DETALLE.Where(x => x.IdAuditoriaCorte == idAuditoria).ToList();
+
+                    foreach (VST_AUDITORIA_CORTE_DETALLE item in auditoria_co)
+                    {
+                        switch (item.TipoTendido)
+                        {
+                            case 1:
+                                tipo_tendido = "Automático";
+                                break;
+                            case 2:
+                                tipo_tendido = "Manual";
+                                break;
+                            case 3:
+                                tipo_tendido = "Ambos";
+                                break;
+                        }
+
+                        ds.dtDetalleCo.AdddtDetalleCoRow(item.Serie, item.Bulto, item.ClaveTendido, tipo_tendido, item.ClaveMesa,
+                            item.ClavePosicion, item.ClaveDefecto, item.Cantidad, item.Nota); ;
+                    }
+
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaCorte.rpt"));
                     break;
             }
 
