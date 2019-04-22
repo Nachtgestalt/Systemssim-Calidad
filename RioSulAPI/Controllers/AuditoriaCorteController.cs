@@ -323,7 +323,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 							Terminado = false,
 							Lavanderia = false,
 							ProcesosEspeciales = false,
-							Calidad = false
+							Calidad = false,
+                            Activo = true
 						};
 						db.Auditorias.Add(auditoria);
 						db.SaveChanges();
