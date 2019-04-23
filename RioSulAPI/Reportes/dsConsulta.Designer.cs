@@ -32,6 +32,8 @@ namespace RioSulAPI.Reportes {
         
         private dtDetalleCoDataTable tabledtDetalleCo;
         
+        private dsDetalleTendidoDataTable tabledsDetalleTendido;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -71,6 +73,9 @@ namespace RioSulAPI.Reportes {
                 }
                 if ((ds.Tables["dtDetalleCo"] != null)) {
                     base.Tables.Add(new dtDetalleCoDataTable(ds.Tables["dtDetalleCo"]));
+                }
+                if ((ds.Tables["dsDetalleTendido"] != null)) {
+                    base.Tables.Add(new dsDetalleTendidoDataTable(ds.Tables["dsDetalleTendido"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -127,6 +132,16 @@ namespace RioSulAPI.Reportes {
         public dtDetalleCoDataTable dtDetalleCo {
             get {
                 return this.tabledtDetalleCo;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public dsDetalleTendidoDataTable dsDetalleTendido {
+            get {
+                return this.tabledsDetalleTendido;
             }
         }
         
@@ -209,6 +224,9 @@ namespace RioSulAPI.Reportes {
                 if ((ds.Tables["dtDetalleCo"] != null)) {
                     base.Tables.Add(new dtDetalleCoDataTable(ds.Tables["dtDetalleCo"]));
                 }
+                if ((ds.Tables["dsDetalleTendido"] != null)) {
+                    base.Tables.Add(new dsDetalleTendidoDataTable(ds.Tables["dsDetalleTendido"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -266,6 +284,12 @@ namespace RioSulAPI.Reportes {
                     this.tabledtDetalleCo.InitVars();
                 }
             }
+            this.tabledsDetalleTendido = ((dsDetalleTendidoDataTable)(base.Tables["dsDetalleTendido"]));
+            if ((initTable == true)) {
+                if ((this.tabledsDetalleTendido != null)) {
+                    this.tabledsDetalleTendido.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -284,6 +308,8 @@ namespace RioSulAPI.Reportes {
             base.Tables.Add(this.tabledtDetalleC);
             this.tabledtDetalleCo = new dtDetalleCoDataTable();
             base.Tables.Add(this.tabledtDetalleCo);
+            this.tabledsDetalleTendido = new dsDetalleTendidoDataTable();
+            base.Tables.Add(this.tabledsDetalleTendido);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -307,6 +333,12 @@ namespace RioSulAPI.Reportes {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         private bool ShouldSerializedtDetalleCo() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        private bool ShouldSerializedsDetalleTendido() {
             return false;
         }
         
@@ -376,6 +408,9 @@ namespace RioSulAPI.Reportes {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
         public delegate void dtDetalleCoRowChangeEventHandler(object sender, dtDetalleCoRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public delegate void dsDetalleTendidoRowChangeEventHandler(object sender, dsDetalleTendidoRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -1809,6 +1844,365 @@ namespace RioSulAPI.Reportes {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class dsDetalleTendidoDataTable : global::System.Data.TypedTableBase<dsDetalleTendidoRow> {
+            
+            private global::System.Data.DataColumn columnSERIE;
+            
+            private global::System.Data.DataColumn columnBULTO;
+            
+            private global::System.Data.DataColumn columnCORTADOR;
+            
+            private global::System.Data.DataColumn columnPOSICION;
+            
+            private global::System.Data.DataColumn columnDEFECTO;
+            
+            private global::System.Data.DataColumn columnTOLERANCIA;
+            
+            private global::System.Data.DataColumn columnCORTADO;
+            
+            private global::System.Data.DataColumn columnCANTIDAD;
+            
+            private global::System.Data.DataColumn columnNOTA;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoDataTable() {
+                this.TableName = "dsDetalleTendido";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal dsDetalleTendidoDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected dsDetalleTendidoDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn SERIEColumn {
+                get {
+                    return this.columnSERIE;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn BULTOColumn {
+                get {
+                    return this.columnBULTO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CORTADORColumn {
+                get {
+                    return this.columnCORTADOR;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn POSICIONColumn {
+                get {
+                    return this.columnPOSICION;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn DEFECTOColumn {
+                get {
+                    return this.columnDEFECTO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn TOLERANCIAColumn {
+                get {
+                    return this.columnTOLERANCIA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CORTADOColumn {
+                get {
+                    return this.columnCORTADO;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn CANTIDADColumn {
+                get {
+                    return this.columnCANTIDAD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataColumn NOTAColumn {
+                get {
+                    return this.columnNOTA;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoRow this[int index] {
+                get {
+                    return ((dsDetalleTendidoRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event dsDetalleTendidoRowChangeEventHandler dsDetalleTendidoRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event dsDetalleTendidoRowChangeEventHandler dsDetalleTendidoRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event dsDetalleTendidoRowChangeEventHandler dsDetalleTendidoRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public event dsDetalleTendidoRowChangeEventHandler dsDetalleTendidoRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void AdddsDetalleTendidoRow(dsDetalleTendidoRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoRow AdddsDetalleTendidoRow(string SERIE, string BULTO, string CORTADOR, string POSICION, string DEFECTO, string TOLERANCIA, decimal CORTADO, decimal CANTIDAD, string NOTA) {
+                dsDetalleTendidoRow rowdsDetalleTendidoRow = ((dsDetalleTendidoRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        SERIE,
+                        BULTO,
+                        CORTADOR,
+                        POSICION,
+                        DEFECTO,
+                        TOLERANCIA,
+                        CORTADO,
+                        CANTIDAD,
+                        NOTA};
+                rowdsDetalleTendidoRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowdsDetalleTendidoRow);
+                return rowdsDetalleTendidoRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                dsDetalleTendidoDataTable cln = ((dsDetalleTendidoDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new dsDetalleTendidoDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal void InitVars() {
+                this.columnSERIE = base.Columns["SERIE"];
+                this.columnBULTO = base.Columns["BULTO"];
+                this.columnCORTADOR = base.Columns["CORTADOR"];
+                this.columnPOSICION = base.Columns["POSICION"];
+                this.columnDEFECTO = base.Columns["DEFECTO"];
+                this.columnTOLERANCIA = base.Columns["TOLERANCIA"];
+                this.columnCORTADO = base.Columns["CORTADO"];
+                this.columnCANTIDAD = base.Columns["CANTIDAD"];
+                this.columnNOTA = base.Columns["NOTA"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            private void InitClass() {
+                this.columnSERIE = new global::System.Data.DataColumn("SERIE", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSERIE);
+                this.columnBULTO = new global::System.Data.DataColumn("BULTO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnBULTO);
+                this.columnCORTADOR = new global::System.Data.DataColumn("CORTADOR", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCORTADOR);
+                this.columnPOSICION = new global::System.Data.DataColumn("POSICION", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPOSICION);
+                this.columnDEFECTO = new global::System.Data.DataColumn("DEFECTO", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDEFECTO);
+                this.columnTOLERANCIA = new global::System.Data.DataColumn("TOLERANCIA", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTOLERANCIA);
+                this.columnCORTADO = new global::System.Data.DataColumn("CORTADO", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCORTADO);
+                this.columnCANTIDAD = new global::System.Data.DataColumn("CANTIDAD", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCANTIDAD);
+                this.columnNOTA = new global::System.Data.DataColumn("NOTA", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNOTA);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoRow NewdsDetalleTendidoRow() {
+                return ((dsDetalleTendidoRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new dsDetalleTendidoRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(dsDetalleTendidoRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.dsDetalleTendidoRowChanged != null)) {
+                    this.dsDetalleTendidoRowChanged(this, new dsDetalleTendidoRowChangeEvent(((dsDetalleTendidoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.dsDetalleTendidoRowChanging != null)) {
+                    this.dsDetalleTendidoRowChanging(this, new dsDetalleTendidoRowChangeEvent(((dsDetalleTendidoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.dsDetalleTendidoRowDeleted != null)) {
+                    this.dsDetalleTendidoRowDeleted(this, new dsDetalleTendidoRowChangeEvent(((dsDetalleTendidoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.dsDetalleTendidoRowDeleting != null)) {
+                    this.dsDetalleTendidoRowDeleting(this, new dsDetalleTendidoRowChangeEvent(((dsDetalleTendidoRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void RemovedsDetalleTendidoRow(dsDetalleTendidoRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                dsConsulta ds = new dsConsulta();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "dsDetalleTendidoDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class dtGeneralRow : global::System.Data.DataRow {
@@ -2849,6 +3243,273 @@ namespace RioSulAPI.Reportes {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class dsDetalleTendidoRow : global::System.Data.DataRow {
+            
+            private dsDetalleTendidoDataTable tabledsDetalleTendido;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            internal dsDetalleTendidoRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tabledsDetalleTendido = ((dsDetalleTendidoDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string SERIE {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.SERIEColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'SERIE\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.SERIEColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string BULTO {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.BULTOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'BULTO\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.BULTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string CORTADOR {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.CORTADORColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'CORTADOR\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.CORTADORColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string POSICION {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.POSICIONColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'POSICION\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.POSICIONColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string DEFECTO {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.DEFECTOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'DEFECTO\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.DEFECTOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string TOLERANCIA {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.TOLERANCIAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'TOLERANCIA\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.TOLERANCIAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal CORTADO {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledsDetalleTendido.CORTADOColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'CORTADO\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.CORTADOColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public decimal CANTIDAD {
+                get {
+                    try {
+                        return ((decimal)(this[this.tabledsDetalleTendido.CANTIDADColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'CANTIDAD\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.CANTIDADColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public string NOTA {
+                get {
+                    try {
+                        return ((string)(this[this.tabledsDetalleTendido.NOTAColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("El valor de la columna \'NOTA\' de la tabla \'dsDetalleTendido\' es DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledsDetalleTendido.NOTAColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsSERIENull() {
+                return this.IsNull(this.tabledsDetalleTendido.SERIEColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetSERIENull() {
+                this[this.tabledsDetalleTendido.SERIEColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsBULTONull() {
+                return this.IsNull(this.tabledsDetalleTendido.BULTOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetBULTONull() {
+                this[this.tabledsDetalleTendido.BULTOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCORTADORNull() {
+                return this.IsNull(this.tabledsDetalleTendido.CORTADORColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCORTADORNull() {
+                this[this.tabledsDetalleTendido.CORTADORColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsPOSICIONNull() {
+                return this.IsNull(this.tabledsDetalleTendido.POSICIONColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetPOSICIONNull() {
+                this[this.tabledsDetalleTendido.POSICIONColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsDEFECTONull() {
+                return this.IsNull(this.tabledsDetalleTendido.DEFECTOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetDEFECTONull() {
+                this[this.tabledsDetalleTendido.DEFECTOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsTOLERANCIANull() {
+                return this.IsNull(this.tabledsDetalleTendido.TOLERANCIAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetTOLERANCIANull() {
+                this[this.tabledsDetalleTendido.TOLERANCIAColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCORTADONull() {
+                return this.IsNull(this.tabledsDetalleTendido.CORTADOColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCORTADONull() {
+                this[this.tabledsDetalleTendido.CORTADOColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsCANTIDADNull() {
+                return this.IsNull(this.tabledsDetalleTendido.CANTIDADColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetCANTIDADNull() {
+                this[this.tabledsDetalleTendido.CANTIDADColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public bool IsNOTANull() {
+                return this.IsNull(this.tabledsDetalleTendido.NOTAColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public void SetNOTANull() {
+                this[this.tabledsDetalleTendido.NOTAColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
@@ -2970,6 +3631,40 @@ namespace RioSulAPI.Reportes {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
             public dtDetalleCoRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+        public class dsDetalleTendidoRowChangeEvent : global::System.EventArgs {
+            
+            private dsDetalleTendidoRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoRowChangeEvent(dsDetalleTendidoRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "15.0.0.0")]
+            public dsDetalleTendidoRow Row {
                 get {
                     return this.eventRow;
                 }

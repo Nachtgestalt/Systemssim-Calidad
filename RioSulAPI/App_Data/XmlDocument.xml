@@ -2092,6 +2092,11 @@
             Represents the strongly named DataTable class.
             </summary>
         </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dsDetalleTendidoDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
         <member name="T:RioSulAPI.Reportes.dsConsulta.dtGeneralRow">
              <summary>
             Represents strongly named DataRow class.
@@ -2112,6 +2117,11 @@
             Represents strongly named DataRow class.
             </summary>
         </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dsDetalleTendidoRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
         <member name="T:RioSulAPI.Reportes.dsConsulta.dtGeneralRowChangeEvent">
              <summary>
             Row event argument class
@@ -2128,6 +2138,11 @@
             </summary>
         </member>
         <member name="T:RioSulAPI.Reportes.dsConsulta.dtDetalleCoRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsConsulta.dsDetalleTendidoRowChangeEvent">
              <summary>
             Row event argument class
             </summary>

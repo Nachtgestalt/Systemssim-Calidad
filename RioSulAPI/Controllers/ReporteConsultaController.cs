@@ -486,6 +486,93 @@ namespace RioSulAPI.Controllers
                         }
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                         break;
+                    case "Tendido":
+                        var aux6 = db.VST_AUDITORIA.
+                            Where(x => x.Tendido == true && x.Activo == true);
+
+                        if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
+                        {
+                            aux6 = aux6.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
+                                                 && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                        }
+
+                        if (Filtro.IdCliente != null)
+                        {
+                            int id = Convert.ToInt16(Filtro.IdCliente);
+                            aux6 = aux6.Where(x => x.IdClienteRef == id);
+                        }
+
+                        if (Filtro.Marca != null)
+                        {
+                            aux6 = aux6.Where(x => x.Marca == Filtro.Marca);
+                        }
+
+                        if (Filtro.PO != null)
+                        {
+                            aux6 = aux6.Where(x => x.PO == Filtro.PO);
+                        }
+
+                        if (Filtro.Corte != null)
+                        {
+                            aux6 = aux6.Where(x => x.NumCortada == Filtro.Corte);
+                        }
+
+                        if (Filtro.Planta != null)
+                        {
+                            aux6 = aux6.Where(x => x.Planta == Filtro.Planta);
+                        }
+
+                        if (Filtro.Estilo != null)
+                        {
+                            aux6 = aux6.Where(x => x.Estilo == Filtro.Estilo);
+                        }
+
+                        consulta = aux6.OrderByDescending(x => x.FechaRegistro).ToList();
+                        foreach (var itemAuditoria in consulta)
+                        {
+                            RES_AUDITORIA A = new RES_AUDITORIA();
+                            Models.Auditoria_Tendido_Detalle ACD = db.Auditoria_Tendido_Detalle
+                                .Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).FirstOrDefault();
+
+                            if (ACD != null)
+                            {
+                                A.pzas_r = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                                A.total = A.pzas_r;
+                            }
+                            else
+                            {
+                                A.pzas_r = 0;
+                                A.total = 0;
+                            }
+
+
+                            Models.C_Clientes Cliente;
+                            Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
+                            A.Cliente = Cliente.Descripcion;
+
+                            A.Marca = itemAuditoria.Marca;
+                            A.IdAuditoria = itemAuditoria.IdAuditoria;
+                            A.PO = itemAuditoria.PO;
+                            A.Corte = itemAuditoria.NumCortada;
+                            A.Planta = itemAuditoria.Planta;
+                            A.Estilo = itemAuditoria.Estilo;
+                            A.Fecha_i = itemAuditoria.FechaRegistro;
+                            A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
+                            A.OT = itemAuditoria.OrdenTrabajo;
+
+                            if (itemAuditoria.FechaRegistroFin == null)
+                            {
+                                A.status = "ACTIVA";
+                            }
+                            else
+                            {
+                                A.status = "CERRADA";
+                            }
+
+                            API.Auditoria.Add(A);
+                        }
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        break;
                 }
             }
             catch (Exception e)
@@ -518,6 +605,7 @@ namespace RioSulAPI.Controllers
             List<Models.VST_AUDITORIA_LAVANDERIA_DETALLE> auditoria_l = new List<VST_AUDITORIA_LAVANDERIA_DETALLE>();
             List<Models.VST_AUDITORIA_PROC_ESP_DETALLE> auditoria_pe = new List<VST_AUDITORIA_PROC_ESP_DETALLE>();
             List<Models.VST_AUDITORIA_CORTE_DETALLE> auditoria_co = new List<VST_AUDITORIA_CORTE_DETALLE>();
+            List<Models.VST_AUDITORIA_TENDIDO_DETALLE> auditoria_ten = new List<VST_AUDITORIA_TENDIDO_DETALLE>();
 
             Models.C_Clientes clientes = new C_Clientes();
 
@@ -620,6 +708,34 @@ namespace RioSulAPI.Controllers
                     }
 
                     cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaCorte.rpt"));
+                    break;
+                case "Tendido":
+                    string tolerancia = "";
+                    auditoria_gen = db.Auditorias.Where(x => x.IdAuditoria == idAuditoria).FirstOrDefault();
+                    clientes = db.C_Clientes.Where(x => x.IdClienteRef == auditoria_gen.IdClienteRef).FirstOrDefault();
+
+                    auditoria_ten = db.VST_AUDITORIA_TENDIDO_DETALLE.Where(x => x.IdAuditoriaCorte == idAuditoria).ToList();
+
+                    foreach (VST_AUDITORIA_TENDIDO_DETALLE item in auditoria_ten)
+                    {
+                        if(item.ToleranciaNegativa == true && item.ToleranciaPositiva == false)
+                        {
+                            tolerancia = "-";
+                        }
+                        if (item.ToleranciaNegativa == false && item.ToleranciaPositiva == true)
+                        {
+                            tolerancia = "+";
+                        }
+                        if (item.ToleranciaNegativa == true && item.ToleranciaPositiva == true)
+                        {
+                            tolerancia = "+/-";
+                        }
+                        ds.dsDetalleTendido.AdddsDetalleTendidoRow(item.Serie,item.Bulto,item.NombreCortador,item.NombrePosicion,item.NombreDefecto,
+                            tolerancia,item.Descripcion,item.Cantidad,item.Nota);
+                        
+                    }
+
+                    cr.Load(HostingEnvironment.MapPath("~/Reportes/crConsultaTendido.rpt"));
                     break;
             }
 
