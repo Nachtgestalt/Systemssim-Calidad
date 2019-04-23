@@ -127,6 +127,8 @@ public partial class bd_calidadIIEntities : DbContext
 
     public virtual DbSet<VST_AUDITORIA_PROC_ESP_DETALLE> VST_AUDITORIA_PROC_ESP_DETALLE { get; set; }
 
+    public virtual DbSet<VST_AUDITORIA_TENDIDO_DETALLE> VST_AUDITORIA_TENDIDO_DETALLE { get; set; }
+
     public virtual DbSet<VST_AUDITORIA_TERMINADO_DETALLE> VST_AUDITORIA_TERMINADO_DETALLE { get; set; }
 
     public virtual DbSet<VST_CONFECCION> VST_CONFECCION { get; set; }

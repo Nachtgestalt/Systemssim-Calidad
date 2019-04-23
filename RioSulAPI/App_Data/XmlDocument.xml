@@ -617,7 +617,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT_T)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.NuevaAuditoriaCorteTendido(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
             <summary>
             Ingresa una nueva auditoria de corte tendido
             </summary>
@@ -630,11 +630,25 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneAuditoriaTendidoPorId(System.Int32)">
+            <summary>
+            Obtiene auditoría por corte por Id
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.CierreAuditoriaTendido(System.Int32)">
             <summary>
             Genera el cierre de auditoria de corte tendido
             </summary>
             <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaCorteController.EDT_AUDITORIA_T)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaLavanderiaController.NuevaAuditoriaLavanderia(RioSulAPI.Controllers.AuditoriaLavanderiaController.REQ_NEW_OT)">
