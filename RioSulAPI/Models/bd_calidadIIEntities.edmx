@@ -77,6 +77,7 @@
           <Property Name="Aud_Imagen" Type="varchar(max)" />
           <Property Name="Nota" Type="varchar(max)" />
           <Property Name="Archivo" Type="varchar(max)" />
+          <Property Name="Segundas" Type="int" />
         </EntityType>
         <EntityType Name="Auditoria_Lavanderia_Detalle">
           <Key>
@@ -122,6 +123,7 @@
           <Property Name="Aud_Imagen" Type="varchar(max)" />
           <Property Name="Nota" Type="varchar(max)" />
           <Property Name="Archivo" Type="varchar(max)" />
+          <Property Name="Segundas" Type="int" />
         </EntityType>
         <EntityType Name="Auditoria_Terminado_Detalle">
           <Key>
@@ -600,6 +602,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_CORTE_DETALLE
           <Property Name="ClaveDefecto" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="NombreDefecto" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Segundas" Type="int" />
           <Property Name="Imagen" Type="varchar(max)" />
           <Property Name="Nota" Type="varchar(max)" />
           <Property Name="Archivo" Type="varchar(max)" />
@@ -717,6 +720,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_AUDITORIA_TENDIDO_DETAL
           <Property Name="ToleranciaPositiva" Type="bit" Nullable="false" />
           <Property Name="ToleranciaNegativa" Type="bit" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Segundas" Type="int" />
           <Property Name="Nota" Type="varchar(max)" />
           <Property Name="Imagen" Type="varchar(max)" />
           <Property Name="Archivo" Type="varchar(max)" />
@@ -1620,6 +1624,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA_CORTE_DETALLE].[ClaveDefecto] AS [ClaveDefecto], 
     [VST_AUDITORIA_CORTE_DETALLE].[NombreDefecto] AS [NombreDefecto], 
     [VST_AUDITORIA_CORTE_DETALLE].[Cantidad] AS [Cantidad], 
+    [VST_AUDITORIA_CORTE_DETALLE].[Segundas] AS [Segundas], 
     [VST_AUDITORIA_CORTE_DETALLE].[Imagen] AS [Imagen], 
     [VST_AUDITORIA_CORTE_DETALLE].[Nota] AS [Nota], 
     [VST_AUDITORIA_CORTE_DETALLE].[Archivo] AS [Archivo]
@@ -1686,6 +1691,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
     [VST_AUDITORIA_TENDIDO_DETALLE].[ToleranciaPositiva] AS [ToleranciaPositiva], 
     [VST_AUDITORIA_TENDIDO_DETALLE].[ToleranciaNegativa] AS [ToleranciaNegativa], 
     [VST_AUDITORIA_TENDIDO_DETALLE].[Cantidad] AS [Cantidad], 
+    [VST_AUDITORIA_TENDIDO_DETALLE].[Segundas] AS [Segundas], 
     [VST_AUDITORIA_TENDIDO_DETALLE].[Nota] AS [Nota], 
     [VST_AUDITORIA_TENDIDO_DETALLE].[Imagen] AS [Imagen], 
     [VST_AUDITORIA_TENDIDO_DETALLE].[Archivo] AS [Archivo]
@@ -2346,6 +2352,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Segundas" Type="Int32" />
           <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Tendido_Detalle_Auditoria_Corte" FromRole="Auditoria_Corte_Detalle" ToRole="Auditoria" />
         </EntityType>
         <EntityType Name="Auditoria_Lavanderia_Detalle">
@@ -2394,6 +2401,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="Aud_Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Segundas" Type="Int32" />
           <NavigationProperty Name="Auditoria" Relationship="bd_calidadIIModel.FK_Auditoria_Corte_Detalle_Auditoria_Corte" FromRole="Auditoria_Tendido_Detalle" ToRole="Auditoria" />
         </EntityType>
         <EntityType Name="Auditoria_Terminado_Detalle">
@@ -2923,6 +2931,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ClaveDefecto" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="NombreDefecto" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Segundas" Type="Int32" />
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -3034,6 +3043,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="ToleranciaPositiva" Type="Boolean" Nullable="false" />
           <Property Name="ToleranciaNegativa" Type="Boolean" Nullable="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Segundas" Type="Int32" />
           <Property Name="Nota" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Imagen" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Archivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -3839,6 +3849,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Corte_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Corte_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Corte_Detalle">
+                <ScalarProperty Name="Segundas" ColumnName="Segundas" />
                 <ScalarProperty Name="Archivo" ColumnName="Archivo" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
@@ -3887,6 +3898,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <EntitySetMapping Name="Auditoria_Tendido_Detalle">
             <EntityTypeMapping TypeName="bd_calidadIIModel.Auditoria_Tendido_Detalle">
               <MappingFragment StoreEntitySet="Auditoria_Tendido_Detalle">
+                <ScalarProperty Name="Segundas" ColumnName="Segundas" />
                 <ScalarProperty Name="Archivo" ColumnName="Archivo" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Aud_Imagen" ColumnName="Aud_Imagen" />
@@ -4355,6 +4367,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="Archivo" ColumnName="Archivo" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
+                <ScalarProperty Name="Segundas" ColumnName="Segundas" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="NombreDefecto" ColumnName="NombreDefecto" />
                 <ScalarProperty Name="ClaveDefecto" ColumnName="ClaveDefecto" />
@@ -4427,6 +4440,7 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
                 <ScalarProperty Name="Archivo" ColumnName="Archivo" />
                 <ScalarProperty Name="Imagen" ColumnName="Imagen" />
                 <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="Segundas" ColumnName="Segundas" />
                 <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
                 <ScalarProperty Name="ToleranciaNegativa" ColumnName="ToleranciaNegativa" />
                 <ScalarProperty Name="ToleranciaPositiva" ColumnName="ToleranciaPositiva" />

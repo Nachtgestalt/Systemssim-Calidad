@@ -42,6 +42,8 @@ public partial class Auditoria_Corte_Detalle
 
     public string Archivo { get; set; }
 
+    public Nullable<int> Segundas { get; set; }
+
 
 
     public virtual Auditoria Auditoria { get; set; }

@@ -960,7 +960,7 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaDefectoConfeccionSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaDefectoConfeccionSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo confeccion por SubModulo
             </summary>
@@ -976,7 +976,7 @@
             <param name="IdDefecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneDefectoConfeccion(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneDefectoConfeccion(System.String,System.String,System.String)">
             <summary>
             Obtiene defecto por Clave y/o Nombre
             </summary>

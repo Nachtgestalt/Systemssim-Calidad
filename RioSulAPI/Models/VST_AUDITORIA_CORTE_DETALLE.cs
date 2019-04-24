@@ -52,6 +52,8 @@ public partial class VST_AUDITORIA_CORTE_DETALLE
 
     public int Cantidad { get; set; }
 
+    public Nullable<int> Segundas { get; set; }
+
     public string Imagen { get; set; }
 
     public string Nota { get; set; }

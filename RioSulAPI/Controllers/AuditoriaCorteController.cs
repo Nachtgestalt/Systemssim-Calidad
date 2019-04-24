@@ -372,7 +372,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 								Cantidad = item.Cantidad,
 								Aud_Imagen = image_name,
 								Nota =  item.Nota,
-								Archivo = pdf
+								Archivo = pdf,
+                                Segundas = item.Segundas
 							};
 							db.Auditoria_Corte_Detalle.Add(corte_Detalle);
 						}
@@ -694,7 +695,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 							Cantidad = item.Cantidad,
 							Aud_Imagen = image_name,
 							Nota = item.Nota,
-							Archivo = pdf
+							Archivo = pdf,
+                            Segundas = item.Segundas
 						};
 						db.Auditoria_Corte_Detalle.Add(auditoria_corte);
 					}
@@ -804,7 +806,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 								Cantidad = item.Cantidad,
 								Aud_Imagen = image_name,
                                 Archivo = pdf,
-                                Nota = item.Nota
+                                Nota = item.Nota,
+                                Segundas = item.Segundas
 							};
 							db.Auditoria_Tendido_Detalle.Add(tendido_Detalle);
 						}
@@ -1128,7 +1131,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
                             Cantidad = item.Cantidad,
                             Aud_Imagen = image_name,
                             Archivo = pdf,
-                            Nota = item.Nota
+                            Nota = item.Nota,
+                            Segundas = item.Segundas
                         };
                         db.Auditoria_Tendido_Detalle.Add(auditoria_calidad);
                     }
@@ -1270,7 +1274,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			[Required] public int IdDefecto { get; set; }
 			[Required] public int IdCortado { get; set; }
 			[Required] public int Cantidad { get; set; }
-			public string Imagen { get; set; }
+            [Required] public int Segundas { get; set; }
+            public string Imagen { get; set; }
 			public string Nota { get; set; }
 			public string Archivo { get; set; }
 		}
@@ -1284,7 +1289,8 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 			[Required] public int IdPosicion { get; set; }
 			[Required] public int IdDefecto { get; set; }
 			[Required] public int Cantidad { get; set; }
-			public string Imagen { get; set; }
+            [Required] public int Segundas { get; set; }
+            public string Imagen { get; set; }
 			public string Nota { get; set; }
 			public string Archivo { get; set; }
 		}

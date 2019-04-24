@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Script.Serialization;
+using System.Web.WebPages;
 using static RioSulAPI.Controllers.CortadoresController;
 
 namespace RioSulAPI.Controllers
@@ -17,7 +20,7 @@ namespace RioSulAPI.Controllers
         private Models.bd_calidadIIEntities db = new Models.bd_calidadIIEntities();
         private JavaScriptSerializer _objSerializer = new JavaScriptSerializer();
         //----------------------------------------DEFECTOS------------------------------------------------
-
+        #region DEFECTO
         /// <summary>
         /// Registra un nuevo defecto confeccion
         /// </summary>
@@ -28,11 +31,25 @@ namespace RioSulAPI.Controllers
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CONFECCION NuevoDefectoConfeccion([FromBody]ViewModel.REQ_DEFECTO_CONFECCION Defecto)
         {
+            string image_name = "";
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                    {
+                        string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Confeccion_Defecto_" + "8" + Defecto.Clave +  DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
                     Models.C_Conf_Confeccion c_Cort = new Models.C_Conf_Confeccion()
                     {
                         Activo = true,
@@ -43,7 +60,7 @@ namespace RioSulAPI.Controllers
                         IdUsuario = Defecto.IdUsuario,
                         Nombre = Defecto.Nombre,
                         Observaciones = Defecto.Observaciones,
-                        Imagen = Defecto.Imagen
+                        Imagen = image_name
                     };
                     db.C_Conf_Confeccion.Add(c_Cort);
                     db.SaveChanges();
@@ -76,21 +93,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ValidaDefectoConfeccionSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ValidaDefectoConfeccionSubModulo(int SubModulo, string Clave, string Nombre)
+        public ViewModel.RES_DEFECTO_CONFECCION ValidaDefectoConfeccionSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 8 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -115,7 +132,7 @@ namespace RioSulAPI.Controllers
         /// <param name="IdDefecto"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActivaInactivaDefectoConfeccion")]
-        [System.Web.Http.HttpGet]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CONFECCION ActivaInactivaDefectoConfeccion(int IdDefecto)
         {
@@ -156,14 +173,32 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ObtieneDefectoConfeccion")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneDefectoConfeccion(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneDefectoConfeccion(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CONFECCION API = new ViewModel.RES_BUS_DEFECTO_CONFECCION();
+            API.Vst_Confeccion = new List<Models.VST_CONFECCION>();
+            List<Models.VST_CONFECCION> consulta = new List<Models.VST_CONFECCION>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Confeccion = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 8).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 8 && x.Activo == true)
+                                .OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 8 && x.Activo == false)
+                                .OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 8).OrderBy(x => x.Nombre)
+                                .ToList();
+                            break;
+                    }
+
+                    API.Vst_Confeccion = consulta;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -192,11 +227,24 @@ namespace RioSulAPI.Controllers
         public ViewModel.RES_EDT_DEFECTO_CONFECCION ObtieneInfoDefectoConfeccion(int ID)
         {
             ViewModel.RES_EDT_DEFECTO_CONFECCION API = new ViewModel.RES_EDT_DEFECTO_CONFECCION();
+            string image_name = "";
+            string file_path = "";
             try
             {
                 if (ModelState.IsValid)
                 {
                     API.Vst_Confeccion = db.VST_CONFECCION.Where(x => x.ID == ID).FirstOrDefault();
+                    file_path = HttpContext.Current.Server.MapPath("~/Imagenes/");
+                    file_path = file_path + API.Vst_Confeccion.Imagen + ".jpg";
+                    if (File.Exists(file_path))
+                    {
+                        API.Vst_Confeccion.Imagen = "data:image/" + "jpg" + ";base64," + Convert.ToBase64String(File.ReadAllBytes(file_path));
+                    }
+                    else
+                    {
+                        API.Vst_Confeccion.Imagen = "";
+                    }
+
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -219,15 +267,30 @@ namespace RioSulAPI.Controllers
         /// <param name="Defecto"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActualizaDefectoConfeccion")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CONFECCION ActualizaDefectoConfeccion([FromBody]ViewModel.REQ_EDT_DEFECTO_CONFECCION Defecto)
         {
+            string image_name = "";
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (Defecto.Imagen != null && !Defecto.Imagen.IsEmpty())
+                    {
+                        string base64 = Defecto.Imagen.Substring(Defecto.Imagen.IndexOf(',') + 1);
+                        byte[] data = Convert.FromBase64String(base64);
+
+                        image_name = "Confeccion_Defecto_" + "8" + Defecto.Clave + DateTime.Now.ToString("yymmssfff");
+
+                        using (var image_file = new FileStream(HttpContext.Current.Server.MapPath("~/Imagenes/") + image_name + ".jpg", FileMode.Create))
+                        {
+                            image_file.Write(data, 0, data.Length);
+                            image_file.Flush();
+                        }
+                    }
+
                     Models.C_Conf_Confeccion Vst = db.C_Conf_Confeccion.Where(x => x.ID == Defecto.ID).FirstOrDefault();
                     if (Vst != null)
                     {
@@ -236,7 +299,7 @@ namespace RioSulAPI.Controllers
                         Vst.Observaciones = Defecto.Observaciones;
                         Vst.Descripcion = Defecto.Descripcion;
                         Vst.Clave = Defecto.Clave;
-                        Vst.Imagen = Defecto.Imagen;
+                        Vst.Imagen = image_name;
 
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -259,7 +322,7 @@ namespace RioSulAPI.Controllers
             }
             return API;
         }
-
+        #endregion
         //----------------------------------------OPERACIONES------------------------------------------------
 
         /// <summary>
