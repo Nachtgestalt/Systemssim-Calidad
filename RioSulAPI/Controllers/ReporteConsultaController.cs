@@ -454,12 +454,6 @@ namespace RioSulAPI.Controllers
                                 A.pzas_2 = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
                                 A.total = A.pzas_r + A.pzas_2;
                             }
-                            else
-                            {
-                                A.pzas_r = 0;
-                                A.total = 0;
-                            }
-
 
                             //AUDITORIA TENDIDO
                             Models.Auditoria_Tendido_Detalle AT = db.Auditoria_Tendido_Detalle
@@ -470,11 +464,6 @@ namespace RioSulAPI.Controllers
                                 A.pzas_r = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
                                 A.pzas_2 = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
                                 A.total = A.pzas_r + A.pzas_2;
-                            }
-                            else
-                            {
-                                A.pzas_r = 0;
-                                A.total = 0;
                             }
 
                             Models.C_Clientes Cliente;
