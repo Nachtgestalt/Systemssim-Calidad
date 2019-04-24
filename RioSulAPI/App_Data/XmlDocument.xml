@@ -998,14 +998,14 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoOperacionConfeccion(RioSulAPI.Controllers.REQ_OPERACION_CONFECCION)">
             <summary>
             Registra un nuevo operación confeccion
             </summary>
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaOperacionSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaOperacionSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo operacion por SubModulo
             </summary>
@@ -1021,7 +1021,7 @@
             <param name="IdOperacion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneOperacionConfeccion(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneOperacionConfeccion(System.String,System.String,System.String)">
             <summary>
             Obtiene operación por Clave y/o Nombre
             </summary>
@@ -1036,19 +1036,11 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaOperacionConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CONFECCION)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaOperacionConfeccion(RioSulAPI.Controllers.EDT_OPERACION_CONFECCION)">
             <summary>
             Actualiza los datos del tendido
             </summary>
             <param name="Operacion"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneDefectosActivosOperacion">
-            <summary>
-            Obtiene defecto por Clave y/o Nombre
-            </summary>
-            <param name="Clave"></param>
-            <param name="Nombre"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoAreaConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">

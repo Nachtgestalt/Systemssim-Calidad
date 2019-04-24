@@ -1,6 +1,7 @@
 ﻿using RioSulAPI.Class;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -324,7 +325,7 @@ namespace RioSulAPI.Controllers
         }
         #endregion
         //----------------------------------------OPERACIONES------------------------------------------------
-
+        #region OPERACIONES
         /// <summary>
         /// Registra un nuevo operación confeccion
         /// </summary>
@@ -333,7 +334,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/NuevoOperacionConfeccion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION NuevoOperacionConfeccion([FromBody]ViewModel.REQ_DEFECTO_CONFECCION Defecto)
+        public ViewModel.RES_DEFECTO_CONFECCION NuevoOperacionConfeccion([FromBody]REQ_OPERACION_CONFECCION Operacion)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
@@ -344,19 +345,17 @@ namespace RioSulAPI.Controllers
                     {
                         Activo = true,
                         FechaCreacion = DateTime.Now,
-                        Clave = Defecto.Clave,
-                        Descripcion = Defecto.Descripcion,
+                        Clave = Operacion.Clave,
+                        Descripcion = Operacion.Descripcion,
                         IdSubModulo = 9,
-                        IdUsuario = Defecto.IdUsuario,
-                        Nombre = Defecto.Nombre,
-                        Observaciones = Defecto.Observaciones,
-                        Imagen = Defecto.Imagen
+                        IdUsuario = Operacion.IdUsuario,
+                        Nombre = Operacion.Nombre,
+                        Observaciones = Operacion.Observaciones
                     };
                     db.C_Conf_Confeccion.Add(c_Cort);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(Defecto.Imagen);
-                    foreach (JSON_POS_DEF item in POS)
+                    foreach (DEFECTOS_REL item in Operacion.Defectos)
                     {
                         Models.C_Operacion_Confeccion c_Operacion_Confeccion = new Models.C_Operacion_Confeccion()
                         {
@@ -395,21 +394,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ValidaOperacionSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ValidaOperacionSubModulo(int SubModulo, string Clave, string Nombre = "")
+        public ViewModel.RES_DEFECTO_CONFECCION ValidaOperacionSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 9 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -434,7 +433,7 @@ namespace RioSulAPI.Controllers
         /// <param name="IdOperacion"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActivaInactivaOperacionConfeccion")]
-        [System.Web.Http.HttpGet]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CONFECCION ActivaInactivaOperacionConfeccion(int IdOperacion)
         {
@@ -475,14 +474,31 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ObtieneOperacionConfeccion")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneOperacionConfeccion(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneOperacionConfeccion(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CONFECCION API = new ViewModel.RES_BUS_DEFECTO_CONFECCION();
+            API.Vst_Confeccion = new List<Models.VST_CONFECCION>();
+            List<Models.VST_CONFECCION> consulta = new List<Models.VST_CONFECCION>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Confeccion = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 9).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 9 && x.Activo == true)
+                                .OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 9 && x.Activo == false)
+                                .OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 9).OrderBy(x => x.Nombre)
+                                .ToList();
+                            break;
+                    }
+                    API.Vst_Confeccion = consulta;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -541,7 +557,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ActualizaOperacionConfeccion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ActualizaOperacionConfeccion([FromBody]ViewModel.REQ_EDT_DEFECTO_CONFECCION Operacion)
+        public ViewModel.RES_DEFECTO_CONFECCION ActualizaOperacionConfeccion([FromBody]EDT_OPERACION_CONFECCION Operacion)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
@@ -551,14 +567,28 @@ namespace RioSulAPI.Controllers
                     Models.C_Conf_Confeccion Vst = db.C_Conf_Confeccion.Where(x => x.ID == Operacion.ID).FirstOrDefault();
                     if (Vst != null)
                     {
+                        List<Models.C_Operacion_Confeccion> operacion = db.C_Operacion_Confeccion.Where(x => x.IdOperacion == Operacion.ID).ToList();
+                        db.C_Operacion_Confeccion.RemoveRange(operacion);
+                        db.SaveChanges();
+
                         Vst.IdUsuario = Operacion.IdUsuario;
                         Vst.Nombre = Operacion.Nombre;
                         Vst.Observaciones = Operacion.Observaciones;
                         Vst.Descripcion = Operacion.Descripcion;
                         Vst.Clave = Operacion.Clave;
-                        Vst.Imagen = Operacion.Imagen;
 
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        foreach (DEFECTOS_REL item in Operacion.Defectos)
+                        {
+                            Models.C_Operacion_Confeccion c_Operacion_Confeccion = new Models.C_Operacion_Confeccion()
+                            {
+                                IdOperacion = Vst.ID,
+                                IdDefecto = item.IdDefecto
+                            };
+                            db.C_Operacion_Confeccion.Add(c_Operacion_Confeccion);
+                        }
                         db.SaveChanges();
 
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -580,41 +610,9 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
-        /// <summary>
-        /// Obtiene defecto por Clave y/o Nombre
-        /// </summary>
-        /// <param name="Clave"></param>
-        /// <param name="Nombre"></param>
-        /// <returns></returns>
-        [System.Web.Http.Route("api/Confeccion/ObtieneDefectosActivosOperacion")]
-        [System.Web.Http.HttpGet]
-        [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneDefectosActivosOperacion()
-        {
-            ViewModel.RES_BUS_DEFECTO_CONFECCION API = new ViewModel.RES_BUS_DEFECTO_CONFECCION();
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    API.Vst_Confeccion = db.VST_CONFECCION.Where(x => x.IdSubModulo == 8 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                }
-                else
-                {
-                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                    API.Vst_Confeccion = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilerias.EscribirLog(ex.ToString());
-                API.Vst_Confeccion = null;
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            }
-            return API;
-        }
-
+        #endregion
         //----------------------------------------AREA------------------------------------------------
+        #region AREA
         /// <summary>
         /// Registra un nuevo area confeccion
         /// </summary>
@@ -902,9 +900,9 @@ namespace RioSulAPI.Controllers
             return API;
         }
 
-
+        #endregion
         //----------------------------------------PLANTAS------------------------------------------------
-
+        #region PLANTAS
         /// <summary>
         /// Obtiene las plantas dadas de alta en Dynamics
         /// </summary>
@@ -1103,5 +1101,33 @@ namespace RioSulAPI.Controllers
                 Utilerias.EscribirLog(ex.ToString());
             }
         }
+        #endregion
+    }
+
+    public partial class REQ_OPERACION_CONFECCION
+    {
+        [Required] public int IdSubModulo { get; set; }
+        [Required] public int IdUsuario { get; set; }
+        [Required] public string Clave { get; set; }
+        [Required] public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string Observaciones { get; set; }
+        public List<DEFECTOS_REL> Defectos { get; set; }
+    }
+
+    public partial class DEFECTOS_REL
+    {
+        public int IdDefecto { get; set; }
+    }
+
+    public partial class EDT_OPERACION_CONFECCION
+    {
+        [Required] public int ID { get; set; }
+        [Required] public int IdUsuario { get; set; }
+        [Required] public string Clave { get; set; }
+        [Required] public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string Observaciones { get; set; }
+        public List<DEFECTOS_REL> Defectos { get; set; }
     }
 }

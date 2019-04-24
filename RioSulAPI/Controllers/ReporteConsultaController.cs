@@ -401,7 +401,7 @@ namespace RioSulAPI.Controllers
                         break;
                     case "Corte":
                         var aux5 = db.VST_AUDITORIA.
-                            Where(x => x.Corte == true && x.Activo == true);
+                            Where(x => (x.Corte == true || x.Tendido == true) && x.Activo == true);
 
                         if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
                         {
@@ -444,6 +444,7 @@ namespace RioSulAPI.Controllers
                         foreach (var itemAuditoria in consulta)
                         {
                             RES_AUDITORIA A = new RES_AUDITORIA();
+                            //AUDITORIA CORTE
                             Models.Auditoria_Corte_Detalle ACD = db.Auditoria_Corte_Detalle
                                 .Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).FirstOrDefault();
 
@@ -460,82 +461,11 @@ namespace RioSulAPI.Controllers
                             }
 
 
-                            Models.C_Clientes Cliente;
-                            Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
-                            A.Cliente = Cliente.Descripcion;
+                            //AUDITORIA TENDIDO
+                            Models.Auditoria_Tendido_Detalle AT = db.Auditoria_Tendido_Detalle
+                               .Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).FirstOrDefault();
 
-                            A.Marca = itemAuditoria.Marca;
-                            A.IdAuditoria = itemAuditoria.IdAuditoria;
-                            A.PO = itemAuditoria.PO;
-                            A.Corte = itemAuditoria.NumCortada;
-                            A.Planta = itemAuditoria.Planta;
-                            A.Estilo = itemAuditoria.Estilo;
-                            A.Fecha_i = itemAuditoria.FechaRegistro;
-                            A.Fecha_f = itemAuditoria.FechaRegistroFin.GetValueOrDefault();
-                            A.OT = itemAuditoria.OrdenTrabajo;
-
-                            if (itemAuditoria.FechaRegistroFin == null)
-                            {
-                                A.status = "ACTIVA";
-                            }
-                            else
-                            {
-                                A.status = "CERRADA";
-                            }
-
-                            API.Auditoria.Add(A);
-                        }
-                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                        break;
-                    case "Tendido":
-                        var aux6 = db.VST_AUDITORIA.
-                            Where(x => x.Tendido == true && x.Activo == true);
-
-                        if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
-                        {
-                            aux6 = aux6.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
-                                                 && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
-                        }
-
-                        if (Filtro.IdCliente != null)
-                        {
-                            int id = Convert.ToInt16(Filtro.IdCliente);
-                            aux6 = aux6.Where(x => x.IdClienteRef == id);
-                        }
-
-                        if (Filtro.Marca != null)
-                        {
-                            aux6 = aux6.Where(x => x.Marca == Filtro.Marca);
-                        }
-
-                        if (Filtro.PO != null)
-                        {
-                            aux6 = aux6.Where(x => x.PO == Filtro.PO);
-                        }
-
-                        if (Filtro.Corte != null)
-                        {
-                            aux6 = aux6.Where(x => x.NumCortada == Filtro.Corte);
-                        }
-
-                        if (Filtro.Planta != null)
-                        {
-                            aux6 = aux6.Where(x => x.Planta == Filtro.Planta);
-                        }
-
-                        if (Filtro.Estilo != null)
-                        {
-                            aux6 = aux6.Where(x => x.Estilo == Filtro.Estilo);
-                        }
-
-                        consulta = aux6.OrderByDescending(x => x.FechaRegistro).ToList();
-                        foreach (var itemAuditoria in consulta)
-                        {
-                            RES_AUDITORIA A = new RES_AUDITORIA();
-                            Models.Auditoria_Tendido_Detalle ACD = db.Auditoria_Tendido_Detalle
-                                .Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).FirstOrDefault();
-
-                            if (ACD != null)
+                            if (AT != null)
                             {
                                 A.pzas_r = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
                                 A.pzas_2 = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
@@ -547,7 +477,6 @@ namespace RioSulAPI.Controllers
                                 A.total = 0;
                             }
 
-
                             Models.C_Clientes Cliente;
                             Cliente = db.C_Clientes.Where(x => x.IdClienteRef == itemAuditoria.IdClienteRef).FirstOrDefault();
                             A.Cliente = Cliente.Descripcion;
@@ -571,6 +500,14 @@ namespace RioSulAPI.Controllers
                                 A.status = "CERRADA";
                             }
 
+                            if(itemAuditoria.Corte == true && itemAuditoria.Tendido == false)
+                            {
+                                A.Auditoria = "Corte";
+                            }
+                            if (itemAuditoria.Corte == false && itemAuditoria.Tendido == true)
+                            {
+                                A.Auditoria = "Tendido";
+                            }
                             API.Auditoria.Add(A);
                         }
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -799,6 +736,7 @@ namespace RioSulAPI.Controllers
             public string status { get; set; }
             public int IdAuditoria { get; set; }
             public string OT { get; set; }
+            public string Auditoria { get; set; }
         }
 
         public partial class A_RES_AUDIOTRIA
