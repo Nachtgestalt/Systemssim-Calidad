@@ -450,7 +450,8 @@ namespace RioSulAPI.Controllers
                             if (ACD != null)
                             {
                                 A.pzas_r = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
-                                A.total = A.pzas_r;
+                                A.pzas_2 = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
+                                A.total = A.pzas_r + A.pzas_2;
                             }
                             else
                             {
@@ -537,7 +538,8 @@ namespace RioSulAPI.Controllers
                             if (ACD != null)
                             {
                                 A.pzas_r = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
-                                A.total = A.pzas_r;
+                                A.pzas_2 = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == itemAuditoria.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
+                                A.total = A.pzas_r + A.pzas_2;
                             }
                             else
                             {
