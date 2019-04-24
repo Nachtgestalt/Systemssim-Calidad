@@ -1043,14 +1043,14 @@
             <param name="Operacion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoAreaConfeccion(RioSulAPI.Class.ViewModel.REQ_DEFECTO_CONFECCION)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoAreaConfeccion(RioSulAPI.Controllers.AREA_CONFECCION)">
             <summary>
             Registra un nuevo area confeccion
             </summary>
             <param name="Defecto"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaAreaSubModulo(System.Int32,System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaAreaSubModulo(System.String,System.String,System.Int32)">
             <summary>
             Valida Nuevo area por SubModulo
             </summary>
@@ -1066,7 +1066,7 @@
             <param name="IdOperacion"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneAreaConfeccion(System.String,System.String)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneAreaConfeccion(System.String,System.String,System.String)">
             <summary>
             Obtiene area por Clave y/o Nombre
             </summary>
@@ -1081,17 +1081,11 @@
             <param name="ID"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaAreaConfeccion(RioSulAPI.Class.ViewModel.REQ_EDT_DEFECTO_CONFECCION)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ActualizaAreaConfeccion(RioSulAPI.Controllers.EDT_AREA_CONFECCION)">
             <summary>
             Actualiza los datos del tendido
             </summary>
             <param name="Area"></param>
-            <returns></returns>
-        </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtieneOperacionAreas">
-            <summary>
-            Obtiene defecto por Clave y/o Nombre
-            </summary>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.ConfeccionController.ObtienePlantasDynamics">

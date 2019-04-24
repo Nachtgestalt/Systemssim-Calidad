@@ -555,7 +555,7 @@ namespace RioSulAPI.Controllers
         /// <param name="Operacion"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActualizaOperacionConfeccion")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
         public ViewModel.RES_DEFECTO_CONFECCION ActualizaOperacionConfeccion([FromBody]EDT_OPERACION_CONFECCION Operacion)
         {
@@ -621,7 +621,7 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/NuevoAreaConfeccion")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION NuevoAreaConfeccion([FromBody]ViewModel.REQ_DEFECTO_CONFECCION Defecto)
+        public ViewModel.RES_DEFECTO_CONFECCION NuevoAreaConfeccion([FromBody]AREA_CONFECCION Area)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
@@ -632,24 +632,22 @@ namespace RioSulAPI.Controllers
                     {
                         Activo = true,
                         FechaCreacion = DateTime.Now,
-                        Clave = Defecto.Clave,
-                        Descripcion = Defecto.Descripcion,
+                        Clave = Area.Clave,
+                        Descripcion = Area.Descripcion,
                         IdSubModulo = 10,
-                        IdUsuario = Defecto.IdUsuario,
-                        Nombre = Defecto.Nombre,
-                        Observaciones = Defecto.Observaciones,
-                        Imagen = Defecto.Imagen
+                        IdUsuario = Area.IdUsuario,
+                        Nombre = Area.Nombre,
+                        Observaciones = Area.Observaciones
                     };
                     db.C_Conf_Confeccion.Add(c_Cort);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(Defecto.Imagen);
-                    foreach (JSON_POS_DEF item in POS)
+                    foreach (OPERACION_REL item in Area.Operaciones)
                     {
                         Models.C_Operacion_Confeccion c_Operacion_Confeccion = new Models.C_Operacion_Confeccion()
                         {
                             IdOperacion = c_Cort.ID,
-                            IdDefecto = item.IdDefecto
+                            IdDefecto = item.IdOperacion
                         };
                         db.C_Operacion_Confeccion.Add(c_Operacion_Confeccion);
                     }
@@ -683,21 +681,21 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ValidaAreaSubModulo")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ValidaAreaSubModulo(int SubModulo, string Clave, string Nombre = "")
+        public ViewModel.RES_DEFECTO_CONFECCION ValidaAreaSubModulo(string Clave = "", string Nombre = "", int ID = 0)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => x.Clave == Clave && x.Nombre == Nombre && x.IdSubModulo == SubModulo).FirstOrDefault();
+                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => (x.Clave == Clave || x.Nombre == Nombre) && x.IdSubModulo == 10 && x.ID != ID).FirstOrDefault();
                     if (c_Cort != null)
                     {
-                        API.Hecho = false;
+                        API.Hecho = true;
                     }
                     else
                     {
-                        API.Hecho = true;
+                        API.Hecho = false;
                     }
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
@@ -722,16 +720,16 @@ namespace RioSulAPI.Controllers
         /// <param name="IdOperacion"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActivaInactivaAreaConfeccion")]
-        [System.Web.Http.HttpGet]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ActivaInactivaAreaConfeccion(int IdOperacion)
+        public ViewModel.RES_DEFECTO_CONFECCION ActivaInactivaAreaConfeccion(int IdArea)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => x.ID == IdOperacion).FirstOrDefault();
+                    Models.C_Conf_Confeccion c_Cort = db.C_Conf_Confeccion.Where(x => x.ID == IdArea).FirstOrDefault();
                     c_Cort.Activo = (c_Cort.Activo == false ? true : false);
 
                     db.Entry(c_Cort).State = System.Data.Entity.EntityState.Modified;
@@ -763,14 +761,31 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ObtieneAreaConfeccion")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneAreaConfeccion(string Clave = "", string Nombre = "")
+        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneAreaConfeccion(string Clave = "", string Nombre = "", string Activo = "")
         {
             ViewModel.RES_BUS_DEFECTO_CONFECCION API = new ViewModel.RES_BUS_DEFECTO_CONFECCION();
+            API.Vst_Confeccion = new List<Models.VST_CONFECCION>();
+            List<Models.VST_CONFECCION> consulta = new List<Models.VST_CONFECCION>();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    API.Vst_Confeccion = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 10).OrderBy(x => x.Nombre).ToList();
+                    switch (Activo)
+                    {
+                        case "True":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 10 && x.Activo == true).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                        case "False":
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 10 && x.Activo == false).
+                                OrderBy(x => x.Nombre).ToList();
+                            break;
+                        default:
+                            consulta = db.VST_CONFECCION.Where(x => (x.Clave.Contains(Clave) || x.Nombre.Contains(Nombre)) && x.IdSubModulo == 10).OrderBy(x => x.Nombre).
+                                ToList();
+                            break;
+                    }
+                    API.Vst_Confeccion = consulta;
                     API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                 }
                 else
@@ -827,9 +842,9 @@ namespace RioSulAPI.Controllers
         /// <param name="Area"></param>
         /// <returns></returns>
         [System.Web.Http.Route("api/Confeccion/ActualizaAreaConfeccion")]
-        [System.Web.Http.HttpPost]
+        [System.Web.Http.HttpPut]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_DEFECTO_CONFECCION ActualizaAreaConfeccion([FromBody]ViewModel.REQ_EDT_DEFECTO_CONFECCION Area)
+        public ViewModel.RES_DEFECTO_CONFECCION ActualizaAreaConfeccion([FromBody]EDT_AREA_CONFECCION Area)
         {
             ViewModel.RES_DEFECTO_CONFECCION API = new ViewModel.RES_DEFECTO_CONFECCION();
             try
@@ -839,14 +854,28 @@ namespace RioSulAPI.Controllers
                     Models.C_Conf_Confeccion Vst = db.C_Conf_Confeccion.Where(x => x.ID == Area.ID).FirstOrDefault();
                     if (Vst != null)
                     {
+                        List<Models.C_Operacion_Confeccion> operacion = db.C_Operacion_Confeccion.Where(x => x.IdOperacion == Area.ID).ToList();
+                        db.C_Operacion_Confeccion.RemoveRange(operacion);
+                        db.SaveChanges();
+
                         Vst.IdUsuario = Area.IdUsuario;
                         Vst.Nombre = Area.Nombre;
                         Vst.Observaciones = Area.Observaciones;
                         Vst.Descripcion = Area.Descripcion;
                         Vst.Clave = Area.Clave;
-                        Vst.Imagen = Area.Imagen;
 
                         db.Entry(Vst).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        foreach (OPERACION_REL item in Area.Operaciones)
+                        {
+                            Models.C_Operacion_Confeccion c_Operacion_Confeccion = new Models.C_Operacion_Confeccion()
+                            {
+                                IdOperacion = Vst.ID,
+                                IdDefecto = item.IdOperacion
+                            };
+                            db.C_Operacion_Confeccion.Add(c_Operacion_Confeccion);
+                        }
                         db.SaveChanges();
 
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
@@ -864,38 +893,6 @@ namespace RioSulAPI.Controllers
                 Utilerias.EscribirLog(ex.ToString());
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 API.Hecho = false;
-            }
-            return API;
-        }
-
-        /// <summary>
-        /// Obtiene defecto por Clave y/o Nombre
-        /// </summary>
-        /// <returns></returns>
-        [System.Web.Http.Route("api/Confeccion/ObtieneOperacionAreas")]
-        [System.Web.Http.HttpGet]
-        [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_BUS_DEFECTO_CONFECCION ObtieneOperacionAreas()
-        {
-            ViewModel.RES_BUS_DEFECTO_CONFECCION API = new ViewModel.RES_BUS_DEFECTO_CONFECCION();
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    API.Vst_Confeccion = db.VST_CONFECCION.Where(x => x.IdSubModulo == 9 && x.Activo == true).OrderBy(x => x.Nombre).ToList();
-                    API.Message = new HttpResponseMessage(HttpStatusCode.OK);
-                }
-                else
-                {
-                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                    API.Vst_Confeccion = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utilerias.EscribirLog(ex.ToString());
-                API.Vst_Confeccion = null;
-                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
             return API;
         }
@@ -1129,5 +1126,32 @@ namespace RioSulAPI.Controllers
         public string Descripcion { get; set; }
         public string Observaciones { get; set; }
         public List<DEFECTOS_REL> Defectos { get; set; }
+    }
+
+    public partial class AREA_CONFECCION
+    {
+        [Required] public int IdSubModulo { get; set; }
+        [Required] public int IdUsuario { get; set; }
+        [Required] public string Clave { get; set; }
+        [Required] public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string Observaciones { get; set; }
+        public List<OPERACION_REL> Operaciones { get; set; }
+    }
+
+    public partial class OPERACION_REL
+    {
+        public int IdOperacion { get; set; }
+    }
+
+    public partial class EDT_AREA_CONFECCION
+    {
+        [Required] public int ID { get; set; }
+        [Required] public int IdUsuario { get; set; }
+        [Required] public string Clave { get; set; }
+        [Required] public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public string Observaciones { get; set; }
+        public List<OPERACION_REL> Operaciones { get; set; }
     }
 }

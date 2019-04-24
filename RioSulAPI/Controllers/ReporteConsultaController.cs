@@ -500,6 +500,7 @@ namespace RioSulAPI.Controllers
                                 A.status = "CERRADA";
                             }
 
+                            //TIPO DE AUDITORIA
                             if(itemAuditoria.Corte == true && itemAuditoria.Tendido == false)
                             {
                                 A.Auditoria = "Corte";
