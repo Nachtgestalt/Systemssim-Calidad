@@ -309,7 +309,7 @@
           <Key>
             <PropertyRef Name="IdPlantaArea" />
           </Key>
-          <Property Name="IdPlantaArea" Type="int" Nullable="false" />
+          <Property Name="IdPlantaArea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPlanta" Type="int" Nullable="false" />
           <Property Name="IdArea" Type="int" Nullable="false" />
         </EntityType>
@@ -1287,30 +1287,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_C_Plantas_Areas_C_Conf_Confeccion">
-          <End Role="C_Conf_Confeccion" Type="Self.C_Conf_Confeccion" Multiplicity="1" />
-          <End Role="C_Plantas_Areas" Type="Self.C_Plantas_Areas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Conf_Confeccion">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Plantas_Areas">
-              <PropertyRef Name="IdArea" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Plantas_Areas_C_Plantas_Dynamic">
-          <End Role="C_Plantas_Dynamic" Type="Self.C_Plantas_Dynamic" Multiplicity="1" />
-          <End Role="C_Plantas_Areas" Type="Self.C_Plantas_Areas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Plantas_Dynamic">
-              <PropertyRef Name="IdPlanta" />
-            </Principal>
-            <Dependent Role="C_Plantas_Areas">
-              <PropertyRef Name="IdPlanta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_C_Posicion_Cortador_C_Cort_Cortadores">
           <End Role="C_Cort_Cortadores" Type="Self.C_Cort_Cortadores" Multiplicity="1" />
           <End Role="C_Posicion_Cortador" Type="Self.C_Posicion_Cortador" Multiplicity="*" />
@@ -1970,14 +1946,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
             <End Role="C_Operacion_ProcesosEspeciales" EntitySet="C_Operacion_ProcesosEspeciales" />
           </AssociationSet>
-          <AssociationSet Name="FK_C_Plantas_Areas_C_Conf_Confeccion" Association="Self.FK_C_Plantas_Areas_C_Conf_Confeccion">
-            <End Role="C_Conf_Confeccion" EntitySet="C_Conf_Confeccion" />
-            <End Role="C_Plantas_Areas" EntitySet="C_Plantas_Areas" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Plantas_Areas_C_Plantas_Dynamic" Association="Self.FK_C_Plantas_Areas_C_Plantas_Dynamic">
-            <End Role="C_Plantas_Dynamic" EntitySet="C_Plantas_Dynamic" />
-            <End Role="C_Plantas_Areas" EntitySet="C_Plantas_Areas" />
-          </AssociationSet>
           <AssociationSet Name="FK_C_Posicion_Cortador_C_Cort_Cortadores" Association="Self.FK_C_Posicion_Cortador_C_Cort_Cortadores">
             <End Role="C_Cort_Cortadores" EntitySet="C_Cort_Cortadores" />
             <End Role="C_Posicion_Cortador" EntitySet="C_Posicion_Cortador" />
@@ -2179,10 +2147,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             <End Role="C_Conf_Confeccion" EntitySet="C_Conf_Confeccion" />
             <End Role="C_Operacion_Confeccion" EntitySet="C_Operacion_Confeccion" />
           </AssociationSet>
-          <AssociationSet Name="FK_C_Plantas_Areas_C_Conf_Confeccion" Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Conf_Confeccion">
-            <End Role="C_Conf_Confeccion" EntitySet="C_Conf_Confeccion" />
-            <End Role="C_Plantas_Areas" EntitySet="C_Plantas_Areas" />
-          </AssociationSet>
           <AssociationSet Name="FK_C_CorreosElectronicos_C_Sg_Usuarios1" Association="bd_calidadIIModel.FK_C_CorreosElectronicos_C_Sg_Usuarios1">
             <End Role="C_Sg_Usuarios" EntitySet="C_Sg_Usuarios" />
             <End Role="C_CorreosElectronicos" EntitySet="C_CorreosElectronicos" />
@@ -2222,10 +2186,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <AssociationSet Name="FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales1" Association="bd_calidadIIModel.FK_C_Operacion_ProcesosEspeciales_C_Procesos_Especiales1">
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
             <End Role="C_Operacion_ProcesosEspeciales" EntitySet="C_Operacion_ProcesosEspeciales" />
-          </AssociationSet>
-          <AssociationSet Name="FK_C_Plantas_Areas_C_Plantas_Dynamic" Association="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic">
-            <End Role="C_Plantas_Dynamic" EntitySet="C_Plantas_Dynamic" />
-            <End Role="C_Plantas_Areas" EntitySet="C_Plantas_Areas" />
           </AssociationSet>
           <AssociationSet Name="FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales" Association="bd_calidadIIModel.FK_C_Posicion_ProcesosEsp_C_Procesos_Especiales">
             <End Role="C_Procesos_Especiales" EntitySet="C_Procesos_Especiales" />
@@ -2487,7 +2447,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <NavigationProperty Name="C_SubModulos" Relationship="bd_calidadIIModel.FK_C_Conf_Confeccion_C_SubModulos" FromRole="C_Conf_Confeccion" ToRole="C_SubModulos" />
           <NavigationProperty Name="C_Operacion_Confeccion" Relationship="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion" FromRole="C_Conf_Confeccion" ToRole="C_Operacion_Confeccion" />
           <NavigationProperty Name="C_Operacion_Confeccion1" Relationship="bd_calidadIIModel.FK_C_Operacion_Confeccion_C_Conf_Confeccion1" FromRole="C_Conf_Confeccion" ToRole="C_Operacion_Confeccion" />
-          <NavigationProperty Name="C_Plantas_Areas" Relationship="bd_calidadIIModel.FK_C_Plantas_Areas_C_Conf_Confeccion" FromRole="C_Conf_Confeccion" ToRole="C_Plantas_Areas" />
         </EntityType>
         <EntityType Name="C_CorreosElectronicos">
           <Key>
@@ -2608,11 +2567,9 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Key>
             <PropertyRef Name="IdPlantaArea" />
           </Key>
-          <Property Name="IdPlantaArea" Type="Int32" Nullable="false" />
+          <Property Name="IdPlantaArea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdPlanta" Type="Int32" Nullable="false" />
           <Property Name="IdArea" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="C_Conf_Confeccion" Relationship="bd_calidadIIModel.FK_C_Plantas_Areas_C_Conf_Confeccion" FromRole="C_Plantas_Areas" ToRole="C_Conf_Confeccion" />
-          <NavigationProperty Name="C_Plantas_Dynamic" Relationship="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic" FromRole="C_Plantas_Areas" ToRole="C_Plantas_Dynamic" />
         </EntityType>
         <EntityType Name="C_Plantas_Dynamic">
           <Key>
@@ -2621,7 +2578,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
           <Property Name="IdPlanta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="Planta" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="C_Plantas_Areas" Relationship="bd_calidadIIModel.FK_C_Plantas_Areas_C_Plantas_Dynamic" FromRole="C_Plantas_Dynamic" ToRole="C_Plantas_Areas" />
         </EntityType>
         <EntityType Name="C_Posicion_Cortador">
           <Key>
@@ -3498,18 +3454,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_C_Plantas_Areas_C_Conf_Confeccion">
-          <End Type="bd_calidadIIModel.C_Conf_Confeccion" Role="C_Conf_Confeccion" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Plantas_Areas" Role="C_Plantas_Areas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Conf_Confeccion">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="C_Plantas_Areas">
-              <PropertyRef Name="IdArea" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_C_CorreosElectronicos_C_Sg_Usuarios1">
           <End Type="bd_calidadIIModel.C_Sg_Usuarios" Role="C_Sg_Usuarios" Multiplicity="1" />
           <End Type="bd_calidadIIModel.C_CorreosElectronicos" Role="C_CorreosElectronicos" Multiplicity="*" />
@@ -3627,18 +3571,6 @@ advertencia 6002: La tabla o vista 'bd_calidadII.dbo.VST_TERMINADO' no tiene def
             </Principal>
             <Dependent Role="C_Operacion_ProcesosEspeciales">
               <PropertyRef Name="IdOperacion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_C_Plantas_Areas_C_Plantas_Dynamic">
-          <End Type="bd_calidadIIModel.C_Plantas_Dynamic" Role="C_Plantas_Dynamic" Multiplicity="1" />
-          <End Type="bd_calidadIIModel.C_Plantas_Areas" Role="C_Plantas_Areas" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="C_Plantas_Dynamic">
-              <PropertyRef Name="IdPlanta" />
-            </Principal>
-            <Dependent Role="C_Plantas_Areas">
-              <PropertyRef Name="IdPlanta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

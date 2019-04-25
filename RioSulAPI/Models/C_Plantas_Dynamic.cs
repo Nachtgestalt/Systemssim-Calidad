@@ -18,26 +18,11 @@ using System;
 public partial class C_Plantas_Dynamic
 {
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-    public C_Plantas_Dynamic()
-    {
-
-        this.C_Plantas_Areas = new HashSet<C_Plantas_Areas>();
-
-    }
-
-
     public int IdPlanta { get; set; }
 
     public string Descripcion { get; set; }
 
     public string Planta { get; set; }
-
-
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<C_Plantas_Areas> C_Plantas_Areas { get; set; }
 
 }
 

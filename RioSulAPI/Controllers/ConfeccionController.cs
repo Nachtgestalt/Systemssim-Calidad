@@ -947,26 +947,25 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/NuevaPlantaArea")]
         [System.Web.Http.HttpPost]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public ViewModel.RES_PLANTA NuevaPlantaArea([FromBody]ViewModel.REQ_PLANTA_AREA aREA)
+        public ViewModel.RES_PLANTA NuevaPlantaArea([FromBody]ViewModel.REQ_PLANTA_AREA Planta)
         {
             ViewModel.RES_PLANTA API = new ViewModel.RES_PLANTA();
             try
             {
                 if (ModelState.IsValid)
                 {
-                    Models.C_Plantas_Dynamic Planta = new Models.C_Plantas_Dynamic();
-                    Planta.Descripcion = aREA.DescripcionPlanta;
-                    Planta.Planta = aREA.Planta;
-                    db.C_Plantas_Dynamic.Add(Planta);
+                    Models.C_Plantas_Dynamic planta = new Models.C_Plantas_Dynamic();
+                    planta.Descripcion = Planta.Descripcion;
+                    planta.Planta = Planta.Planta;
+                    db.C_Plantas_Dynamic.Add(planta);
                     db.SaveChanges();
 
-                    List<JSON_POS_DEF> POS = _objSerializer.Deserialize<List<JSON_POS_DEF>>(aREA.Areas);
-                    foreach (JSON_POS_DEF item in POS)
+                    foreach (ViewModel.AREA_REL item in Planta.Areas)
                     {
                         Models.C_Plantas_Areas c_Plantas_Areas = new Models.C_Plantas_Areas()
                         {
-                            IdPlanta = Planta.IdPlanta,
-                            IdArea = item.IdDefecto
+                            IdPlanta = planta.IdPlanta,
+                            IdArea = item.IdArea
                         };
                         db.C_Plantas_Areas.Add(c_Plantas_Areas);
                     }
@@ -995,13 +994,17 @@ namespace RioSulAPI.Controllers
         [System.Web.Http.Route("api/Confeccion/ValidaExistenciaPlanta")]
         [System.Web.Http.HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public bool ValidaExistenciaPlanta(int IdPlanta)
+        public bool ValidaExistenciaPlanta(string Planta = "", string Descripcion = "")
         {
             bool Result = true;
             try
             {
-                Models.C_Plantas_Areas c_Plantas_ = db.C_Plantas_Areas.Where(x => x.IdPlanta == IdPlanta).FirstOrDefault();
+                Models.C_Plantas_Dynamic c_Plantas_ = db.C_Plantas_Dynamic.Where(x => x.Planta == Planta || x.Descripcion == Descripcion).FirstOrDefault();
                 if (c_Plantas_ != null)
+                {
+                    Result = true;
+                }
+                else
                 {
                     Result = false;
                 }
@@ -1057,19 +1060,29 @@ namespace RioSulAPI.Controllers
         /// </summary>
         /// <param name="IdPlantaArea"></param>
         /// <returns></returns>
-        [System.Web.Http.HttpGet]
-        [System.Web.Http.Route("api/Cnfeccion/EliminaRelacionAreaPlanta")]
+        [System.Web.Http.HttpPut]
+        [System.Web.Http.Route("api/Confeccion/AreaPlanta")]
         [ApiExplorerSettings(IgnoreApi = false)]
-        public bool EliminaRelacionAreaPlanta(int IdPlantaArea)
+        public bool EliminaRelacionAreaPlanta([FromBody] ViewModel.EDT_PLANTA_AREA Planta)
         {
             bool Result = true;
             try
             {
-                Models.C_Plantas_Areas _Plantas_Areas = db.C_Plantas_Areas.Where(x => x.IdPlantaArea == IdPlantaArea).FirstOrDefault();
+                List<Models.C_Plantas_Areas> _Plantas_Areas = db.C_Plantas_Areas.Where(x => x.IdPlanta == Planta.IdPlanta).ToList();
                 if (_Plantas_Areas != null)
                 {
-                    db.C_Plantas_Areas.Remove(_Plantas_Areas);
+                    db.C_Plantas_Areas.RemoveRange(_Plantas_Areas);
+                    db.SaveChanges();
 
+                    foreach (ViewModel.AREA_REL item in Planta.Areas)
+                    {
+                        Models.C_Plantas_Areas c_Plantas_Areas = new Models.C_Plantas_Areas()
+                        {
+                            IdPlanta = Planta.IdPlanta,
+                            IdArea = item.IdArea
+                        };
+                        db.C_Plantas_Areas.Add(c_Plantas_Areas);
+                    }
                     db.SaveChanges();
                 }
             }

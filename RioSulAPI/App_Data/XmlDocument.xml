@@ -1100,7 +1100,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaExistenciaPlanta(System.Int32)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.ValidaExistenciaPlanta(System.String,System.String)">
             <summary>
             Verifica que la planta no se encuentre ya registrada alguna relación
             </summary>
@@ -1114,7 +1114,7 @@
             <param name="Planta"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.ConfeccionController.EliminaRelacionAreaPlanta(System.Int32)">
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.EliminaRelacionAreaPlanta(RioSulAPI.Class.ViewModel.EDT_PLANTA_AREA)">
             <summary>
             Elimina la relación de una planta con área
             </summary>

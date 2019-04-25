@@ -632,9 +632,20 @@ namespace RioSulAPI.Class
 
         public partial class REQ_PLANTA_AREA
         {
-            [Required] public string DescripcionPlanta { get; set; }
             [Required] public string Planta { get; set; }
-            [Required] public string Areas { get; set; }
+            [Required] public string Descripcion { get; set; }
+            [Required] public List<AREA_REL> Areas { get; set; }
+        }
+
+        public partial class AREA_REL
+        {
+            public int IdArea{get;set;}
+        }
+
+        public partial class EDT_PLANTA_AREA
+        {
+            public int IdPlanta { get; set; }
+            public List<AREA_REL> Areas { get; set; }
         }
 
         public partial class RES_PLANTAS_AREAS_REL

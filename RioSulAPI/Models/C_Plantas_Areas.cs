@@ -24,12 +24,6 @@ public partial class C_Plantas_Areas
 
     public int IdArea { get; set; }
 
-
-
-    public virtual C_Conf_Confeccion C_Conf_Confeccion { get; set; }
-
-    public virtual C_Plantas_Dynamic C_Plantas_Dynamic { get; set; }
-
 }
 
 }

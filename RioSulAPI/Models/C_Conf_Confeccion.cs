@@ -26,8 +26,6 @@ public partial class C_Conf_Confeccion
 
         this.C_Operacion_Confeccion1 = new HashSet<C_Operacion_Confeccion>();
 
-        this.C_Plantas_Areas = new HashSet<C_Plantas_Areas>();
-
     }
 
 
@@ -64,10 +62,6 @@ public partial class C_Conf_Confeccion
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 
     public virtual ICollection<C_Operacion_Confeccion> C_Operacion_Confeccion1 { get; set; }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-
-    public virtual ICollection<C_Plantas_Areas> C_Plantas_Areas { get; set; }
 
 }
 
