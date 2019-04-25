@@ -401,6 +401,12 @@
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportes\crConsultaConf.cs">
+      <DependentUpon>crConsultaConf.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Reportes\crConsultaTendido.cs">
       <DependentUpon>crConsultaTendido.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -550,6 +556,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reportes\crConsultaConf.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crConsultaConf.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\crConsultaTendido.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>crConsultaTendido.cs</LastGenOutput>
