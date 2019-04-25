@@ -506,7 +506,7 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 				db.SaveChanges();
 
 				List<Models.VST_CORREOS_AUDITORIA> correos = db.VST_CORREOS_AUDITORIA.Where(x => x.Corte == true).ToList();
-				List<Models.Auditoria_Proc_Esp_Detalle> auditoria_det = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == IdAuditoria).ToList();
+				List<Models.Auditoria_Corte_Detalle> auditoria_det = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == IdAuditoria).ToList();
 
 				if (correos.Count > 0)
 				{
@@ -523,9 +523,9 @@ FROM            ItemXRef AS IXR RIGHT OUTER JOIN
 					var sub = "AUDITORÍA OT: " + API.OrdenTrabajo.ToUpper();
 					var body = "Se ha cerrado la auditoría de la orden de trabajo con número de corte: " + API.NumCortada.ToUpper() + " en el área de corte.";
 
-					foreach (Auditoria_Proc_Esp_Detalle item in auditoria_det)
+					foreach (Auditoria_Corte_Detalle item in auditoria_det)
 					{
-						if (item.Notas != "null" && !item.Notas.IsEmpty())
+						if (item.Nota != "null" && !item.Nota.IsEmpty())
 						{
 							notas = true;
 						}

@@ -15,30 +15,36 @@ namespace RioSulAPI.Models
 using System;
     using System.Collections.Generic;
     
-public partial class Auditoria_Confeccion_Detalle
+public partial class VST_AUDITORIA_CONFECCION_DETALLE
 {
-
-    public int IdAuditoriaConfeccionDetalle { get; set; }
 
     public int IdAuditoria { get; set; }
 
     public int IdArea { get; set; }
 
+    public string ClaveArea { get; set; }
+
+    public string NombreArea { get; set; }
+
     public int IdOperacion { get; set; }
+
+    public string ClaveOperacion { get; set; }
+
+    public string NombreOperacion { get; set; }
 
     public int IdDefecto { get; set; }
 
+    public string ClaveDefecto { get; set; }
+
+    public string NombreDefecto { get; set; }
+
     public int Cantidad { get; set; }
 
-    public string Aud_Imagen { get; set; }
+    public string Imagen { get; set; }
 
     public string Nota { get; set; }
 
     public string Archivo { get; set; }
-
-
-
-    public virtual Auditoria Auditoria { get; set; }
 
 }
 

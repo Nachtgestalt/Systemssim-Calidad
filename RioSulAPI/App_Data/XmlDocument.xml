@@ -536,7 +536,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaCorteController.REQ_NEW_OT)">
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.NuevaAuditoriaConfeccion(RioSulAPI.Controllers.AuditoriaConfeccionController.REQ_NEW_OT)">
             <summary>
             Registra nueva auditoria confección
             </summary>
@@ -549,11 +549,25 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.ObtieneAuditoriaCortePorId(System.Int32)">
+            <summary>
+            Obtiene auditoría por corte por Id
+            </summary>
+            <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.CierreAuditoria(System.Int32)">
             <summary>
             Genera el cierre de auditoria de corte confeccion
             </summary>
             <param name="IdAuditoria"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RioSulAPI.Controllers.AuditoriaConfeccionController.ActualizaAuditoria(RioSulAPI.Controllers.AuditoriaConfeccionController.EDT_AUDITORIA)">
+            <summary>
+            ACTUALIZAMOS EL DETALLE DE LA AUDITORIA
+            </summary>
+            <param name="id"></param>
             <returns></returns>
         </member>
         <member name="M:RioSulAPI.Controllers.AuditoriaCorteController.ObtieneOrdenesTrabajoDynamics(System.String,System.String)">
