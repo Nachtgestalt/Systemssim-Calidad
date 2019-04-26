@@ -284,31 +284,41 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Cortador")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaCortador(int IdCortador)
+		public MESSAGE EliminaCortador(int IdCortador)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == IdCortador).FirstOrDefault();
-					db.C_Cort_Cortadores.Remove(c_Cort);
-					db.SaveChanges();
-					
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    Models.Auditoria_Tendido_Detalle auditoria = db.Auditoria_Tendido_Detalle.Where(x=> x.IdCortador == IdCortador).FirstOrDefault();
+
+                    if(auditoria == null)
+                    {
+                        Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == IdCortador).FirstOrDefault();
+                        db.C_Cort_Cortadores.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }                   
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 
@@ -579,31 +589,41 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Tendido")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaTendido(int ID)
+		public MESSAGE EliminaTendido(int ID)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
-					db.C_Cort_Cortadores.Remove(c_Cort);
-					db.SaveChanges();
+                    Models.Auditoria_Corte_Detalle auditoria = db.Auditoria_Corte_Detalle.Where(x=> x.IdTendido == ID).FirstOrDefault();
 
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    if(auditoria == null)
+                    {
+                        Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Cort_Cortadores.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 
@@ -1116,31 +1136,42 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Mesa")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaMesa(int ID)
+		public MESSAGE EliminaMesa(int ID)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
-					db.C_Cort_Cortadores.Remove(c_Cort);
-					db.SaveChanges();
+                    Models.Auditoria_Corte_Detalle auditoria = db.Auditoria_Corte_Detalle.Where(x=> x.IdMesa == ID).FirstOrDefault();
 
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    if(auditoria == null)
+                    {
+                        Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Cort_Cortadores.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+                    
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 		#endregion
@@ -1475,31 +1506,42 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Defecto")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaDefecto(int ID)
+		public MESSAGE EliminaDefecto(int ID)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
-					db.C_Cort_Cortadores.Remove(c_Cort);
-					db.SaveChanges();
+                    Models.Auditoria_Corte_Detalle auditoria = db.Auditoria_Corte_Detalle.Where(x=> x.IdDefecto == ID).FirstOrDefault();
+                    Models.Auditoria_Tendido_Detalle auditoria2 = db.Auditoria_Tendido_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
 
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    if (auditoria == null && auditoria2 == null)
+                    {
+                        Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Cort_Cortadores.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }               
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 		#endregion
@@ -1798,35 +1840,47 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Posicion")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaPosicion(int ID)
+		public MESSAGE EliminaPosicion(int ID)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					List<Models.C_Posicion_Cortador> posicion_Cortador = db.C_Posicion_Cortador.Where(x => x.IdPosicion == ID).ToList();
-					db.C_Posicion_Cortador.RemoveRange(posicion_Cortador);
-					db.SaveChanges();
+                    Models.Auditoria_Corte_Detalle auditoria = db.Auditoria_Corte_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
+                    Models.Auditoria_Tendido_Detalle auditoria2 = db.Auditoria_Tendido_Detalle.Where(x => x.IdPosicion == ID).FirstOrDefault();
 
-					Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
-					db.C_Cort_Cortadores.Remove(c_Cort);
-					db.SaveChanges();
+                    if (auditoria == null && auditoria2 == null)
+                    {
+                        List<Models.C_Posicion_Cortador> posicion_Cortador = db.C_Posicion_Cortador.Where(x => x.IdPosicion == ID).ToList();
+                        db.C_Posicion_Cortador.RemoveRange(posicion_Cortador);
+                        db.SaveChanges();
 
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        Models.C_Cort_Cortadores c_Cort = db.C_Cort_Cortadores.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Cort_Cortadores.Remove(c_Cort);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 		#endregion
@@ -1966,32 +2020,42 @@ namespace RioSulAPI.Controllers
 		[System.Web.Http.Route("api/Cortadores/Tolerancia")]
 		[System.Web.Http.HttpDelete]
 		[ApiExplorerSettings(IgnoreApi = false)]
-		public ViewModel.RES_CORTADOR EliminaTolerancia(int ID)
+		public MESSAGE EliminaTolerancia(int ID)
 		{
-			ViewModel.RES_CORTADOR API = new ViewModel.RES_CORTADOR();
+			MESSAGE API = new MESSAGE();
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					Models.C_Tolerancia_Corte tolerancia_Corte = db.C_Tolerancia_Corte.Where(x => x.IdTolerancia == ID).FirstOrDefault();
+                    Models.Auditoria_Tendido_Detalle auditoria = db.Auditoria_Tendido_Detalle.Where(x => x.IdCortado == ID).FirstOrDefault();
 
-					db.C_Tolerancia_Corte.Remove(tolerancia_Corte);
-					db.SaveChanges();
+                    if(auditoria == null)
+                    {
+                        Models.C_Tolerancia_Corte tolerancia_Corte = db.C_Tolerancia_Corte.Where(x => x.IdTolerancia == ID).FirstOrDefault();
 
-					API.Hecho = true;
-					API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                        db.C_Tolerancia_Corte.Remove(tolerancia_Corte);
+                        db.SaveChanges();
+
+                        API.Hecho = "Eliminado con éxito";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
 				}
 				else
 				{
-					API.Hecho = false;
-					API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
-				}
+                    API.Hecho = "Formato Iválido";
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
 			}
 			catch (Exception ex)
 			{
-				API.Hecho = false;
-				API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-			}
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = "Error Interno";
+            }
 			return API;
 		}
 
@@ -2035,5 +2099,12 @@ namespace RioSulAPI.Controllers
 		{
 			public int IdDefecto { get; set; }
 		}
-	}
+
+        public partial class MESSAGE
+        {
+            public string Hecho { get; set; }
+
+            public HttpResponseMessage Message { get; set; }
+        }
+    }
 }
