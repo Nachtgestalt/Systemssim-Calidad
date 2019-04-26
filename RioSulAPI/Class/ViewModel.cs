@@ -761,6 +761,7 @@ namespace RioSulAPI.Class
         public partial class RES_DEFECTO_LAV
         {
             public bool Hecho { get; set; }
+ 
             public HttpResponseMessage Message { get; set; }
         }
 

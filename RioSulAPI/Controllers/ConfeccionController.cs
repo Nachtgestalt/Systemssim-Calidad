@@ -332,9 +332,9 @@ namespace RioSulAPI.Controllers
         [HttpDelete]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Confeccion/EliminaConfeccion")]
-        public ViewModel.RES_DEFECTO_LAV DeleteDefectoLav(int ID, string tipo = "")
+        public MESSAGE DeleteDefectoLav(int ID, string tipo = "")
         {
-            ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
+            MESSAGE API = new MESSAGE();
             try
             {
                 if (ModelState.IsValid)
@@ -369,19 +369,19 @@ namespace RioSulAPI.Controllers
                         db.C_Conf_Confeccion.Remove(c_Lav);
                         db.SaveChanges();
 
-                        API.Hecho = true;
+                        API.Hecho = "Eliminado con éxito";
                         API.Message = new HttpResponseMessage(HttpStatusCode.OK);
                     }
                     else
                     {
-                        API.Hecho = false;
+                        API.Hecho = "Registro relacionado con Auditoria, Validar registro, Imposible eliminar";
                         API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
                     }
 
                 }
                 else
                 {
-                    API.Hecho = false;
+                    API.Hecho = "Formato Iválido";
                     API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 }
             }
@@ -389,7 +389,7 @@ namespace RioSulAPI.Controllers
             {
                 Utilerias.EscribirLog(ex.ToString());
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-                API.Hecho = false;
+                API.Hecho = "Error Interno";
             }
             return API;
         }
@@ -1236,5 +1236,12 @@ namespace RioSulAPI.Controllers
         public string Descripcion { get; set; }
         public string Observaciones { get; set; }
         public List<OPERACION_REL> Operaciones { get; set; }
+    }
+
+    public partial class MESSAGE
+    {
+        public string Hecho { get; set; }
+
+        public HttpResponseMessage Message { get; set; }
     }
 }
