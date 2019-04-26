@@ -1012,6 +1012,13 @@
             <param name="Defecto"></param>
             <returns></returns>
         </member>
+        <member name="M:RioSulAPI.Controllers.ConfeccionController.DeleteDefectoLav(System.Int32,System.String)">
+            <summary>
+            Elimina los catálogos de Confección
+            </summary>
+            <param name="IdLavanderia"></param>
+            <returns></returns>
+        </member>
         <member name="M:RioSulAPI.Controllers.ConfeccionController.NuevoOperacionConfeccion(RioSulAPI.Controllers.REQ_OPERACION_CONFECCION)">
             <summary>
             Registra un nuevo operación confeccion

@@ -323,6 +323,76 @@ namespace RioSulAPI.Controllers
             }
             return API;
         }
+
+        /// <summary>
+        /// Elimina los catálogos de Confección
+        /// </summary>
+        /// <param name="IdLavanderia"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Confeccion/EliminaConfeccion")]
+        public ViewModel.RES_DEFECTO_LAV DeleteDefectoLav(int ID, string tipo = "")
+        {
+            ViewModel.RES_DEFECTO_LAV API = new ViewModel.RES_DEFECTO_LAV();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    Models.Auditoria_Confeccion_Detalle auditoria = new Models.Auditoria_Confeccion_Detalle();
+
+                    switch (tipo)
+                    {
+                        case "Defecto":
+                            auditoria = db.Auditoria_Confeccion_Detalle.Where(x => x.IdDefecto == ID).FirstOrDefault();
+                            break;
+                        case "Operacion":
+                            auditoria = db.Auditoria_Confeccion_Detalle.Where(x => x.IdOperacion == ID).FirstOrDefault();
+                            break;
+                        case "Area":
+                            auditoria = db.Auditoria_Confeccion_Detalle.Where(x => x.IdArea == ID).FirstOrDefault();
+                            break;
+                    }
+
+                    if (auditoria == null)
+                    {
+                        List<Models.C_Operacion_Confeccion> op = db.C_Operacion_Confeccion.Where(x => x.IdOperacion == ID).ToList();
+                        db.C_Operacion_Confeccion.RemoveRange(op);
+                        db.SaveChanges();
+
+                        List<Models.C_Operacion_Confeccion> def = db.C_Operacion_Confeccion.Where(x => x.IdDefecto == ID).ToList();
+                        db.C_Operacion_Confeccion.RemoveRange(def);
+                        db.SaveChanges();
+
+                        Models.C_Conf_Confeccion c_Lav = db.C_Conf_Confeccion.Where(x => x.ID == ID).FirstOrDefault();
+                        db.C_Conf_Confeccion.Remove(c_Lav);
+                        db.SaveChanges();
+
+                        API.Hecho = true;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        API.Hecho = false;
+                        API.Message = new HttpResponseMessage(HttpStatusCode.Conflict);
+                    }
+
+                }
+                else
+                {
+                    API.Hecho = false;
+                    API.Message = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utilerias.EscribirLog(ex.ToString());
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.Hecho = false;
+            }
+            return API;
+        }
         #endregion
         //----------------------------------------OPERACIONES------------------------------------------------
         #region OPERACIONES
