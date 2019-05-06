@@ -596,8 +596,6 @@ namespace RioSulAPI.Controllers
                 API.Auditoria = null;
                 API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
-
-
             return API;
         }
 
@@ -798,6 +796,299 @@ namespace RioSulAPI.Controllers
             return httpResponseMessage;
         }
 
+         /// <summary>
+         /// 
+         /// </summary>
+        [System.Web.Http.HttpPost]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [System.Web.Http.Route("api/ReporteConsulta/GetConsultaGeneral")]
+        public C_CONSULTA_GEN GetConsultaGeneral([FromBody] REQ_CONSULTA_GEN Filtro)
+        {
+            C_CONSULTA_GEN API = new C_CONSULTA_GEN();
+            API.AuditoriaConfeccion = new List<CONFECCION>();
+            API.AuditoriaCorte = new List<CORTE>();
+            API.AuditoriaLavanderia = new List<AUDITORIA>();
+            API.AuditoriaProcesos = new List<AUDITORIA>();
+            API.AuditoriaTerminado = new List<AUDITORIA>();
+
+            List<VST_AUDITORIA> consulta = new List<VST_AUDITORIA>();
+            try
+            {
+                var aux = db.VST_AUDITORIA.Where(x => x.Activo == true);
+
+                if (Filtro.Fecha_i != Convert.ToDateTime("01/01/0001 12:00:00 a. m.") && Filtro.Fecha_f != Convert.ToDateTime("01/01/0001 12:00:00 a. m."))
+                {
+                    aux = aux.Where(x => DbFunctions.TruncateTime(x.FechaRegistro) >= Filtro.Fecha_i
+                                         && DbFunctions.TruncateTime(x.FechaRegistro) <= Filtro.Fecha_f);
+                }
+
+                if (Filtro.IdCliente != null)
+                {
+                    int id = Convert.ToInt16(Filtro.IdCliente);
+                    aux = aux.Where(x => x.IdClienteRef == id);
+                }
+
+                if (Filtro.Marca != null)
+                {
+                    aux = aux.Where(x => x.Marca == Filtro.Marca);
+                }
+
+                if (Filtro.PO != null)
+                {
+                    aux = aux.Where(x => x.PO == Filtro.PO);
+                }
+
+                if (Filtro.Corte != null)
+                {
+                    aux = aux.Where(x => x.NumCortada == Filtro.Corte);
+                }
+                consulta = aux.OrderByDescending(x => x.FechaRegistro).ToList();
+                foreach(var item in consulta)
+                {
+                    if (item.Corte == true)
+                    {
+                        CORTE corte = new CORTE();
+                        corte.IdAuditoria = item.IdAuditoria;
+                        corte.CantCorte = item.NumCortada;
+                        corte.Fecha_i = item.FechaRegistro;
+                        corte.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        corte.Auditoria = "CORTE";
+                        if (item.FechaRegistroFin == null)
+                        {
+                            corte.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            corte.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            corte.Defectos = db.Auditoria_Corte_Detalle.Where(x=> x.IdAuditoriaCorte == item.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            corte.Composturas = db.Auditoria_Corte_Detalle.Where(x => x.IdAuditoriaCorte == item.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
+                        }
+                        catch(Exception e)
+                        {
+                            corte.Defectos = 0;
+                            corte.Composturas = 0;
+                        }
+                        var terminado = (from x in consulta select new { x }).Where(x => x.x.OrdenTrabajo == item.OrdenTrabajo && x.x.Terminado == true).ToList();
+                        foreach(var item2 in terminado)
+                        {
+                            try
+                            {
+                                corte.Composturas += db.Auditoria_Terminado_Detalle.Where(x=> x.IdAuditoria == item2.x.IdAuditoria && x.Compostura == true).
+                                                     Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            }
+                            catch(Exception e)
+                            {
+                                corte.Composturas = corte.Composturas;
+                            }
+                        }
+                        API.AuditoriaCorte.Add(corte);
+                    }
+                    if (item.Tendido == true)
+                    {
+                        CORTE corte = new CORTE();
+                        corte.IdAuditoria = item.IdAuditoria;
+                        corte.CantCorte = item.NumCortada;
+                        corte.Fecha_i = item.FechaRegistro;
+                        corte.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        corte.Auditoria = "TENDIDO";
+                        if (item.FechaRegistroFin == null)
+                        {
+                            corte.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            corte.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            corte.Defectos = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == item.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            corte.Composturas = db.Auditoria_Tendido_Detalle.Where(x => x.IdAuditoriaCorte == item.IdAuditoria).Select(x => x.Segundas).DefaultIfEmpty(0).Sum();
+                        }
+                        catch (Exception e)
+                        {
+                            corte.Defectos = 0;
+                            corte.Composturas = 0;
+                        }
+                        var terminado = (from x in consulta select new { x }).Where(x => x.x.OrdenTrabajo == item.OrdenTrabajo && x.x.Terminado == true).ToList();
+                        foreach (var item2 in terminado)
+                        {
+                            try
+                            {
+                                corte.Composturas += db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item2.x.IdAuditoria && x.Compostura == true).
+                                                     Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            }
+                            catch (Exception e)
+                            {
+                                corte.Composturas = corte.Composturas;
+                            }
+                        }
+                        API.AuditoriaCorte.Add(corte);
+                    }
+                    if (item.Confeccion == true)
+                    {
+                        CONFECCION confeccion = new CONFECCION();
+                        confeccion.IdAuditoria = item.IdAuditoria;
+                        confeccion.Planta = item.Planta;
+                        confeccion.Fecha_i = item.FechaRegistro;
+                        confeccion.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        if (item.FechaRegistroFin == null)
+                        {
+                            confeccion.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            confeccion.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            confeccion.Defectos = db.Auditoria_Confeccion_Detalle.Where(x => x.IdAuditoria == item.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            confeccion.Composturas = 0;
+                        }
+                        catch (Exception e)
+                        {
+                            confeccion.Defectos = 0;
+                            confeccion.Composturas = 0;
+                        }
+                        var terminado = (from x in consulta select new { x }).Where(x => x.x.OrdenTrabajo == item.OrdenTrabajo && x.x.Terminado == true).ToList();
+                        foreach (var item2 in terminado)
+                        {
+                            try
+                            {
+                                confeccion.Composturas += db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item2.x.IdAuditoria && x.Compostura == true).
+                                                     Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            }
+                            catch (Exception e)
+                            {
+                                confeccion.Composturas = confeccion.Composturas;
+                            }
+                        }
+                        API.AuditoriaConfeccion.Add(confeccion);
+                    }
+                    if (item.ProcesosEspeciales == true)
+                    {
+                        AUDITORIA auditoria = new AUDITORIA();
+                        auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Fecha_i = item.FechaRegistro;
+                        auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        if (item.FechaRegistroFin == null)
+                        {
+                            auditoria.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            auditoria.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            auditoria.Defectos = db.Auditoria_Proc_Esp_Detalle.Where(x => x.IdAuditoria == item.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            auditoria.Composturas = 0;
+                        }
+                        catch (Exception e)
+                        {
+                            auditoria.Defectos = 0;
+                            auditoria.Composturas = 0;
+                        }
+                        var terminado = (from x in consulta select new { x }).Where(x => x.x.OrdenTrabajo == item.OrdenTrabajo && x.x.Terminado == true).ToList();
+                        foreach (var item2 in terminado)
+                        {
+                            try
+                            {
+                                auditoria.Composturas += db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item2.x.IdAuditoria && x.Compostura == true).
+                                                     Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            }
+                            catch (Exception e)
+                            {
+                                auditoria.Composturas = auditoria.Composturas;
+                            }
+                        }
+                        API.AuditoriaProcesos.Add(auditoria);
+                    }
+                    if (item.Lavanderia == true)
+                    {
+                        AUDITORIA auditoria = new AUDITORIA();
+                        auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Fecha_i = item.FechaRegistro;
+                        auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        if (item.FechaRegistroFin == null)
+                        {
+                            auditoria.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            auditoria.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            auditoria.Defectos = db.Auditoria_Lavanderia_Detalle.Where(x => x.IdAuditoria == item.IdAuditoria).Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            auditoria.Composturas = 0;
+                        }
+                        catch (Exception e)
+                        {
+                            auditoria.Defectos = 0;
+                            auditoria.Composturas = 0;
+                        }
+                        var terminado = (from x in consulta select new { x }).Where(x => x.x.OrdenTrabajo == item.OrdenTrabajo && x.x.Terminado == true).ToList();
+                        foreach (var item2 in terminado)
+                        {
+                            try
+                            {
+                                auditoria.Composturas += db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item2.x.IdAuditoria && x.Compostura == true).
+                                                     Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            }
+                            catch (Exception e)
+                            {
+                                auditoria.Composturas = auditoria.Composturas;
+                            }
+                        }
+                        API.AuditoriaLavanderia.Add(auditoria);
+                    }
+                    if (item.Terminado == true)
+                    {
+                        AUDITORIA auditoria = new AUDITORIA();
+                        auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Fecha_i = item.FechaRegistro;
+                        auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
+                        if (item.FechaRegistroFin == null)
+                        {
+                            auditoria.Status = "ACTIVA";
+                        }
+                        else
+                        {
+                            auditoria.Status = "CERRADA";
+                        }
+                        try
+                        {
+                            auditoria.Defectos = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item.IdAuditoria && x.Revisado == true)
+                                .Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                            auditoria.Composturas = db.Auditoria_Terminado_Detalle.Where(x => x.IdAuditoria == item.IdAuditoria && x.Compostura == true)
+                                .Select(x => x.Cantidad).DefaultIfEmpty(0).Sum(); ;
+                        }
+                        catch (Exception e)
+                        {
+                            auditoria.Defectos = 0;
+                            auditoria.Composturas = 0;
+                        }
+                        API.AuditoriaTerminado.Add(auditoria);
+                    }
+                }
+                API.Message = new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch(Exception e)
+            {
+                API.Message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+                API.AuditoriaConfeccion = null;
+                API.AuditoriaCorte = null;
+                API.AuditoriaLavanderia =  null;
+                API.AuditoriaProcesos =  null;
+                API.AuditoriaTerminado = null; 
+            }
+
+            return API;
+        }
+
         public partial class C_CONSULTA
         {
             [Required] public DateTime Fecha_i { get; set; }
@@ -837,5 +1128,57 @@ namespace RioSulAPI.Controllers
             public HttpResponseMessage Message { get; set; }
         }
 
+        public partial class REQ_CONSULTA_GEN
+        {
+            [Required] public DateTime Fecha_i { get; set; }
+            [Required] public DateTime Fecha_f { get; set; }
+            public string IdCliente { get; set; }
+            public string Marca { get; set; }
+            public string PO { get; set; }
+            public string Corte { get; set; }
+        }
+
+        public partial class CORTE
+        {
+            public int IdAuditoria { get; set; }
+            public string CantCorte { get; set; }
+            public DateTime Fecha_i { get; set; }
+            public DateTime Fecha_f { get; set; }
+            public decimal Defectos { get; set; }
+            public decimal Composturas { get; set; }
+            public string Status { get; set; }
+            public string Auditoria { get; set; }
+        }
+
+        public partial class CONFECCION
+        {
+            public int IdAuditoria { get; set; }
+            public string Planta { get; set; }
+            public DateTime Fecha_i { get; set; }
+            public DateTime Fecha_f { get; set; }
+            public decimal Defectos { get; set; }
+            public decimal Composturas { get; set; }
+            public string Status { get; set; }
+        }
+
+        public partial class AUDITORIA
+        {
+            public int IdAuditoria { get; set; }
+            public DateTime Fecha_i { get; set; }
+            public DateTime Fecha_f { get; set; }
+            public decimal Defectos { get; set; }
+            public decimal Composturas { get; set; }
+            public string Status { get; set; }
+        }
+
+        public partial class C_CONSULTA_GEN
+        {
+            public List<CORTE> AuditoriaCorte { get; set; }
+            public List<CONFECCION> AuditoriaConfeccion { get; set; }
+            public List<AUDITORIA> AuditoriaProcesos { get; set; }
+            public List<AUDITORIA> AuditoriaLavanderia { get; set; }
+            public List<AUDITORIA> AuditoriaTerminado { get; set; }
+            public HttpResponseMessage Message { get; set; }
+        }
     }
 }

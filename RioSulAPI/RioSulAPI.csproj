@@ -401,6 +401,12 @@
       <DependentUpon>bd_calidadIIEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reportes\crComposturas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crComposturas.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\crConsultaConf.cs">
       <DependentUpon>crConsultaConf.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -441,6 +447,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dsConsulta.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes\dsReportes.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsReportes.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +514,17 @@
     <Content Include="Reportes\dsConsulta.xss">
       <DependentUpon>dsConsulta.xsd</DependentUpon>
     </Content>
+    <Content Include="Reportes\dsReportes.xsc">
+      <DependentUpon>dsReportes.xsd</DependentUpon>
+    </Content>
+    <None Include="Reportes\dsReportes.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsReportes.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reportes\dsReportes.xss">
+      <DependentUpon>dsReportes.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Models\bd_calidadIIEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -556,6 +578,10 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reportes\crComposturas.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crComposturas.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reportes\crConsultaConf.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>crConsultaConf.cs</LastGenOutput>
