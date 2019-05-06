@@ -2174,12 +2174,22 @@
             Represents the strongly named DataTable class.
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosDataTable">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesDataTable">
              <summary>
             Represents the strongly named DataTable class.
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesDataTable">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompOpDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompGenDataTable">
              <summary>
             Represents the strongly named DataTable class.
             </summary>
@@ -2194,12 +2204,22 @@
             Represents strongly named DataRow class.
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosRow">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesRow">
              <summary>
             Represents strongly named DataRow class.
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesRow">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompOpRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompGenRow">
              <summary>
             Represents strongly named DataRow class.
             </summary>
@@ -2214,12 +2234,22 @@
             Row event argument class
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosRowChangeEvent">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesRowChangeEvent">
              <summary>
             Row event argument class
             </summary>
         </member>
-        <member name="T:RioSulAPI.Reportes.dsReportes.dsTotalesRowChangeEvent">
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompOpRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsCompGenRowChangeEvent">
              <summary>
             Row event argument class
             </summary>
