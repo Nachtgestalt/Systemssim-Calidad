@@ -407,6 +407,12 @@
       <DependentUpon>crCompMar.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\crCompMarG.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crCompMarG.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\crComposturas.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -587,6 +593,10 @@
     <EmbeddedResource Include="Reportes\crCompMar.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>crCompMar.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\crCompMarG.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crCompMarG.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\crComposturas.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

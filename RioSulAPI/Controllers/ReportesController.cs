@@ -185,6 +185,7 @@ namespace RioSulAPI.Controllers
             return httpResponseMessage;
         }
 
+#region COMPOSTURAS X MARCA
         [HttpGet]
         [ApiExplorerSettings(IgnoreApi = false)]
         [Route("api/Reportes/ComposturasMarca")]
@@ -202,13 +203,22 @@ namespace RioSulAPI.Controllers
                 Where(x => x.Activo == true && x.IdSubModulo == 9).Distinct().ToList();
 
             ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("TOTAL COMPOSTURAS X MARCA");
 
             foreach(var item in marcas)
             {
+                c_cortada = 0;
                 ds.dsComp.AdddsCompRow(item);
-                tot_cortes = 10;
+                tot_cortes = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Marca == item).Select(x=> x.IdAuditoria).Count();
 
-                c_cortada = 20;
+                var NumCort = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Marca == item).Select(x => x.NumCortada).ToList();
+
+                foreach(string item2 in NumCort)
+                {
+                    c_cortada += Convert.ToDecimal(item2);
+                }
 
                 composturas = db.Auditorias.
                         Join(db.Auditoria_Confeccion_Detalle, x => x.IdAuditoria, y => y.IdAuditoria,
@@ -247,6 +257,194 @@ namespace RioSulAPI.Controllers
 
             return httpResponseMessage;
         }
+
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/ComposturasMarcaGrafico")]
+        public HttpResponseMessage ReporteComposturasMG(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crCompMarG cr = new crCompMarG();
+
+            decimal tot_cortes = 0, c_cortada = 0, composturas = 0, p_composturas = 0;
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var marcas = db.Auditorias.Where(x => x.Confeccion == true).Select(x => x.Marca).Distinct().ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("PORCENTAJE DE COMPOSTURAS POR MARCA");
+
+            foreach (var item in marcas)
+            {
+                c_cortada = 0;
+                ds.dsComp.AdddsCompRow(item);
+                tot_cortes = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Marca == item).Select(x => x.IdAuditoria).Count();
+
+                var NumCort = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Marca == item).Select(x => x.NumCortada).ToList();
+
+                foreach (string item2 in NumCort)
+                {
+                    c_cortada += Convert.ToDecimal(item2);
+                }
+
+                composturas = db.Auditorias.
+                        Join(db.Auditoria_Confeccion_Detalle, x => x.IdAuditoria, y => y.IdAuditoria,
+                        (x, y) => new { x.Marca, x.Activo, x.Confeccion, x.FechaRegistro, y.IdOperacion, y.Cantidad }).
+                        Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Marca == item).Select(x => x.Cantidad)
+                        .DefaultIfEmpty(0).Sum();
+
+                p_composturas = (composturas * 100) / c_cortada;
+
+                ds.dsCompGen.AdddsCompGenRow(item, tot_cortes, c_cortada, composturas, p_composturas);
+            }
+            
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+#endregion
+
+#region COMPOSTURAS X PLANTA
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/ComposturasPlanta")]
+        public HttpResponseMessage ReporteComposturasP(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crCompMar cr = new crCompMar();
+
+            decimal cantidad = 0, tot_cortes = 0, c_cortada = 0, composturas = 0, p_composturas = 0;
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var planta = db.Auditorias.Where(x => x.Confeccion == true).Select(x => x.Planta).Distinct().ToList();
+            var operacion = db.C_Conf_Confeccion.
+                Join(db.Auditoria_Confeccion_Detalle, x => x.ID, y => y.IdOperacion, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
+                Where(x => x.Activo == true && x.IdSubModulo == 9).Distinct().ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("TOTAL COMPOSTURAS X PLANTA");
+
+            foreach (var item in planta)
+            {
+                c_cortada = 0;
+                ds.dsComp.AdddsCompRow(item);
+                tot_cortes = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.IdAuditoria).Count();
+
+                var NumCort = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.NumCortada).ToList();
+
+                foreach (string item2 in NumCort)
+                {
+                    c_cortada += Convert.ToDecimal(item2);
+                }
+
+                composturas = db.Auditorias.
+                        Join(db.Auditoria_Confeccion_Detalle, x => x.IdAuditoria, y => y.IdAuditoria,
+                        (x, y) => new { x.Planta, x.Activo, x.Confeccion, x.FechaRegistro, y.IdOperacion, y.Cantidad }).
+                        Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.Cantidad)
+                        .DefaultIfEmpty(0).Sum();
+
+                p_composturas = (composturas * 100) / c_cortada;
+
+                ds.dsCompGen.AdddsCompGenRow(item, tot_cortes, c_cortada, composturas, p_composturas);
+
+                foreach (var item2 in operacion)
+                {
+                    cantidad = db.Auditorias.
+                        Join(db.Auditoria_Confeccion_Detalle, x => x.IdAuditoria, y => y.IdAuditoria,
+                        (x, y) => new { x.Planta, x.Activo, x.Confeccion, x.FechaRegistro, y.IdOperacion, y.Cantidad }).
+                        Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item && x.IdOperacion == item2.ID).Select(x => x.Cantidad)
+                        .DefaultIfEmpty(0).Sum();
+
+                    ds.dsCompOp.AdddsCompOpRow(item, item2.Clave, cantidad);
+                }
+            }
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/ComposturasPlantaGrafico")]
+        public HttpResponseMessage ReporteComposturasPG(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crCompMarG cr = new crCompMarG();
+
+            decimal tot_cortes = 0, c_cortada = 0, composturas = 0, p_composturas = 0;
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var plantas = db.Auditorias.Where(x => x.Confeccion == true).Select(x => x.Planta).Distinct().ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("PORCENTAJE DE COMPOSTURAS POR PLANTA");
+            foreach (var item in plantas)
+            {
+                c_cortada = 0;
+                ds.dsComp.AdddsCompRow(item);
+                tot_cortes = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.IdAuditoria).Count();
+
+                var NumCort = db.Auditorias.Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.NumCortada).ToList();
+
+                foreach (string item2 in NumCort)
+                {
+                    c_cortada += Convert.ToDecimal(item2);
+                }
+
+                composturas = db.Auditorias.
+                        Join(db.Auditoria_Confeccion_Detalle, x => x.IdAuditoria, y => y.IdAuditoria,
+                        (x, y) => new { x.Planta, x.Activo, x.Confeccion, x.FechaRegistro, y.IdOperacion, y.Cantidad }).
+                        Where(x => x.Confeccion == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.Planta == item).Select(x => x.Cantidad)
+                        .DefaultIfEmpty(0).Sum();
+
+                p_composturas = (composturas * 100) / c_cortada;
+
+                ds.dsCompGen.AdddsCompGenRow(item, tot_cortes, c_cortada, composturas, p_composturas);
+            }
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+#endregion
 
         public partial class RES_REPORTES
         {
