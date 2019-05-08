@@ -849,6 +849,10 @@ namespace RioSulAPI.Controllers
                     {
                         CORTE corte = new CORTE();
                         corte.IdAuditoria = item.IdAuditoria;
+                        corte.Cliente = item.Descripcion;
+                        corte.Marca = item.Marca;
+                        corte.PO = item.PO;
+                        corte.Corte = item.OrdenTrabajo;
                         corte.CantCorte = item.NumCortada;
                         corte.Fecha_i = item.FechaRegistro;
                         corte.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
@@ -890,6 +894,10 @@ namespace RioSulAPI.Controllers
                     {
                         CORTE corte = new CORTE();
                         corte.IdAuditoria = item.IdAuditoria;
+                        corte.Cliente = item.Descripcion;
+                        corte.Marca = item.Marca;
+                        corte.PO = item.PO;
+                        corte.Corte = item.OrdenTrabajo;
                         corte.CantCorte = item.NumCortada;
                         corte.Fecha_i = item.FechaRegistro;
                         corte.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
@@ -931,6 +939,10 @@ namespace RioSulAPI.Controllers
                     {
                         CONFECCION confeccion = new CONFECCION();
                         confeccion.IdAuditoria = item.IdAuditoria;
+                        confeccion.Cliente = item.Descripcion;
+                        confeccion.Marca = item.Marca;
+                        confeccion.PO = item.PO;
+                        confeccion.Corte = item.OrdenTrabajo;
                         confeccion.Planta = item.Planta;
                         confeccion.Fecha_i = item.FechaRegistro;
                         confeccion.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
@@ -971,6 +983,10 @@ namespace RioSulAPI.Controllers
                     {
                         AUDITORIA auditoria = new AUDITORIA();
                         auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Cliente = item.Descripcion;
+                        auditoria.Marca = item.Marca;
+                        auditoria.PO = item.PO;
+                        auditoria.Corte = item.OrdenTrabajo;
                         auditoria.Fecha_i = item.FechaRegistro;
                         auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
                         if (item.FechaRegistroFin == null)
@@ -1010,6 +1026,10 @@ namespace RioSulAPI.Controllers
                     {
                         AUDITORIA auditoria = new AUDITORIA();
                         auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Cliente = item.Descripcion;
+                        auditoria.Marca = item.Marca;
+                        auditoria.PO = item.PO;
+                        auditoria.Corte = item.OrdenTrabajo;
                         auditoria.Fecha_i = item.FechaRegistro;
                         auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
                         if (item.FechaRegistroFin == null)
@@ -1049,6 +1069,10 @@ namespace RioSulAPI.Controllers
                     {
                         AUDITORIA auditoria = new AUDITORIA();
                         auditoria.IdAuditoria = item.IdAuditoria;
+                        auditoria.Cliente = item.Descripcion;
+                        auditoria.Marca = item.Marca;
+                        auditoria.PO = item.PO;
+                        auditoria.Corte = item.OrdenTrabajo;
                         auditoria.Fecha_i = item.FechaRegistro;
                         auditoria.Fecha_f = item.FechaRegistroFin.GetValueOrDefault();
                         if (item.FechaRegistroFin == null)
@@ -1141,6 +1165,10 @@ namespace RioSulAPI.Controllers
         public partial class CORTE
         {
             public int IdAuditoria { get; set; }
+            public string Cliente { get; set; }
+            public string Marca { get; set; }
+            public string PO { get; set; }
+            public string Corte { get; set; }
             public string CantCorte { get; set; }
             public DateTime Fecha_i { get; set; }
             public DateTime Fecha_f { get; set; }
@@ -1153,6 +1181,10 @@ namespace RioSulAPI.Controllers
         public partial class CONFECCION
         {
             public int IdAuditoria { get; set; }
+            public string Cliente { get; set; }
+            public string Marca { get; set; }
+            public string PO { get; set; }
+            public string Corte { get; set; }
             public string Planta { get; set; }
             public DateTime Fecha_i { get; set; }
             public DateTime Fecha_f { get; set; }
@@ -1164,6 +1196,10 @@ namespace RioSulAPI.Controllers
         public partial class AUDITORIA
         {
             public int IdAuditoria { get; set; }
+            public string Cliente { get; set; }
+            public string Marca { get; set; }
+            public string PO { get; set; }
+            public string Corte { get; set; }
             public DateTime Fecha_i { get; set; }
             public DateTime Fecha_f { get; set; }
             public decimal Defectos { get; set; }

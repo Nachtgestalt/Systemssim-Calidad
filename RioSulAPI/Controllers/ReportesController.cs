@@ -606,6 +606,41 @@ namespace RioSulAPI.Controllers
         }
         #endregion
 
+        #region CORTE X PULGADAS
+
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/Corte")]
+        public HttpResponseMessage ReporteCorte(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crComposturas cr = new crComposturas();
+
+            var posiciones = db.C_Cort_Cortadores.
+                Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdPosicion, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
+                Where(x => x.Activo == true && x.IdSubModulo == 7).Distinct().ToList();
+
+            foreach(var tolerancia in db.C_Tolerancia_Corte.ToList())
+            {
+                
+            }
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+
+        #endregion
+
         public partial class RES_REPORTES
         {
             public HttpResponseMessage Message { get; set; }
