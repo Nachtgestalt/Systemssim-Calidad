@@ -2199,6 +2199,16 @@
             Represents the strongly named DataTable class.
             </summary>
         </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsOperacionDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosDataTable">
+             <summary>
+            Represents the strongly named DataTable class.
+            </summary>
+        </member>
         <member name="T:RioSulAPI.Reportes.dsReportes.dsGeneralCRow">
              <summary>
             Represents strongly named DataRow class.
@@ -2234,6 +2244,16 @@
             Represents strongly named DataRow class.
             </summary>
         </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsOperacionRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosRow">
+             <summary>
+            Represents strongly named DataRow class.
+            </summary>
+        </member>
         <member name="T:RioSulAPI.Reportes.dsReportes.dsGeneralCRowChangeEvent">
              <summary>
             Row event argument class
@@ -2265,6 +2285,16 @@
             </summary>
         </member>
         <member name="T:RioSulAPI.Reportes.dsReportes.dsTituloRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsOperacionRowChangeEvent">
+             <summary>
+            Row event argument class
+            </summary>
+        </member>
+        <member name="T:RioSulAPI.Reportes.dsReportes.dsDefectosRowChangeEvent">
              <summary>
             Row event argument class
             </summary>
