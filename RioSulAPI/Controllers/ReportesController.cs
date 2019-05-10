@@ -615,15 +615,56 @@ namespace RioSulAPI.Controllers
         {
             dsReportes ds = new dsReportes();
             crComposturas cr = new crComposturas();
+            List<TOLERANCIA> tolerancias = new List<TOLERANCIA>();
 
             var posiciones = db.C_Cort_Cortadores.
                 Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdPosicion, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
                 Where(x => x.Activo == true && x.IdSubModulo == 7).Distinct().ToList();
 
-            foreach(var tolerancia in db.C_Tolerancia_Corte.ToList())
+            //TOLERANCIA NEGATIVA
+            var tolerancia_aux = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == false).
+                OrderBy(x=> x.Denominador).ToList();
+
+            foreach(var item in tolerancia_aux)
             {
-                
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador
+                };
+                tolerancias.Add(tol);
             }
+
+            //TOLERANCIA NEGATIVA Y POSITIVA
+            var tolerancia_aux2 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux2)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA POSITIVA
+            var tolerancia_aux3 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == false && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux3)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = item.Numerador + "/" + item.Denominador
+                };
+                tolerancias.Add(tol);
+            }
+
+            //RELACION ENTRE TOLERANCIA Y POSICIONES
+
 
             cr.SetDataSource(ds);
             MemoryStream stream = new MemoryStream();
@@ -645,6 +686,12 @@ namespace RioSulAPI.Controllers
         {
             public HttpResponseMessage Message { get; set; }
             public byte[] AUD { get; set; }
+        }
+
+        public partial class TOLERANCIA
+        {
+            public int ID { get; set; }
+            public string Tolerancia { get; set; }
         }
     }
 }
