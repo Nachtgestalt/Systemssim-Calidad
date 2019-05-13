@@ -614,8 +614,11 @@ namespace RioSulAPI.Controllers
         public HttpResponseMessage ReporteCorte(DateTime Fecha_i, DateTime Fecha_f)
         {
             dsReportes ds = new dsReportes();
-            crComposturas cr = new crComposturas();
+            crTolerancia cr = new crTolerancia();
             List<TOLERANCIA> tolerancias = new List<TOLERANCIA>();
+            decimal cantidad = 0;
+
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
 
             var posiciones = db.C_Cort_Cortadores.
                 Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdPosicion, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
@@ -630,7 +633,8 @@ namespace RioSulAPI.Controllers
                 TOLERANCIA tol = new TOLERANCIA()
                 {
                     ID = item.IdTolerancia,
-                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador
+                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador) * -1
                 };
                 tolerancias.Add(tol);
             }
@@ -644,11 +648,12 @@ namespace RioSulAPI.Controllers
                 TOLERANCIA tol = new TOLERANCIA()
                 {
                     ID = item.IdTolerancia,
-                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador
+                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
                 };
                 tolerancias.Add(tol);
             }
-
+ 
             //TOLERANCIA POSITIVA
             var tolerancia_aux3 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == false && x.ToleranciaPositiva == true).
                 OrderBy(x => x.Denominador).ToList();
@@ -658,12 +663,31 @@ namespace RioSulAPI.Controllers
                 TOLERANCIA tol = new TOLERANCIA()
                 {
                     ID = item.IdTolerancia,
-                    Tolerancia = item.Numerador + "/" + item.Denominador
+                    Tolerancia = item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
                 };
                 tolerancias.Add(tol);
             }
+            tolerancias = tolerancias.OrderBy(x => x.Ord_Tolerancia).ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("LÍMITES DE CTRL DE CALIDAD DE CORTE X PULGADAS");
 
             //RELACION ENTRE TOLERANCIA Y POSICIONES
+            foreach (var tolerancia in tolerancias)
+            {
+                ds.dsComp.AdddsCompRow(tolerancia.Tolerancia);
+                foreach(var posicion in posiciones)
+                {
+                    cantidad = db.Auditorias.
+                        Join(db.Auditoria_Tendido_Detalle, x => x.IdAuditoria, y => y.IdAuditoriaCorte,
+                        (x, y) => new {x.Activo, x.Tendido, x.FechaRegistro, y.IdPosicion, y.IdCortado ,y.Cantidad }).
+                        Where(x => x.Tendido == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.IdCortado == tolerancia.ID && x.IdPosicion == posicion.ID).
+                        Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                    ds.dsCompOp.AdddsCompOpRow(tolerancia.Tolerancia, posicion.Clave, cantidad);
+                }
+            }
 
 
             cr.SetDataSource(ds);
@@ -680,6 +704,293 @@ namespace RioSulAPI.Controllers
             return httpResponseMessage;
         }
 
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/CorteGrafico")]
+        public HttpResponseMessage ReporteCorteG(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crToleranciaG cr = new crToleranciaG();
+            List<TOLERANCIA> tolerancias = new List<TOLERANCIA>();
+            decimal cantidad = 0;
+
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var posiciones = db.C_Cort_Cortadores.
+                Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdPosicion, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
+                Where(x => x.Activo == true && x.IdSubModulo == 7).Distinct().ToList();
+
+            //TOLERANCIA NEGATIVA
+            var tolerancia_aux = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == false).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador) * -1
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA NEGATIVA Y POSITIVA
+            var tolerancia_aux2 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux2)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA POSITIVA
+            var tolerancia_aux3 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == false && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux3)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+            tolerancias = tolerancias.OrderBy(x => x.Ord_Tolerancia).ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("LÍMITES DE CTRL DE CALIDAD DE CORTE X PULGADAS");
+
+            //RELACION ENTRE TOLERANCIA Y POSICIONES
+            foreach (var tolerancia in tolerancias)
+            {
+                ds.dsComp.AdddsCompRow(tolerancia.Tolerancia);
+                foreach (var posicion in posiciones)
+                {
+                    cantidad = db.Auditorias.
+                        Join(db.Auditoria_Tendido_Detalle, x => x.IdAuditoria, y => y.IdAuditoriaCorte,
+                        (x, y) => new { x.Activo, x.Tendido, x.FechaRegistro, y.IdPosicion, y.IdCortado, y.Cantidad }).
+                        Where(x => x.Tendido == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.IdCortado == tolerancia.ID && x.IdPosicion == posicion.ID).
+                        Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                    ds.dsCompOp.AdddsCompOpRow(tolerancia.Tolerancia, posicion.Clave, cantidad);
+                }
+            }
+
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/CorteCortadores")]
+        public HttpResponseMessage ReporteCorte2(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crTolerancia cr = new crTolerancia();
+            List<TOLERANCIA> tolerancias = new List<TOLERANCIA>();
+            decimal cantidad = 0;
+
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var cortadores = db.C_Cort_Cortadores.
+                Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdCortador, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
+                Where(x => x.Activo == true && x.IdSubModulo == 1).Distinct().ToList();
+
+            //TOLERANCIA NEGATIVA
+            var tolerancia_aux = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == false).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador) * -1
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA NEGATIVA Y POSITIVA
+            var tolerancia_aux2 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux2)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA POSITIVA
+            var tolerancia_aux3 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == false && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux3)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+            tolerancias = tolerancias.OrderBy(x => x.Ord_Tolerancia).ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("REFILADO POR CORTADOR");
+
+            //RELACION ENTRE TOLERANCIA Y POSICIONES
+            foreach (var tolerancia in tolerancias)
+            {
+                ds.dsComp.AdddsCompRow(tolerancia.Tolerancia);
+                foreach (var cortador in cortadores)
+                {
+                    cantidad = db.Auditorias.
+                        Join(db.Auditoria_Tendido_Detalle, x => x.IdAuditoria, y => y.IdAuditoriaCorte,
+                        (x, y) => new { x.Activo, x.Tendido, x.FechaRegistro, y.IdCortador, y.IdCortado, y.Cantidad }).
+                        Where(x => x.Tendido == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.IdCortado == tolerancia.ID && x.IdCortador == cortador.ID).
+                        Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                    ds.dsCompOp.AdddsCompOpRow(tolerancia.Tolerancia, cortador.Clave, cantidad);
+                }
+            }
+
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/CorteCortadoresGrafico")]
+        public HttpResponseMessage ReporteCorte2G(DateTime Fecha_i, DateTime Fecha_f)
+        {
+            dsReportes ds = new dsReportes();
+            crToleranciaG cr = new crToleranciaG();
+            List<TOLERANCIA> tolerancias = new List<TOLERANCIA>();
+            decimal cantidad = 0;
+
+            string fecha = "Periodo: " + Fecha_i.ToString("MMMM") + "-" + Fecha_f.ToString("MMMM-yyyy");
+
+            var cortadores = db.C_Cort_Cortadores.
+                Join(db.Auditoria_Tendido_Detalle, x => x.ID, y => y.IdCortador, (x, y) => new { x.ID, x.Clave, x.Nombre, x.Activo, x.IdSubModulo }).
+                Where(x => x.Activo == true && x.IdSubModulo == 1).Distinct().ToList();
+
+            //TOLERANCIA NEGATIVA
+            var tolerancia_aux = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == false).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador) * -1
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA NEGATIVA Y POSITIVA
+            var tolerancia_aux2 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == true && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux2)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = "+/-" + item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+
+            //TOLERANCIA POSITIVA
+            var tolerancia_aux3 = db.C_Tolerancia_Corte.Where(x => x.ToleranciaNegativa == false && x.ToleranciaPositiva == true).
+                OrderBy(x => x.Denominador).ToList();
+
+            foreach (var item in tolerancia_aux3)
+            {
+                TOLERANCIA tol = new TOLERANCIA()
+                {
+                    ID = item.IdTolerancia,
+                    Tolerancia = item.Numerador + "/" + item.Denominador,
+                    Ord_Tolerancia = (item.Numerador / item.Denominador)
+                };
+                tolerancias.Add(tol);
+            }
+            tolerancias = tolerancias.OrderBy(x => x.Ord_Tolerancia).ToList();
+
+            ds.dsPosiciones.AdddsPosicionesRow(fecha);
+            ds.dsTitulo.AdddsTituloRow("REFILADO POR CORTADOR");
+
+            //RELACION ENTRE TOLERANCIA Y POSICIONES
+            foreach (var tolerancia in tolerancias)
+            {
+                ds.dsComp.AdddsCompRow(tolerancia.Tolerancia);
+                foreach (var cortador in cortadores)
+                {
+                    cantidad = db.Auditorias.
+                        Join(db.Auditoria_Tendido_Detalle, x => x.IdAuditoria, y => y.IdAuditoriaCorte,
+                        (x, y) => new { x.Activo, x.Tendido, x.FechaRegistro, y.IdCortador, y.IdCortado, y.Cantidad }).
+                        Where(x => x.Tendido == true && x.Activo == true && DbFunctions.TruncateTime(x.FechaRegistro) >= Fecha_i
+                        && DbFunctions.TruncateTime(x.FechaRegistro) <= Fecha_f && x.IdCortado == tolerancia.ID && x.IdCortador == cortador.ID).
+                        Select(x => x.Cantidad).DefaultIfEmpty(0).Sum();
+                    ds.dsCompOp.AdddsCompOpRow(tolerancia.Tolerancia, cortador.Clave, cantidad);
+                }
+            }
+
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
         #endregion
 
         public partial class RES_REPORTES
@@ -692,6 +1003,7 @@ namespace RioSulAPI.Controllers
         {
             public int ID { get; set; }
             public string Tolerancia { get; set; }
+            public decimal Ord_Tolerancia { get; set; }
         }
     }
 }
