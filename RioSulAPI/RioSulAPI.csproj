@@ -407,6 +407,12 @@
       <DependentUpon>crCompMar.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reportes\crCostoCotizado.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>crCostoCotizado.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Reportes\crToleranciaG.cs">
       <DependentUpon>crToleranciaG.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -611,6 +617,10 @@
     <EmbeddedResource Include="Reportes\crCompMar.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>crCompMar.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes\crCostoCotizado.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>crCostoCotizado.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reportes\crToleranciaG.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

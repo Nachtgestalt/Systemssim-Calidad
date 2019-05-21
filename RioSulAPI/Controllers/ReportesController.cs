@@ -993,6 +993,99 @@ namespace RioSulAPI.Controllers
         }
         #endregion
 
+        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = false)]
+        [Route("api/Reportes/CostoCotizado")]
+        public HttpResponseMessage CostoCotizado(decimal tipo_cambio, int OT_I = 0, int OT_F = 0)
+        {        
+            dsReportes ds = new dsReportes();
+            crCostoCotizado cr = new crCostoCotizado();
+
+            decimal costo_prenda = 0, cotizado = 0, real = 0,restante = 0, piezas_cobrar = 0, costo_segundas = 0, total_restar = 0, cargo_final = 0;
+            var auditorias = db.C_Segundas.Join(db.Auditorias, x => x.Estilo, y => y.Estilo,
+                (x, y) => new
+                {
+                    x.Porcentaje_Tela,
+                    x.Porcentaje_Corte,
+                    x.Porcentaje_Confeccion,
+                    x.Porcentaje_Lavanderia,
+                    x.Porcentaje_ProcesosEspeciales,
+                    x.Costo_Segunda,
+                    y.Tela,
+                    y.Estilo,
+                    y.PO,
+                    y.Planta,
+                    y.Marca,
+                    y.Corte,
+                    y.Activo,
+                    y.OrdenTrabajo,
+                    y.NumCortada
+                }).Where(x => x.Activo == true).Distinct().ToList();
+
+            foreach(var auditoria in auditorias)
+            {
+                if(Convert.ToInt64(auditoria.OrdenTrabajo) >= OT_I && Convert.ToInt64(auditoria.OrdenTrabajo) <= OT_F)
+                {
+                    costo_prenda = Costo_prenda(auditoria.OrdenTrabajo);
+                    cotizado = (tipo_cambio * costo_prenda) * Convert.ToDecimal(auditoria.NumCortada) * auditoria.Porcentaje_Confeccion;
+                    real = auditoria.Porcentaje_Confeccion / Convert.ToDecimal(auditoria.NumCortada);
+                    restante = real - cotizado;
+                    piezas_cobrar = restante * Convert.ToDecimal(auditoria.NumCortada);
+                    costo_segundas = auditoria.Costo_Segunda;
+                    total_restar = piezas_cobrar / costo_segundas;
+                    cargo_final = (piezas_cobrar * (tipo_cambio * costo_prenda)) - total_restar;
+
+                    ds.dsCostoCotizado.AdddsCostoCotizadoRow(auditoria.Tela,auditoria.Estilo,auditoria.PO,auditoria.Planta,auditoria.Marca,
+                        auditoria.OrdenTrabajo,costo_prenda,(tipo_cambio * costo_prenda),Convert.ToDecimal(auditoria.NumCortada),auditoria.Porcentaje_Confeccion,
+                        cotizado,real,restante,piezas_cobrar,costo_segundas,total_restar,cargo_final);
+                }
+            }
+
+            cr.SetDataSource(ds);
+            MemoryStream stream = new MemoryStream();
+            cr.ExportToStream(CrystalDecisions.Shared.ExportFormatType.PortableDocFormat).CopyTo(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
+            httpResponseMessage.Content = new StreamContent(stream);
+            httpResponseMessage.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            httpResponseMessage.Content.Headers.ContentDisposition.FileName = "Ejemplo.pdf";
+            httpResponseMessage.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+            return httpResponseMessage;
+        }
+
+        public decimal Costo_prenda(string Wonbr)
+        {
+            decimal costo = 0;
+
+            using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
+            {
+                _Conn.Open();
+                string Consulta = @"SELECT        
+									IV.StkBasePrc
+FROM            ItemXRef AS IXR RIGHT OUTER JOIN
+						 WOHeader AS WH INNER JOIN
+						 SOHeader INNER JOIN
+						 RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
+						 Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
+						 Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
+						 InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
+						 WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+						 RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
+						WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R') and Wh.WONbr = '"+ Wonbr +"' ";
+                SqlCommand Command = new SqlCommand(Consulta, _Conn);
+                SqlDataReader sqlData = Command.ExecuteReader();
+                while (sqlData.Read())
+                {
+                    costo = Convert.ToDecimal(sqlData[0].ToString());
+                }
+                sqlData.Close();
+            }
+
+            return costo;
+        }
+
         public partial class RES_REPORTES
         {
             public HttpResponseMessage Message { get; set; }
