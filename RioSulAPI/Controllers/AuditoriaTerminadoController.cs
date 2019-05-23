@@ -313,17 +313,19 @@ namespace RioSulAPI.Controllers
 						using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
 						{
 							_Conn.Open();
-							string Consulta = @"SELECT        distinct(WH.WONbr)
-									FROM ItemXRef AS IXR RIGHT OUTER JOIN
-									WOHeader AS WH INNER JOIN
-									SOHeader INNER JOIN
-									RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
-									Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
-									Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
-									InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
-									WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
-									RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID    
-									WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R');";                            
+							string Consulta = @"SELECT			
+				                                distinct(WH.WONbr)
+                                FROM            dbo.InventoryADG AS IADG INNER JOIN
+                                                         dbo.Inventory INNER JOIN
+                                                         dbo.WOHeader AS WH INNER JOIN
+                                                         dbo.SOHeader INNER JOIN
+                                                         dbo.RsTb_SeriesDtl AS RSD ON dbo.SOHeader.OrdNbr = RSD.User1 INNER JOIN
+                                                         dbo.Customer AS CM ON dbo.SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr ON dbo.Inventory.InvtID = WH.InvtID ON IADG.InvtID = dbo.Inventory.InvtID LEFT OUTER JOIN
+                                                         dbo.WOBuildTo AS WOB INNER JOIN
+                                                         dbo.Inventory AS IV ON WOB.InvtID = IV.InvtID INNER JOIN
+                                                         dbo.ItemXRef AS IXR ON IV.InvtID = IXR.InvtID ON UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+                                                         dbo.RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta
+                                WHERE        (WH.Status = 'A') AND (WH.ProcStage = 'R')";                            
 							SqlCommand Command = new SqlCommand(Consulta, _Conn);
 							SqlDataReader sqlData = Command.ExecuteReader();
 							while (sqlData.Read())
@@ -371,32 +373,32 @@ namespace RioSulAPI.Controllers
 				using (SqlConnection _Conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["dbRioSulApp"].ToString()))
 				{
 					_Conn.Open();
-					string Consulta = @" SELECT        
-									ISNULL(CM.Name, '') AS CLIENTE, 
-									IV.Size AS LINEA, 
-									IV.Color AS LAVADO, 
-									WH.User5 AS PLANTA,
-									IADG.Style AS DIVISION,
-									ISNULL(WOB.InvtID, '') AS TELA, 
-									IV.ClassID AS MARCA,
-									WH.CustID AS ESTILO,
-									WH.InvtID AS TELA_PROV,
-									WH.QtyOrig AS NUMERO_CORTADA,
-									IV.Descr AS MODELO,
-									IV.Descr AS DESCRIPCION, 
-									WH.User6 AS PO,
-									IV.User2 AS RUTA,
-									ISNULL(CM.CustId, 0) AS CLIENT_ID
-FROM            ItemXRef AS IXR RIGHT OUTER JOIN
-						 WOHeader AS WH INNER JOIN
-						 SOHeader INNER JOIN
-						 RsTb_SeriesDtl AS RSD ON SOHeader.OrdNbr = RSD.User1 INNER JOIN
-						 Customer AS CM ON SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr LEFT OUTER JOIN
-						 Inventory AS IV ON WH.InvtID = IV.InvtID LEFT OUTER JOIN
-						 InventoryADG AS IADG ON IV.InvtID = IADG.InvtID LEFT OUTER JOIN
-						 WOBuildTo AS WOB ON WOB.InvtID = IV.InvtID AND UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
-						 RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta ON IXR.InvtID = WH.InvtID
-						WHERE (WH.Status = 'A') AND (WH.ProcStage = 'R') and WH.WONbr = '" + OT +"'; ";
+					string Consulta = @" SELECT			ISNULL(CM.Name, '') AS CLIENTE, 
+				                                        dbo.Inventory.Size AS LINEA, 
+				                                        dbo.Inventory.Color AS LAVADO,
+				                                        WH.User5 AS PLANTA,
+				                                        IADG.Style AS DIVISION, 
+				                                        ISNULL(WOB.InvtID, '') AS TELA, 
+                                                        IV.ClassID AS MARCA,
+				                                        LEFT(WH.InvtID, 26) AS ESTILO,
+				                                        IXR.AlternateID AS TELA_PROV,
+				                                        WH.QtyOrig AS NUMERO_CORTADA,
+				                                        dbo.Inventory.Descr AS MODELO,
+				                                        dbo.Inventory.Descr AS DESCRIPCION, 
+                                                        WH.User6 AS PO,
+				                                        dbo.Inventory.User2 AS RUTA,
+				                                        ISNULL(CM.CustId, 0) AS CLIENT_ID
+FROM            dbo.InventoryADG AS IADG INNER JOIN
+                         dbo.Inventory INNER JOIN
+                         dbo.WOHeader AS WH INNER JOIN
+                         dbo.SOHeader INNER JOIN
+                         dbo.RsTb_SeriesDtl AS RSD ON dbo.SOHeader.OrdNbr = RSD.User1 INNER JOIN
+                         dbo.Customer AS CM ON dbo.SOHeader.CustID = CM.CustId ON WH.WONbr = RSD.WoNbr ON dbo.Inventory.InvtID = WH.InvtID ON IADG.InvtID = dbo.Inventory.InvtID LEFT OUTER JOIN
+                         dbo.WOBuildTo AS WOB INNER JOIN
+                         dbo.Inventory AS IV ON WOB.InvtID = IV.InvtID INNER JOIN
+                         dbo.ItemXRef AS IXR ON IV.InvtID = IXR.InvtID ON UPPER(IV.ClassID) = 'TEMEZ' LEFT OUTER JOIN
+                         dbo.RsTb_Plantas AS RSP ON WH.User5 = RSP.Planta
+WHERE        (WH.Status = 'A') AND (WH.ProcStage = 'R') and WH.WONbr = '" + OT +"'; ";
 					SqlCommand Command = new SqlCommand(Consulta, _Conn);
 					SqlDataReader reader = Command.ExecuteReader();
 					if (reader.Read())
